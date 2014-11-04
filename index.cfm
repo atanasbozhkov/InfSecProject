@@ -28,6 +28,18 @@
       <script src="assets/js/vendor/html5shiv.js"></script>
       <script src="assets/js/vendor/respond.min.js"></script>
     <![endif]-->
+    <script type="text/javascript">
+    function checkSubmit(e)
+    {
+       if(e && e.keyCode == 13)
+          {
+                $('.btn-lg')[0].click()
+           }
+     }
+            
+    </script>
+
+
   </head>
   <body>
     <div>
@@ -36,7 +48,7 @@
           <h4><small>MSc Information Security Project </small> TeamD</h4>
         </div>
 
-        <div class="login-form">
+        <div class="login-form" onKeyPress="return checkSubmit(event)">
           <div class="form-group">
             <input type="text" class="form-control login-field" value="" placeholder="Enter your name" id="login-name" />
             <label class="login-field-icon fui-user" for="login-name"></label>
@@ -47,13 +59,8 @@
             <label class="login-field-icon fui-lock" for="login-pass"></label>
           </div>
 
-          <!-----<a class="btn btn-primary btn-lg btn-block" href="charts.html">Log in</a> --->
-          <input class="btn btn-primary btn-lg btn-block" type="submit" name="reg_submit" value="Log in"/>
-
-          <a class="login-link" href="#">Forgot your password?    &nbsp;   </a>
-          <br/>
-			<a class="btn btn-primary btn-lg btn-block" href="register.html">Create an account</a>
-
+          <a class="btn btn-primary btn-lg btn-block" href="charts.cfm">Log in</a>
+          <a class="login-link" href="#">Forgot your password?</a>
         </div>
       </div>
     </div>
