@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>TeamD InfSec Project Login</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+    <title>TeamD InfSec Project Register</title>
     <meta name="description" content=""/>
 
     <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
@@ -28,27 +28,56 @@
       <script src="assets/js/vendor/html5shiv.js"></script>
       <script src="assets/js/vendor/respond.min.js"></script>
     <![endif]-->
-  </head>
-  <body>
-    <div>
+</head>
+
+<body>
+
+
+<div>
       <div class="login-screen">
         <div class="login-icon">
-          <h4><small>MSc Information Security Project </small> TeamD</h4>
+          <h4><small>Register </small></h4>
         </div>
 
         <div class="login-form">
           <div class="form-group">
-            <input type="text" class="form-control login-field" value="" placeholder="Enter your name" id="login-name" />
+            <input type="text" class="form-control login-field" value="" placeholder="Username" id="login-name" />
             <label class="login-field-icon fui-user" for="login-name"></label>
           </div>
 
+          <div class="form-group">
+            <input type="text" class="form-control login-field" value="" placeholder="Email" id="login-email" />
+            <label class="login-field-icon fui-mail" for="login-email"></label>
+          </div>
+          
+          
           <div class="form-group">
             <input type="password" class="form-control login-field" value="" placeholder="Password" id="login-pass" />
             <label class="login-field-icon fui-lock" for="login-pass"></label>
           </div>
 
-          <a class="btn btn-primary btn-lg btn-block" href="charts.html">Log in</a>
-          <a class="login-link" href="#">Forgot your password?</a>
+
+<div class="form-group">
+            <input type="firstname" class="form-control login-field" value="" placeholder="Firstname" id="login-pass" />
+            <label class="login-field-icon fui-user" for="login-firstname"></label>
+          </div>
+          
+          
+          <div class="form-group">
+            <input type="lastname" class="form-control login-field" value="" placeholder="Lastname" id="login-pass" />
+            <label class="login-field-icon fui-user" for="login-pass"></label>
+          </div>
+
+
+
+
+
+
+          <!-----<a class="btn btn-primary btn-lg btn-block" href="charts.html">Log in</a> --->
+          <input class="btn btn-primary btn-lg btn-block" type="submit" name="reg_submit" value="Register"/>
+
+          
+
         </div>
       </div>
     </div>
@@ -61,5 +90,5 @@
     <script>
       videojs.options.flash.swf = "assets/js/vendors/video-js.swf"
     </script>
-  </body>
+</body>
 </html>

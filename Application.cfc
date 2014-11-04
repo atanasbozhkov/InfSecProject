@@ -1,64 +1,62 @@
 <cfcomponent displayname="SecureComponent" output="true" hint="handle the application">
-<cfset This.name = "SecureComponent">
-<cfset This.sessionManagement=true>
-<!--- <cfset This.clientmanagement=true>
-<cfset This.clientStorage=true> --->
-<cfset This.Sessiontimeout="#createtimespan(0,0,10,0)#">
-<cfset This.applicationtimeout="#createtimespan(5,0,0,0)#">
+    <cfset This.name = "SecureComponent">
+    <cfset This.sessionManagement=true>
+    <cfset This.Sessiontimeout="#createtimespan(0,0,0,5)#">
+    <cfset This.applicationtimeout="#createtimespan(5,0,0,0)#">
+    <cfset This.loginstorage="session">
+    <cfinvoke component="components.config" method="getConfig" returnVariable="config">
 
-<!--- while trying access, it checks authentication --->
-<cffunction name="OnRequestStart"> 
-    <cfargument name = "request" required="true"/> 
-    <cfif IsDefined("Form.logout")> 
-        <cflogout> 
-    </cfif> 
- 
-    <cflogin> 
-        <cfif NOT IsDefined("cflogin")> 
-            <cfinclude template="loginform.cfm"> 
-            <cfabort> 
-        <cfelse> 
-            <cfif cflogin.name IS "" OR cflogin.password IS ""> 
-                <cfoutput> 
-                    <h2>You must enter text in both the User Name and Password fields. 
-                    </h2> 
-                </cfoutput> 
-                <cfinclude template="loginform.cfm"> 
-                <cfabort> 
-            <cfelse> 
-                <!--- <cfquery name="loginQuery" dataSource="cfdocexamples"> 
-                SELECT UserID, Roles 
-                FROM LoginInfo 
-                WHERE 
-                    UserID = '#cflogin.name#' 
-                    AND Password = '#cflogin.password#' 
-                </cfquery> 
-                <cfif loginQuery.Roles NEQ ""> 
-                    <cfloginuser name="#cflogin.name#" Password = "#cflogin.password#" 
-                        roles="#loginQuery.Roles#">  --->
-                <cfif cflogin.name eq "kelvin" and cflogin.password eq "password">
-                    <cfloginuser name="#cflogin.name#" Password = "#cflogin.password#" 
-                        roles="admin">
-                <cfelse> 
-                    <cfoutput> 
-                        <H2>Your login information is not valid.<br> 
-                        Please Try again</H2> 
-                    </cfoutput>     
-                    <cfinclude template="loginform.cfm"> 
-                    <cfabort> 
-                </cfif> 
-            </cfif>     
+    <!--- while trying access, it checks authentication --->
+    <cffunction name="OnRequestStart"> 
+        <cfif isDefined("Form.logout")>
+            <cflogout>
         </cfif> 
-    </cflogin> 
- 
-    <cfif GetAuthUser() NEQ ""> 
-        <cfoutput> 
-            <form action="charts.cfm" method="Post"> 
-                <input type="submit" Name="Logout" value="Logout"> 
-            </form> 
-        </cfoutput> 
-    </cfif> 
- 
-</cffunction> 
+     
+        <cflogin> 
+            <cfif NOT isDefined("cflogin")>
+                <cfinclude template="index.cfm">
+                <cfabort>
+            <cfelse>
+                <cfif cflogin.name IS "" OR cflogin.password IS "">
+                    <cfinclude template="index.cfm">
+                    <cfoutput>
+                        <h4>You must enter text in both the User Name and Password fields.</h4>
+                    </cfoutput>
+                    <cfabort>
+                <cfelse>
+                    <cfquery name="loginQuery" dataSource="#config.sourceName#">
+                        SELECT users.username, passwords.password, passwords.salt FROM users, passwords
+                        WHERE users.username = '#cflogin.name#' AND passwords.user_id = users.user_id
+                    </cfquery>
+                    <cfif loginQuery.RecordCount eq 1>
+                        <cfif compare(loginQuery.password, hash(cflogin.password&loginQuery.salt, "SHA-512")) eq 0>
+                            <cfloginuser name="#cflogin.name#" Password = "#loginQuery.password#" roles="admin">
+                        <cfelse>
+                            <cfinclude template="index.cfm">
+                            <cfoutput>
+                                <h4>Your login information is not valid.<br>Please Try again</h4>
+                            </cfoutput>
+                            <cfabort>
+                        </cfif>
+                    <cfelse>
+                        <cfinclude template="index.cfm">
+                        <cfoutput>
+                            <h4>Your login information is not valid.<br>Please Try again</h4>
+                        </cfoutput>
+                        <cfabort>
+                    </cfif>
+                </cfif>
+            </cfif>
+        </cflogin>
+
+        <cfif GetAuthUser() NEQ "">
+            <cfoutput>
+                <form action="" method="Post">
+                    <input type="submit" Name="logout" value="Logout" class="btn btn-primary btn-lg btn-block">
+                </form>
+            </cfoutput>
+        </cfif>
+
+    </cffunction>
 
 </cfcomponent>
