@@ -68,10 +68,10 @@
               text: ''
             },
             labels: {
-                            style: {
-                                width: '12000px'
-                            }
-                        }
+            style: {
+                width: '12000px'
+            }
+            }
           },
           yAxis: {
             min: 0,
@@ -145,43 +145,49 @@
           subtitle: {
               text: 'Fake text'
           },
-          xAxis: {
-              categories: [
-                  'Jan',
-                  'Feb',
-                  'Mar',
-                  'Apr',
-                  'May',
-                  'Jun',
-                  'Jul',
-                  'Aug',
-                  'Sep',
-                  'Oct',
-                  'Nov',
-                  'Dec'
-              ]
-          },
-          yAxis: {
-              min: 0,
-              title: {
-                  text: 'Times'
-              }
-          },
-          tooltip: {
-              headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-              pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                  '<td style="padding:0"><b>{point.y:.0f} time(s)</b></td></tr>',
-              footerFormat: '</table>',
-              shared: true,
-              useHTML: true
-          },
-          plotOptions: {
-              column: {
-                  pointPadding: 0.2,
-                  borderWidth: 0
-              }
-          },
-          series: displayData
+          series: [{
+              name: 'Things',
+              colorByPoint: true,
+              data: [{
+                  name: 'Forgotten',
+                  y: 5,
+                  drilldown: 'forgotten'
+              }, {
+                  name: 'Changed',
+                  y: 2,
+                  drilldown: 'changed'
+              }, {
+                  name: 'System',
+                  y: 4,
+                  drilldown: 'system'
+              }]
+          }],
+          drilldown: {
+              series: [{
+                  id: 'forgotten',
+                  data: [
+                      ['Nasco', 4],
+                      ['Jospeph', 2],
+                      ['Kelvin', 1],
+                      ['Nicolas', 2],
+                      ['Sam', 1]
+                  ]
+              }, {
+                  id: 'changed',
+                  data: [
+                      ['Karen', 4],
+                      ['Jack', 2]
+                  ]
+              }, {
+                  id: 'system',
+                  data: [
+                      ['Jake', 4],
+                      ['Marina', 2],
+                      ['Ivan', 2]
+                  ]
+              }]
+          }
+
       });
 
 // Activate the side menu
@@ -239,6 +245,7 @@
     <script src="assets/js/flat-ui.min.js"></script>
     <!-- Load the charts -->
     <script src="assets/js/highcharts/highcharts.js"></script>
+    <script src="http://code.highcharts.com/modules/drilldown.js"></script>
     <script src="assets/js/highcharts/modules/exporting.js"></script>
     <!-- <script src="docs/assets/js/application.js"></script> -->
 
