@@ -7,12 +7,12 @@
     <cfinvoke component="components.config" method="getConfig" returnVariable="config">
 
     <!--- while trying access, it checks authentication --->
-    <cffunction name="OnRequestStart"> 
+    <cffunction name="OnRequestStart">
         <cfif isDefined("Form.logout")>
             <cflogout>
-        </cfif> 
-     
-        <cflogin> 
+        </cfif>
+
+        <cflogin>
             <cfif NOT isDefined("cflogin")>
                 <cfinclude template="index.cfm">
                 <cfabort>
@@ -29,10 +29,11 @@
                         WHERE users.username = '#cflogin.name#' AND passwords.user_id = users.user_id
                     </cfquery>
                     <cfif loginQuery.RecordCount eq 1>
-                        <cfif compare(loginQuery.password, hash(cflogin.password&loginQuery.salt, "SHA-512")) eq 0>
+                        <cfif compare(loginQuery.password, hash(cflogin.password, "SHA-512")) eq 0>
                             <cfloginuser name="#cflogin.name#" Password = "#loginQuery.password#" roles="admin">
                         <cfelse>
                             <cfinclude template="index.cfm">
+                            <cfset hash=hash(cflogin.password, "SHA-512")>
                             <cfoutput>
                                 <h4>Your login information is not valid.<br>Please Try again</h4>
                             </cfoutput>
@@ -49,13 +50,13 @@
             </cfif>
         </cflogin>
 
-        <cfif GetAuthUser() NEQ "">
+<!---         <cfif GetAuthUser() NEQ "">
             <cfoutput>
                 <form action="" method="Post">
                     <input type="submit" Name="logout" value="Logout" class="btn btn-primary btn-lg btn-block">
                 </form>
             </cfoutput>
-        </cfif>
+        </cfif> --->
 
     </cffunction>
 

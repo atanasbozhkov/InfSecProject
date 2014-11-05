@@ -19,6 +19,9 @@
     <link href="assets/css/flat-ui.css" rel="stylesheet">
     <!-- <link href="docs/assets/css/demo.css" rel="stylesheet"> -->
 
+    <!--- Load the css for the side menu  --->
+    <link href="assets/css/menu.css" rel="stylesheet">
+
     <link rel="shortcut icon" href="img/favicon.ico">
     <style type="text/css">
     body {
@@ -48,10 +51,10 @@
           var container_chartAtaFleetAvg = new Highcharts.Chart({
     chart: {
         renderTo: 'container1',
-            
+
             type: 'bar',
             height: 285
-            
+
           },
           title: {
             text: 'Fleet Average'
@@ -112,8 +115,8 @@
           credits: {
             enabled: false
           },
-          exporting: { 
-            enabled: true 
+          exporting: {
+            enabled: true
           },
           series: [{
         name: 'Intermediate',
@@ -129,7 +132,7 @@
         data: [0.10]
         }]
         });
-  
+
 
       $('#container').highcharts({
           chart: {
@@ -180,14 +183,39 @@
           },
           series: displayData
       });
+
+// Activate the side menu
+  $("#menu-toggle").click(function(e) {
+          e.preventDefault();
+          $("#wrapper").toggleClass("active");
+  });
   });
       </script>
-  <body>
-    <div >
-    Hello Charts
-    </div>
 
-<div class="container">
+  <body>
+    <div id="wrapper" class="active">
+
+  <!-- Sidebar -->
+  <div id="sidebar-wrapper">
+  <ul id="sidebar_menu" class="sidebar-nav">
+       <li class="sidebar-brand"><a id="menu-toggle" href="#">Menu</a></li>
+  </ul>
+    <ul class="sidebar-nav" id="sidebar">
+      <li><a>Link1</a></li>
+      <li><a>link2</a></li>
+      <li>
+      <cfif GetAuthUser() NEQ "">
+          <cfoutput>
+             <a onclick="document.getElementById('logout').submit()" style="{color: ##999999} :hover {color: ##fff} "><li> <form id="logout" action="" method="Post">
+                  <input type="hidden" Name="logout" value="Logout">
+                  Logout
+              </form></a>
+          </cfoutput>
+      </cfif>
+      </li>
+    </ul>
+  </div>
+
     <div class="row">
         <div class="col-md-11"><div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div></div>
     </div>
