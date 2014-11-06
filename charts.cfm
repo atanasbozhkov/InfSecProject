@@ -19,6 +19,9 @@
     <link href="assets/css/flat-ui.css" rel="stylesheet">
     <!-- <link href="docs/assets/css/demo.css" rel="stylesheet"> -->
 
+    <!--- Load the css for the side menu  --->
+    <link href="assets/css/menu.css" rel="stylesheet">
+
     <link rel="shortcut icon" href="img/favicon.ico">
     <style type="text/css">
     body {
@@ -48,10 +51,10 @@
           var container_chartAtaFleetAvg = new Highcharts.Chart({
     chart: {
         renderTo: 'container1',
-            
+
             type: 'bar',
             height: 285
-            
+
           },
           title: {
             text: 'Fleet Average'
@@ -65,10 +68,10 @@
               text: ''
             },
             labels: {
-                            style: {
-                                width: '12000px'
-                            }
-                        }
+            style: {
+                width: '12000px'
+            }
+            }
           },
           yAxis: {
             min: 0,
@@ -112,8 +115,8 @@
           credits: {
             enabled: false
           },
-          exporting: { 
-            enabled: true 
+          exporting: {
+            enabled: true
           },
           series: [{
         name: 'Intermediate',
@@ -129,7 +132,7 @@
         data: [0.10]
         }]
         });
-  
+
 
       $('#container').highcharts({
           chart: {
@@ -142,52 +145,83 @@
           subtitle: {
               text: 'Fake text'
           },
-          xAxis: {
-              categories: [
-                  'Jan',
-                  'Feb',
-                  'Mar',
-                  'Apr',
-                  'May',
-                  'Jun',
-                  'Jul',
-                  'Aug',
-                  'Sep',
-                  'Oct',
-                  'Nov',
-                  'Dec'
-              ]
-          },
-          yAxis: {
-              min: 0,
-              title: {
-                  text: 'Times'
-              }
-          },
-          tooltip: {
-              headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-              pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                  '<td style="padding:0"><b>{point.y:.0f} time(s)</b></td></tr>',
-              footerFormat: '</table>',
-              shared: true,
-              useHTML: true
-          },
-          plotOptions: {
-              column: {
-                  pointPadding: 0.2,
-                  borderWidth: 0
-              }
-          },
-          series: displayData
+          series: [{
+              name: 'Things',
+              colorByPoint: true,
+              data: [{
+                  name: 'Forgotten',
+                  y: 5,
+                  drilldown: 'forgotten'
+              }, {
+                  name: 'Changed',
+                  y: 2,
+                  drilldown: 'changed'
+              }, {
+                  name: 'System',
+                  y: 4,
+                  drilldown: 'system'
+              }]
+          }],
+          drilldown: {
+              series: [{
+                  id: 'forgotten',
+                  data: [
+                      ['Nasco', 4],
+                      ['Jospeph', 2],
+                      ['Kelvin', 1],
+                      ['Nicolas', 2],
+                      ['Sam', 1]
+                  ]
+              }, {
+                  id: 'changed',
+                  data: [
+                      ['Karen', 4],
+                      ['Jack', 2]
+                  ]
+              }, {
+                  id: 'system',
+                  data: [
+                      ['Jake', 4],
+                      ['Marina', 2],
+                      ['Ivan', 2]
+                  ]
+              }]
+          }
+
       });
+
+// Activate the side menu
+  $("#menu-toggle").click(function(e) {
+          e.preventDefault();
+          $("#wrapper").toggleClass("active");
+  });
   });
       </script>
-  <body>
-    <div >
-    Hello Charts
-    </div>
 
-<div class="container">
+  <body>
+    <div id="wrapper" class="active">
+
+  <!-- Sidebar -->
+  <div id="sidebar-wrapper">
+  <ul id="sidebar_menu" class="sidebar-nav">
+       <li class="sidebar-brand"><a id="menu-toggle" href="#">Menu</a></li>
+  </ul>
+    <ul class="sidebar-nav" id="sidebar">
+      <li><a>Link1</a></li>
+      <li><a>link2</a></li>
+      <li>
+      <cfif GetAuthUser() NEQ "">
+          <cfoutput>
+             <a onclick="document.getElementById('logout').submit()" style="{color: ##999999} :hover {color: ##fff} "><li> <form id="logout" action="" method="Post">
+                  <input type="hidden" Name="logout" value="Logout">
+                  Logout
+              </form></a>
+          </cfoutput>
+      </cfif>
+      </li>
+    </ul>
+  </div>
+
     <div class="row">
         <div class="col-md-11"><div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div></div>
     </div>
@@ -211,6 +245,7 @@
     <script src="assets/js/flat-ui.min.js"></script>
     <!-- Load the charts -->
     <script src="assets/js/highcharts/highcharts.js"></script>
+    <script src="http://code.highcharts.com/modules/drilldown.js"></script>
     <script src="assets/js/highcharts/modules/exporting.js"></script>
     <!-- <script src="docs/assets/js/application.js"></script> -->
 
