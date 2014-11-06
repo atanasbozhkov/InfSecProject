@@ -4,14 +4,23 @@
     <cfset This.Sessiontimeout="#createtimespan(0,0,0,5)#">
     <cfset This.applicationtimeout="#createtimespan(5,0,0,0)#">
     <cfset This.loginstorage="session">
+
     <cfinvoke component="components.config" method="getConfig" returnVariable="config">
 
     <!--- while trying access, it checks authentication --->
-    <cffunction name="OnRequestStart"> 
+    <cffunction name="OnRequestStart">
+        <!--- exclude a list of pages --->
+        <cfargument name="page" type="string" required="true">
+        <cfset pagename=listLast(arguments.page, "/")>
+        <cfif listFindNoCase(config.protectList, pagename) eq 0>
+            <cfreturn true>
+        </cfif>
+
+        <!--- if the submitted form is logout --->
         <cfif isDefined("Form.logout")>
             <cflogout>
-        </cfif> 
-     
+        </cfif>
+
         <cflogin> 
             <cfif NOT isDefined("cflogin")>
                 <cfinclude template="index.cfm">
@@ -49,6 +58,7 @@
             </cfif>
         </cflogin>
 
+        <!--- check if user logged in --->
         <cfif GetAuthUser() NEQ "">
             <cfoutput>
                 <form action="" method="Post">

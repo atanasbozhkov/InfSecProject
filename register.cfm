@@ -38,33 +38,33 @@
         <div class="login-icon">
           <h4><small>Register </small></h4>
         </div>
-
+        <form action="" method="post">
         <div class="login-form">
           <div class="form-group">
-            <input type="text" class="form-control login-field" value="" placeholder="Username" id="login-name" />
+            <input name="username" type="text" class="form-control login-field" value="" placeholder="Username" id="login-name" />
             <label class="login-field-icon fui-user" for="login-name"></label>
           </div>
 
           <div class="form-group">
-            <input type="text" class="form-control login-field" value="" placeholder="Email" id="login-email" />
+            <input name="email" type="text" class="form-control login-field" value="" placeholder="Email" id="login-email" />
             <label class="login-field-icon fui-mail" for="login-email"></label>
           </div>
           
           
           <div class="form-group">
-            <input type="password" class="form-control login-field" value="" placeholder="Password" id="login-pass" />
+            <input name="password" type="password" class="form-control login-field" value="" placeholder="Password" id="login-pass" />
             <label class="login-field-icon fui-lock" for="login-pass"></label>
           </div>
 
 
 <div class="form-group">
-            <input type="firstname" class="form-control login-field" value="" placeholder="Firstname" id="login-pass" />
+            <input name="firstname" type="text" class="form-control login-field" value="" placeholder="Firstname" id="login-pass" />
             <label class="login-field-icon fui-user" for="login-firstname"></label>
           </div>
           
           
           <div class="form-group">
-            <input type="lastname" class="form-control login-field" value="" placeholder="Lastname" id="login-pass" />
+            <input name="lastname" type="text" class="form-control login-field" value="" placeholder="Lastname" id="login-pass" />
             <label class="login-field-icon fui-user" for="login-pass"></label>
           </div>
 
@@ -79,6 +79,7 @@
           
 
         </div>
+        </form>
       </div>
     </div>
 
