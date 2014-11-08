@@ -35,14 +35,14 @@
                 <cfelse>
                     <cfquery name="loginQuery" dataSource="#config.sourceName#">
                         SELECT users.username, passwords.password, passwords.salt FROM users, passwords
-                        WHERE users.username = '#cflogin.name#' AND passwords.user_id = users.user_id
+                        WHERE users.username = '#cflogin.name#' AND passwords.pass_id = users.pass_id
                     </cfquery>
                     <cfif loginQuery.RecordCount eq 1>
-                        <cfif compare(loginQuery.password, hash(cflogin.password, "SHA-512")) eq 0>
+                        <cfif compare(loginQuery.password, hash(cflogin.password&loginQuery.salt, "SHA-512")) eq 0>
                             <cfloginuser name="#cflogin.name#" Password = "#loginQuery.password#" roles="admin">
                         <cfelse>
                             <cfinclude template="index.cfm">
-                            <cfset hash=hash(cflogin.password, "SHA-512")>
+                            <!--- <cfset hash=hash(cflogin.password, "SHA-512")> --->
                             <cfoutput>
                                 <h4>Your login information is not valid.<br>Please Try again</h4>
                             </cfoutput>
