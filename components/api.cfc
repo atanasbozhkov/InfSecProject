@@ -22,8 +22,8 @@
                     </cfoutput>
                 <cfelse>
                     <cfquery name="loginQuery" dataSource="#config.sourceName#">
-                        SELECT users.username, passwords.password, passwords.salt FROM users, passwords
-                        WHERE users.username = '#cflogin.name#' AND passwords.pass_id = users.pass_id
+                        SELECT users.email, passwords.password, passwords.salt FROM users, passwords
+                        WHERE users.email = '#cflogin.name#' AND passwords.pass_id = users.pass_id
                     </cfquery>
                     <cfif loginQuery.RecordCount eq 1>
                         <cfif compare(loginQuery.password, hash(cflogin.password&loginQuery.salt, "SHA-512")) eq 0>

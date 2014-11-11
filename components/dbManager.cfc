@@ -1,7 +1,7 @@
 <cfcomponent displayname="DBManager" hint="datasource reader">
     <!--- variable initialize --->
     <cfinvoke component="config" method="getConfig" returnVariable="config">
-    
+
     <!--- init function --->
     <cffunction name="init" access="public" returntype="dbManager">
         <cfreturn this />
@@ -16,14 +16,14 @@
 
 	<cffunction name="getUsername" access="public" output="false" returntype="string">
         <cfquery name="getNames" datasource="#config.sourceName#">
-            SELECT username FROM users
+            SELECT email FROM users
         </cfquery>
 
         <cfset json=arrayNew(1)>
         <cfloop query="getNames">
-            <cfset arrayAppend(json, #username#)>
+            <cfset arrayAppend(json, #email#)>
         </cfloop>
-		
+
         <cfreturn SerializeJSON(json)/>
     </cffunction>
 

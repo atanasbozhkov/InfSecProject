@@ -2,7 +2,10 @@
 <cfset dbManager = createObject("component","components.dbManager").init()>
 <cfinvoke component="#dbManager#" method="getData" returnvariable="data">
 <cfinvoke component="#dbManager#" method="getUsername" returnvariable="userName">
-
+<cfinvoke component="components.forgotten" method="generateQR" returnvariable="qr">
+    <cfinvokeargument name="userid" value="0">
+</cfinvoke>
+<cfoutput> <img src="#qr#"/> </cfoutput>
 <!DOCTYPE html>
 <html lang="en">
   <head>
