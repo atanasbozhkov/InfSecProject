@@ -221,11 +221,11 @@
       <li>
       <cfif IsUserLoggedIn()>
           <cfoutput>
-             <!--- <a onclick="document.getElementById('logout').submit()" style="{color: ##999999} :hover {color: ##fff} "><li> <form id="logout" action="" method="Post">
+             <a onclick="document.getElementById('logout').submit()" style="{color: ##999999} :hover {color: ##fff} "><li> <form id="logout" action="" method="Post">
                   <input type="hidden" Name="logout" value="Logout">
                   Logout
-              </form></a> --->
-              <a onClick="logoutSubmit()">Logout</a>
+              </form></a>
+              <!--- <a onClick="logoutSubmit()">Logout</a> --->
           </cfoutput>
       </cfif>
       </li>
