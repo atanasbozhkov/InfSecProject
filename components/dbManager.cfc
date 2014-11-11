@@ -23,7 +23,7 @@
         <cfloop query="getNames">
             <cfset arrayAppend(json, #username#)>
         </cfloop>
-		
+
         <cfreturn SerializeJSON(json)/>
     </cffunction>
 
@@ -52,4 +52,38 @@
                     '1')
         </cfquery>
     </cffunction>
+
+    <cffunction name="forgottenPassword" access="public" output="false"
+        returntype="query">
+        <cfset var getPassword="">
+        <cfquery name="getPassword" datasource="cfdocexamples">
+            SELECT * FROM Password
+        </cfquery>
+    </cffunction>
+	<cffunction name="name" access="public" output="false"
+        returntype="query">
+        <cfset var UserList="">
+        <cfquery name="EmpList" datasource="cfdocexamples">
+            SELECT Firstname, Lastname
+            FROM Users
+        </cfquery>
+    </cffunction>
+	<cffunction name="fullname" access="public" output="false"
+        returntype="query">
+        <cfset var Userquery="">
+        <cfquery name="Userquery" datasource="cfdocexamples">
+            SELECT FirstName || ' ' || LastName AS FullName
+            FROM User
+        </cfquery>
+    </cffunction>
+	<cffunction name="UserId" access="public" output="false" returntype="query">
+        <cfset var deptquery="">
+        <cfquery name="Userid" datasource="cfdocexamples">
+            SELECT UserId, FirstName || ' ' || LastName
+            AS FullName
+            FROM User
+            ORDER BY Userid
+        </cfquery>
+    </cffunction>
+
 </cfcomponent>
