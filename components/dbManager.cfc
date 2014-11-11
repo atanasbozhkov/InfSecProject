@@ -1,7 +1,6 @@
 <cfcomponent displayname="DBManager" hint="datasource reader">
     <!--- variable initialize --->
     <cfinvoke component="config" method="getConfig" returnVariable="config">
-    
     <!--- init function --->
     <cffunction name="init" access="public" returntype="dbManager">
         <cfreturn this />
