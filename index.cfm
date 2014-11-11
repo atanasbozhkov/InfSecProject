@@ -35,7 +35,36 @@
           {
                 $('.btn-lg')[0].click()
            }
-     }
+    }
+
+    function submitLogin()
+    {
+        var username = $("#login-name").val(),
+            password = $("#login-pass").val();
+
+        if (username.length === 0 || password.length === 0)
+        {
+            $("#message").html("<h4>You must enter text in both the User Name and Password fields.</h4>");
+            return;
+        }
+
+        $.ajax({
+            url: "http://localhost:8500/rest/securitycfc/api/login",
+            contentType: "application/json",
+            beforeSend: function(xhr) {
+               xhr.setRequestHeader("Authorization", "Basic"+btoa(username+":"+password));
+            }
+        }).done(function(data){
+            if (data)
+            {
+                location.reload();
+            }
+            else
+            {
+                $("#message").html("<h4>Your login information is not valid.<br>Please Try again</h4>");
+            }
+        });
+    }
             
     </script>
 
@@ -49,7 +78,6 @@
         </div>
 
         <div class="login-form" onKeyPress="return checkSubmit(event)">
-          <!--- <form action=<cfoutput>#CGI.script_name#?#CGI.query_string#</cfoutput> method="Post">  --->
           <form action="" method="Post"> 
             <div class="form-group">
               <input name="j_username" type="text" class="form-control login-field" value="" placeholder="Enter your name" id="login-name" />
@@ -63,10 +91,12 @@
 
             <!--- <a class="btn btn-primary btn-lg btn-block" href="charts.cfm">Log in</a> --->
             <input type="submit" value="Log In" class="btn btn-primary btn-lg btn-block">
+            <!--- <div id="submitLogin" class="btn btn-primary btn-lg btn-block" onClick="return submitLogin()">Log in</div> --->
             <a class="login-link" href="#">Forgot your password?</a>
           </form>
         </div>
       </div>
+      <!--- <div id="message"></div> --->
     </div>
 
 

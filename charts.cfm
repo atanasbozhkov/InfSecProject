@@ -210,7 +210,7 @@
       <li><a>Link1</a></li>
       <li><a>link2</a></li>
       <li>
-      <cfif GetAuthUser() NEQ "">
+      <cfif IsUserLoggedIn()>
           <cfoutput>
              <a onclick="document.getElementById('logout').submit()" style="{color: ##999999} :hover {color: ##fff} "><li> <form id="logout" action="" method="Post">
                   <input type="hidden" Name="logout" value="Logout">

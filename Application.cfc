@@ -1,7 +1,7 @@
 <cfcomponent displayname="SecureComponent" output="true" hint="handle the application">
     <cfset This.name = "SecureComponent">
     <cfset This.sessionManagement=true>
-    <cfset This.Sessiontimeout="#createtimespan(0,0,0,5)#">
+    <cfset This.Sessiontimeout="#createtimespan(0,0,10,0)#">
     <cfset This.applicationtimeout="#createtimespan(5,0,0,0)#">
     <cfset This.loginstorage="session">
 
@@ -21,53 +21,10 @@
             <cflogout>
         </cfif>
 
-        <cflogin>
-            <cfif NOT isDefined("cflogin")>
-                <cfinclude template="index.cfm">
-                <cfabort>
-            <cfelse>
-                <cfif cflogin.name IS "" OR cflogin.password IS "">
-                    <cfinclude template="index.cfm">
-                    <cfoutput>
-                        <h4>You must enter text in both the User Name and Password fields.</h4>
-                    </cfoutput>
-                    <cfabort>
-                <cfelse>
-                    <cfquery name="loginQuery" dataSource="#config.sourceName#">
-                        SELECT users.username, passwords.password, passwords.salt FROM users, passwords
-                        WHERE users.username = '#cflogin.name#' AND passwords.pass_id = users.pass_id
-                    </cfquery>
-                    <cfif loginQuery.RecordCount eq 1>
-                        <cfif compare(loginQuery.password, hash(cflogin.password&loginQuery.salt, "SHA-512")) eq 0>
-                            <cfloginuser name="#cflogin.name#" Password = "#loginQuery.password#" roles="admin">
-                        <cfelse>
-                            <cfinclude template="index.cfm">
-                            <!--- <cfset hash=hash(cflogin.password, "SHA-512")> --->
-                            <cfoutput>
-                                <h4>Your login information is not valid.<br>Please Try again</h4>
-                            </cfoutput>
-                            <cfabort>
-                        </cfif>
-                    <cfelse>
-                        <cfinclude template="index.cfm">
-                        <cfoutput>
-                            <h4>Your login information is not valid.<br>Please Try again</h4>
-                        </cfoutput>
-                        <cfabort>
-                    </cfif>
-                </cfif>
-            </cfif>
-        </cflogin>
-
-
-        <!--- check if user logged in --->
-<!---         <cfif GetAuthUser() NEQ "">
-            <cfoutput>
-                <form action="" method="Post">
-                    <input type="submit" Name="logout" value="Logout" class="btn btn-primary btn-lg btn-block">
-                </form>
-            </cfoutput>
-        </cfif> --->
+        <cfinvoke component="components.api" method="login" returnVariable="loginSuccess">
+        <cfif NOT loginSuccess>
+            <cfreturn false>
+        </cfif>
 
     </cffunction>
 
