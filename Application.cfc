@@ -18,7 +18,7 @@
 
         <!--- if the submitted form is logout --->
         <cfif isDefined("Form.logout")>
-            <cflogout>
+            <cfinvoke component="components.api" method="logout">
         </cfif>
 
         <cfinvoke component="components.api" method="login" returnVariable="loginSuccess">

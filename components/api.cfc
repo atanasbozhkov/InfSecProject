@@ -48,4 +48,8 @@
         <cfreturn auth>
     </cffunction>
 
+    <cffunction name="logout" access="remote" httpmethod="GET" restpath="logout" returntype="void" produces="application/json">
+        <cflogout>
+    </cffunction>
+
 </cfcomponent>
