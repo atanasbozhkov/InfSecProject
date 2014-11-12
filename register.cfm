@@ -1,3 +1,4 @@
+<cfajaxproxy cfc="components.api" jsclassname="api">
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -38,48 +39,43 @@
         <div class="login-icon">
           <h4><small>Register </small></h4>
         </div>
-        <form action="" method="post">
+
         <div class="login-form">
-          <div class="form-group">
-            <input name="username" type="text" class="form-control login-field" value="" placeholder="Username" id="login-name" />
-            <label class="login-field-icon fui-user" for="login-name"></label>
-          </div>
+          <!--- <div class="form-group">
+            <input name="username" type="text" class="form-control login-field" value="" placeholder="Username" id="reg-name" />
+            <label class="login-field-icon fui-user" for="reg-name"></label>
+          </div> --->
 
           <div class="form-group">
-            <input name="email" type="text" class="form-control login-field" value="" placeholder="Email" id="login-email" />
-            <label class="login-field-icon fui-mail" for="login-email"></label>
+            <input name="email" type="text" class="form-control login-field" value="" placeholder="Email" id="reg-email" />
+            <label class="login-field-icon fui-mail" for="reg-email"></label>
           </div>
           
           
           <div class="form-group">
-            <input name="password" type="password" class="form-control login-field" value="" placeholder="Password" id="login-pass" />
-            <label class="login-field-icon fui-lock" for="login-pass"></label>
+            <input name="password" type="password" class="form-control login-field" value="" placeholder="Password" id="reg-pass" />
+            <label class="login-field-icon fui-lock" for="reg-pass"></label>
           </div>
 
 
 <div class="form-group">
-            <input name="firstname" type="text" class="form-control login-field" value="" placeholder="Firstname" id="login-pass" />
-            <label class="login-field-icon fui-user" for="login-firstname"></label>
+            <input name="firstname" type="text" class="form-control login-field" value="" placeholder="Firstname" id="reg-firstname" />
+            <label class="login-field-icon fui-user" for="reg-firstname"></label>
           </div>
           
           
           <div class="form-group">
-            <input name="lastname" type="text" class="form-control login-field" value="" placeholder="Lastname" id="login-pass" />
-            <label class="login-field-icon fui-user" for="login-pass"></label>
+            <input name="lastname" type="text" class="form-control login-field" value="" placeholder="Lastname" id="reg-lastname" />
+            <label class="login-field-icon fui-user" for="reg-lastname"></label>
           </div>
 
-
-
-
-
-
+          <!--- specfic function --->
+          <!--- <input type="Hidden" name="method" value="register"> --->
           <!-----<a class="btn btn-primary btn-lg btn-block" href="charts.html">Log in</a> --->
-          <input class="btn btn-primary btn-lg btn-block" type="submit" name="reg_submit" value="Register"/>
-
-          
+          <!--- <input class="btn btn-primary btn-lg btn-block" type="submit" name="reg_submit" value="Register"/> --->
+          <div class="btn btn-primary btn-lg btn-block" onClick="submitRegister()">Register</div>
 
         </div>
-        </form>
       </div>
     </div>
 
@@ -87,6 +83,28 @@
     <script src="assets/js/vendor/jquery.min.js"></script>
     <script src="assets/js/flat-ui.min.js"></script>
     <!-- <script src="docs/assets/js/application.js"></script> -->
+    <script type="text/javascript">
+        function formSubmissionHandler(data)
+        {
+            console.log(data);
+            data = data || {};
+            if (data.STATUS)
+            {
+                alert("success");
+            }
+            else
+            {
+                alert(data.MSG);
+            }
+        }
+
+        function submitRegister()
+        {
+            var instance = new api();
+            instance.setCallbackHandler(formSubmissionHandler);
+            instance.register($("#reg-email").val(), $("#reg-pass").val(), $("#reg-firstname").val(), $("#reg-lastname").val());
+        }
+    </script>
 
     <script>
       videojs.options.flash.swf = "assets/js/vendors/video-js.swf"
