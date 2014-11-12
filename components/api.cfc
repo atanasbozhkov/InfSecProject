@@ -52,4 +52,56 @@
         <cflogout>
     </cffunction>
 
+    <cffunction name="register" access="remote" httpmethod="POST" restpath="register" returntype="string" produces="application/json">
+        <cfargument name="email" type="string" required="true" restargsource="Form">
+        <cfargument name="password" type="string" required="true" restargsource="Form">
+        <cfargument name="firstname" type="string" required="true" restargsource="Form">
+        <cfargument name="lastname" type="string" required="true" restargsource="Form">
+
+        <cfset result.status = false>
+        <cfset result.msg = "unknown">
+
+        <cfif len(email) eq 0 OR len(password) eq 0 OR len(firstname) eq 0 OR len(lastname) eq 0>
+            <cfset result.msg = "missing field">
+            <cfreturn serializeJSON(result)>
+        </cfif>
+
+        <cfset salt = hash(rand("SHA1PRNG"), "SHA-512")>
+        <cfset hash = hash(password&salt, "SHA-512")>
+
+        <cftry>
+            <cfquery name="searchUser" dataSource="#config.sourceName#">
+                SELECT email FROM users WHERE email = "#email#"
+            </cfquery>
+
+            <cfif searchUser.RecordCount neq 0>
+                <cfset result.msg = "email registered">
+                <cfreturn serializeJSON(result)>
+            </cfif>
+
+            <cfquery name="createUser" dataSource="#config.sourceName#" result="insertUserResult">
+                INSERT INTO users (email, pass_id, first_name, last_name, role_id, secret_question)
+                    VALUES ('#email#', '0', '#firstname#', '#lastname#', '1', 'test_text')
+            </cfquery>
+
+            <cfquery name="createPassword" dataSource="#config.sourceName#" result="insertPwResult">
+                INSERT INTO passwords (user_id, password, salt, type, active)
+                    VALUES ('#insertUserResult.generated_Key#', '#hash#', '#salt#', '1', '0')
+            </cfquery>
+
+            <cfquery name="updatePwID" dataSource="#config.sourceName#">
+                UPDATE users SET pass_id = '#insertPwResult.generated_Key#'
+                    WHERE user_id = '#insertUserResult.generated_Key#'
+            </cfquery>
+            <cfcatch type="database">
+                <cfset result.msg = "Error occur!">
+                <cfreturn serializeJSON(result)>
+            </cfcatch>
+        </cftry>
+
+        <cfset result.status = true>
+        <cfset result.msg = "success created account">
+        <cfreturn serializeJSON(result)>
+    </cffunction>
+
 </cfcomponent>
