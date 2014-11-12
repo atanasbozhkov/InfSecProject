@@ -1,88 +1,44 @@
 <cfcomponent displayname="DBManager" hint="datasource reader">
     <!--- variable initialize --->
     <cfinvoke component="config" method="getConfig" returnVariable="config">
+
     <!--- init function --->
     <cffunction name="init" access="public" returntype="dbManager">
         <cfreturn this />
     </cffunction>
 
-    <cffunction name="allUser" access="public" output="false" returntype="query">
-        <cfquery name="getAll" datasource="#config.sourceName#">
-            SELECT * FROM users
-        </cfquery>
-        <cfreturn getAll/>
-    </cffunction>
-
 	<cffunction name="getUsername" access="public" output="false" returntype="string">
         <cfquery name="getNames" datasource="#config.sourceName#">
-            SELECT username FROM users
+            SELECT email FROM users
         </cfquery>
 
         <cfset json=arrayNew(1)>
         <cfloop query="getNames">
-            <cfset arrayAppend(json, #username#)>
+            <cfset arrayAppend(json, #email#)>
         </cfloop>
 
         <cfreturn SerializeJSON(json)/>
     </cffunction>
 
-    <cffunction name="getData" access="public" output="false" returntype="string">
-        <cfset data = arrayNew(1)>
-            <cfloop from="1" to="12" index="i" step="1">
-                <cfset arrayAppend(data, #i#*20)>
-            </cfloop>
-        <cfreturn SerializeJSON(data)>
+    <cffunction name="getAuthData" access="public" output="false" returntype="query">
+        <cfargument name="username" type="string">
+
+        <cfquery name="loginQuery" dataSource="#config.sourceName#">
+            SELECT users.email, passwords.password, passwords.salt FROM users, passwords
+            WHERE users.email = '#username#' AND passwords.pass_id = users.pass_id
+        </cfquery>
+        <cfreturn loginQuery/>
     </cffunction>
 
-    <!--- test function --->
-    <cffunction name="insertUser" access="public" output="false" returntype="void">
-        <cfset firstname = "Ebay">
-        <cfset lastname = "Bid">
+    <cffunction name="isUserExist" access="public" output="false" returntype="boolean">
+        <cfargument name="email" type="string">
 
-        <cfquery datasource="#config.sourceName#" result="insertResult">
-            INSERT INTO users (username, pass_id, first_name, last_name, email, secret_question, role_id)
-                VALUES (
-                    '#firstname#.#lastname#',
-                    '1',
-                    '#firstname#',
-                    '#lastname#',
-                    '#firstname#.#lastname#@gmail.com',
-                    'test',
-                    '1')
+        <cfquery name="searchUser" dataSource="#config.sourceName#">
+            SELECT email FROM users WHERE email = "#email#"
         </cfquery>
+        <cfif searchUser.RecordCount neq 0>
+            <cfreturn true>
+        </cfif>
+        <cfreturn false>
     </cffunction>
-
-    <cffunction name="forgottenPassword" access="public" output="false"
-        returntype="query">
-        <cfset var getPassword="">
-        <cfquery name="getPassword" datasource="cfdocexamples">
-            SELECT * FROM Password
-        </cfquery>
-    </cffunction>
-	<cffunction name="name" access="public" output="false"
-        returntype="query">
-        <cfset var UserList="">
-        <cfquery name="EmpList" datasource="cfdocexamples">
-            SELECT Firstname, Lastname
-            FROM Users
-        </cfquery>
-    </cffunction>
-	<cffunction name="fullname" access="public" output="false"
-        returntype="query">
-        <cfset var Userquery="">
-        <cfquery name="Userquery" datasource="cfdocexamples">
-            SELECT FirstName || ' ' || LastName AS FullName
-            FROM User
-        </cfquery>
-    </cffunction>
-	<cffunction name="UserId" access="public" output="false" returntype="query">
-        <cfset var deptquery="">
-        <cfquery name="Userid" datasource="cfdocexamples">
-            SELECT UserId, FirstName || ' ' || LastName
-            AS FullName
-            FROM User
-            ORDER BY Userid
-        </cfquery>
-    </cffunction>
-
 </cfcomponent>

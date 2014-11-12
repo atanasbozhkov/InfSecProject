@@ -1,8 +1,6 @@
 <!--- cf function --->
+<cfajaxproxy cfc="components.api" jsclassname="api">
 <cfset dbManager = createObject("component","components.dbManager").init()>
-<cfinvoke component="#dbManager#" method="getData" returnvariable="data">
-<cfinvoke component="#dbManager#" method="getUsername" returnvariable="userName">
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -38,16 +36,6 @@
   </head>
       <script type="text/javascript">
   $(function () {
-      var displayData = [], userNames = <cfoutput>#userName#</cfoutput>;
-      for (var name in userNames) {
-          var obj = {};
-          obj.name = userNames[name];
-          obj.data = [];
-          for (var i=0; i<12; i++) {
-            obj.data.push(Math.random()*10);
-          }
-          displayData.push(obj);
-      };
           var container_chartAtaFleetAvg = new Highcharts.Chart({
     chart: {
         renderTo: 'container1',
@@ -199,11 +187,11 @@
 
       function logoutSubmit()
       {
-          $.ajax({
-            url: "http://localhost:8500/rest/securitycfc/api/logout"
-          }).done(function(){
+          var instance = new api();
+          instance.setCallbackHandler(function(){
               location.reload();
           });
+          instance.logout();
       }
       </script>
 
@@ -216,16 +204,12 @@
        <li class="sidebar-brand"><a id="menu-toggle" href="#">Menu</a></li>
   </ul>
     <ul class="sidebar-nav" id="sidebar">
-      <li><a>Link1</a></li>
+      <li><a href='forgotten.cfm'>Forgotten</a></li>
       <li><a>link2</a></li>
       <li>
       <cfif IsUserLoggedIn()>
           <cfoutput>
-             <a onclick="document.getElementById('logout').submit()" style="{color: ##999999} :hover {color: ##fff} "><li> <form id="logout" action="" method="Post">
-                  <input type="hidden" Name="logout" value="Logout">
-                  Logout
-              </form></a>
-              <!--- <a onClick="logoutSubmit()">Logout</a> --->
+              <a onClick="logoutSubmit()">Logout</a>
           </cfoutput>
       </cfif>
       </li>

@@ -1,4 +1,21 @@
-<cfajaxproxy cfc="components.api" jsclassname="api">
+<!--- cf function --->
+<cfset dbManager = createObject("component","components.dbManager").init()>
+<cfinvoke component="#dbManager#" method="getData" returnvariable="data">
+<cfinvoke component="#dbManager#" method="getUsername" returnvariable="userName">
+<cfinvoke component="components.forgotten" method="sendLink" returnvariable="forgottenResult">
+    <cfinvokeargument name="userid" value="0">
+</cfinvoke>
+<cfif #forgottenResult# is 1>
+    <cfoutput>
+        <script type="text/javascript">
+        var result = 'Email link sent successfully. Please check your email in a few minutes.';
+        </script>
+    </cfoutput>
+    <cfelse>
+        <script type="text/javascript">
+        var result = 'There was an error while sending the reset link. Please contact the administrators';
+        </script>
+</cfif>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -14,6 +31,7 @@
     <!-- Loading Flat UI -->
     <link href="assets/css/flat-ui.css" rel="stylesheet">
     <!-- <link href="docs/assets/css/demo.css" rel="stylesheet"> -->
+    <script src="assets/js/jquery8.js"></script>
 
     <link rel="shortcut icon" href="img/favicon.ico">
     <style type="text/css">
@@ -41,8 +59,7 @@
     function submitLogin()
     {
         var username = $("#login-name").val(),
-            password = $("#login-pass").val(),
-            instance = new api();
+            password = $("#login-pass").val();
 
         if (username.length === 0 || password.length === 0)
         {
@@ -50,9 +67,14 @@
             return;
         }
 
-        instance.setCallbackHandler(function(auth)
-        {
-            if (auth)
+        $.ajax({
+            url: "http://localhost:8500/rest/securitycfc/api/login",
+            contentType: "application/json",
+            beforeSend: function(xhr) {
+               xhr.setRequestHeader("Authorization", "Basic"+btoa(username+":"+password));
+            }
+        }).done(function(data){
+            if (data)
             {
                 location.reload();
             }
@@ -61,40 +83,17 @@
                 $("#message").html("<h4>Your login information is not valid.<br>Please Try again</h4>");
             }
         });
-        instance.login(username, password);
     }
-            
+    $( document ).ready(function() {
+        document.getElementById('result').innerHTML = '<center>' + result + '</center>'
+    });
     </script>
 
 
   </head>
   <body>
-    <div>
-      <div class="login-screen">
-        <div class="login-icon">
-          <h4><small>MSc Information Security Project </small> TeamD</h4>
-        </div>
+    <div id="result" style="color:#fff;">
 
-        <div class="login-form" onKeyPress="return checkSubmit(event)">
-          <cflogin>
-          <cfform action="" method="Post" name="loginForm"> 
-            <div class="form-group">
-              <input name="j_username" type="text" class="form-control login-field" value="" placeholder="Enter your name" id="login-name" />
-              <label class="login-field-icon fui-user" for="login-name"></label>
-            </div>
-
-            <div class="form-group">
-              <input name="j_password" type="password" class="form-control login-field" value="" placeholder="Password" id="login-pass" />
-              <label class="login-field-icon fui-lock" for="login-pass"></label>
-            </div>
-
-            <div id="submitLogin" class="btn btn-primary btn-lg btn-block" onClick="return submitLogin()">Log in</div>
-            <a class="login-link" href="#">Forgot your password?</a>
-          </cfform>
-          </cflogin>
-        </div>
-      </div>
-      <div id="message"></div>
     </div>
 
 
