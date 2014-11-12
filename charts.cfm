@@ -1,10 +1,6 @@
 <!--- cf function --->
 <cfajaxproxy cfc="components.api" jsclassname="api">
 <cfset dbManager = createObject("component","components.dbManager").init()>
-<!--- <cfinvoke component="components.forgotten" method="generateQR" returnvariable="qr">
-    <cfinvokeargument name="userid" value="0">
-</cfinvoke>
-<cfoutput> <img src="#qr#"/> </cfoutput> --->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -208,7 +204,7 @@
        <li class="sidebar-brand"><a id="menu-toggle" href="#">Menu</a></li>
   </ul>
     <ul class="sidebar-nav" id="sidebar">
-      <li><a>Link1</a></li>
+      <li><a href='forgotten.cfm'>Forgotten</a></li>
       <li><a>link2</a></li>
       <li>
       <cfif IsUserLoggedIn()>
