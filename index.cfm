@@ -1,3 +1,4 @@
+<cfajaxproxy cfc="components.api" jsclassname="api">
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -40,7 +41,8 @@
     function submitLogin()
     {
         var username = $("#login-name").val(),
-            password = $("#login-pass").val();
+            password = $("#login-pass").val(),
+            instance = new api();
 
         if (username.length === 0 || password.length === 0)
         {
@@ -48,14 +50,9 @@
             return;
         }
 
-        $.ajax({
-            url: "http://localhost:8500/rest/securitycfc/api/login",
-            contentType: "application/json",
-            beforeSend: function(xhr) {
-               xhr.setRequestHeader("Authorization", "Basic"+btoa(username+":"+password));
-            }
-        }).done(function(data){
-            if (data)
+        instance.setCallbackHandler(function(auth)
+        {
+            if (auth)
             {
                 location.reload();
             }
@@ -64,6 +61,7 @@
                 $("#message").html("<h4>Your login information is not valid.<br>Please Try again</h4>");
             }
         });
+        instance.login(username, password);
     }
             
     </script>
@@ -78,7 +76,8 @@
         </div>
 
         <div class="login-form" onKeyPress="return checkSubmit(event)">
-          <form action="" method="Post"> 
+          <cflogin>
+          <cfform action="" method="Post" name="loginForm"> 
             <div class="form-group">
               <input name="j_username" type="text" class="form-control login-field" value="" placeholder="Enter your name" id="login-name" />
               <label class="login-field-icon fui-user" for="login-name"></label>
@@ -89,14 +88,13 @@
               <label class="login-field-icon fui-lock" for="login-pass"></label>
             </div>
 
-            <!--- <a class="btn btn-primary btn-lg btn-block" href="charts.cfm">Log in</a> --->
-            <input type="submit" value="Log In" class="btn btn-primary btn-lg btn-block">
-            <!--- <div id="submitLogin" class="btn btn-primary btn-lg btn-block" onClick="return submitLogin()">Log in</div> --->
+            <div id="submitLogin" class="btn btn-primary btn-lg btn-block" onClick="return submitLogin()">Log in</div>
             <a class="login-link" href="#">Forgot your password?</a>
-          </form>
+          </cfform>
+          </cflogin>
         </div>
       </div>
-      <!--- <div id="message"></div> --->
+      <div id="message"></div>
     </div>
 
 

@@ -16,13 +16,8 @@
             <cfreturn true>
         </cfif>
 
-        <!--- if the submitted form is logout --->
-        <cfif isDefined("Form.logout")>
-            <cfinvoke component="components.api" method="logout">
-        </cfif>
-
-        <cfinvoke component="components.api" method="login" returnVariable="loginSuccess">
-        <cfif NOT loginSuccess>
+        <cfif NOT IsUserLoggedIn()>
+            <cfinclude template="index.cfm">
             <cfreturn false>
         </cfif>
 

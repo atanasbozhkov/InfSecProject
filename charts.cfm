@@ -1,4 +1,5 @@
 <!--- cf function --->
+<cfajaxproxy cfc="components.api" jsclassname="api">
 <cfset dbManager = createObject("component","components.dbManager").init()>
 <cfinvoke component="#dbManager#" method="getData" returnvariable="data">
 <cfinvoke component="#dbManager#" method="getUsername" returnvariable="userName">
@@ -202,11 +203,11 @@
 
       function logoutSubmit()
       {
-          $.ajax({
-            url: "http://localhost:8500/rest/securitycfc/api/logout"
-          }).done(function(){
+          var instance = new api();
+          instance.setCallbackHandler(function(){
               location.reload();
           });
+          instance.logout();
       }
       </script>
 
@@ -224,11 +225,7 @@
       <li>
       <cfif IsUserLoggedIn()>
           <cfoutput>
-             <a onclick="document.getElementById('logout').submit()" style="{color: ##999999} :hover {color: ##fff} "><li> <form id="logout" action="" method="Post">
-                  <input type="hidden" Name="logout" value="Logout">
-                  Logout
-              </form></a>
-              <!--- <a onClick="logoutSubmit()">Logout</a> --->
+              <a onClick="logoutSubmit()">Logout</a>
           </cfoutput>
       </cfif>
       </li>
