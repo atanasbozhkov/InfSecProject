@@ -79,6 +79,8 @@
       </div>
     </div>
 
+    <div><h4 id="message"></h4></div>
+
 
     <script src="assets/js/vendor/jquery.min.js"></script>
     <script src="assets/js/flat-ui.min.js"></script>
@@ -94,7 +96,7 @@
             }
             else
             {
-                alert(data.MSG);
+                $("#message").html(data.MSG);
             }
         }
 

@@ -1,7 +1,6 @@
 <cfcomponent displayname="API" hint="api interface">
     <cfset dbManager = createObject("component","dbManager").init()>
     <cfinvoke component="#dbManager#" method="getUsername" returnvariable="userName">
-    <cfinvoke component="config" method="getConfig" returnVariable="config">
 
     <cffunction name="login" access="remote" returntype="string">
         <cfargument name="username" type="string" required="true">
@@ -14,10 +13,9 @@
 
         <cflogin>
             <cfif username neq "" AND password neq "">
-                <cfquery name="loginQuery" dataSource="#config.sourceName#">
-                    SELECT users.email, passwords.password, passwords.salt FROM users, passwords
-                    WHERE users.email = '#username#' AND passwords.pass_id = users.pass_id
-                </cfquery>
+                <cfinvoke component="#dbManager#" method="getAuthData" returnvariable="loginQuery">
+                    <cfinvokeargument name="username" value="#username#">
+                </cfinvoke>
                 <cfif loginQuery.RecordCount eq 1>
                     <cfif compare(loginQuery.password, hash(password&loginQuery.salt, "SHA-512")) eq 0>
                         <cfloginuser name="#username#" Password = "#loginQuery.password#" roles="admin">
@@ -50,35 +48,28 @@
         <cfset salt = hash(rand("SHA1PRNG"), "SHA-512")>
         <cfset hash = hash(password&salt, "SHA-512")>
 
-        <cftry>
-            <cfquery name="searchUser" dataSource="#config.sourceName#">
-                SELECT email FROM users WHERE email = "#email#"
-            </cfquery>
+        <cfinvoke component="#dbManager#" method="isUserExist" returnvariable="userExist">
+            <cfinvokeargument name="email" value="#email#">
+        </cfinvoke>
 
-            <cfif searchUser.RecordCount neq 0>
-                <cfset result.msg = "email registered">
-                <cfreturn serializeJSON(result)>
-            </cfif>
+        <cfif userExist>
+            <cfset result.msg = "email registered">
+            <cfreturn serializeJSON(result)>
+        </cfif>
 
-            <cfquery name="createUser" dataSource="#config.sourceName#" result="insertUserResult">
-                INSERT INTO users (email, pass_id, first_name, last_name, role_id, secret_question)
-                    VALUES ('#email#', '0', '#firstname#', '#lastname#', '1', 'test_text')
-            </cfquery>
+        <cfinvoke component="#dbManager#" method="addUser" returnvariable="userResult">
+            <cfinvokeargument name="email" value="#email#">
+            <cfinvokeargument name="firstname" value="#firstname#">
+            <cfinvokeargument name="lastname" value="#lastname#">
+            <cfinvokeargument name="hash" value="#hash#">
+            <cfinvokeargument name="salt" value="#salt#">
+        </cfinvoke>
 
-            <cfquery name="createPassword" dataSource="#config.sourceName#" result="insertPwResult">
-                INSERT INTO passwords (user_id, password, salt, type, active)
-                    VALUES ('#insertUserResult.generated_Key#', '#hash#', '#salt#', '1', '0')
-            </cfquery>
-
-            <cfquery name="updatePwID" dataSource="#config.sourceName#">
-                UPDATE users SET pass_id = '#insertPwResult.generated_Key#'
-                    WHERE user_id = '#insertUserResult.generated_Key#'
-            </cfquery>
-            <cfcatch type="database">
-                <cfset result.msg = "Error occur!">
-                <cfreturn serializeJSON(result)>
-            </cfcatch>
-        </cftry>
+        <cfif NOT userResult.success>
+            <!--- remove error data (userResult.userid userResult.pwid) --->
+            <cfset result.msg = "Error Occur">
+            <cfreturn serializeJSON(result)>
+        </cfif>
 
         <cfset result.status = true>
         <cfset result.msg = "success created account">

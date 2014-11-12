@@ -1,8 +1,6 @@
 <!--- cf function --->
 <cfajaxproxy cfc="components.api" jsclassname="api">
 <cfset dbManager = createObject("component","components.dbManager").init()>
-<cfinvoke component="#dbManager#" method="getData" returnvariable="data">
-<cfinvoke component="#dbManager#" method="getUsername" returnvariable="userName">
 <!--- <cfinvoke component="components.forgotten" method="generateQR" returnvariable="qr">
     <cfinvokeargument name="userid" value="0">
 </cfinvoke>
@@ -42,16 +40,6 @@
   </head>
       <script type="text/javascript">
   $(function () {
-      var displayData = [], userNames = <cfoutput>#userName#</cfoutput>;
-      for (var name in userNames) {
-          var obj = {};
-          obj.name = userNames[name];
-          obj.data = [];
-          for (var i=0; i<12; i++) {
-            obj.data.push(Math.random()*10);
-          }
-          displayData.push(obj);
-      };
           var container_chartAtaFleetAvg = new Highcharts.Chart({
     chart: {
         renderTo: 'container1',
