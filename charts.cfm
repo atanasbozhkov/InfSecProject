@@ -1,6 +1,5 @@
 <!--- cf function --->
-<cfajaxproxy cfc="components.api" jsclassname="api">
-<cfset dbManager = createObject("component","components.dbManager").init()>
+<cfajaxproxy cfc="components.auth" jsclassname="auth">
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -187,7 +186,7 @@
 
       function logoutSubmit()
       {
-          var instance = new api();
+          var instance = new auth();
           instance.setCallbackHandler(function(){
               location.reload();
           });

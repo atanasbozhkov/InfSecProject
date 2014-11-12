@@ -1,8 +1,6 @@
 
 <cfcomponent displayname="ForgottenPass" hint="Forgotten Password">
-    <cfset dbManager = createObject("component","dbManager").init()>
-    <cfinvoke component="#dbManager#" method="getUsername" returnvariable="userName">
-    <cfinvoke component="config" method="getConfig" returnVariable="config">
+
     <cffunction name="sendLink" output="false" access="public" returntype="any">
         <cfargument name="userid" type="string" required="true">
         <cfset token=hash(RandRange(0,1000000),'SHA-1')>

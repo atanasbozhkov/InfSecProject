@@ -1,7 +1,4 @@
 <!--- cf function --->
-<cfset dbManager = createObject("component","components.dbManager").init()>
-<cfinvoke component="#dbManager#" method="getData" returnvariable="data">
-<cfinvoke component="#dbManager#" method="getUsername" returnvariable="userName">
 <cfinvoke component="components.forgotten" method="sendLink" returnvariable="forgottenResult">
     <cfinvokeargument name="userid" value="0">
 </cfinvoke>

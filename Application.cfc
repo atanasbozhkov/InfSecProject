@@ -4,15 +4,16 @@
     <cfset This.Sessiontimeout="#createtimespan(0,0,10,0)#">
     <cfset This.applicationtimeout="#createtimespan(5,0,0,0)#">
     <cfset This.loginstorage="session">
+    <cfset This.datasource = "PGT_TEAM_D_2014_TEST">
 
-    <cfinvoke component="components.config" method="getConfig" returnVariable="config">
+    <cfset protectList = "charts.cfm">
 
     <!--- while trying access, it checks authentication --->
     <cffunction name="OnRequestStart">
         <!--- exclude a list of pages --->
         <cfargument name="page" type="string" required="true">
         <cfset pagename=listLast(arguments.page, "/")>
-        <cfif listFindNoCase(config.protectList, pagename) eq 0>
+        <cfif listFindNoCase(protectList, pagename) eq 0>
             <cfreturn true>
         </cfif>
 

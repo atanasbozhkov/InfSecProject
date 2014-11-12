@@ -1,4 +1,4 @@
-<cfajaxproxy cfc="components.api" jsclassname="api">
+<cfajaxproxy cfc="components.auth" jsclassname="auth">
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -42,7 +42,7 @@
     {
         var username = $("#login-name").val(),
             password = $("#login-pass").val(),
-            instance = new api();
+            instance = new auth();
 
         if (username.length === 0 || password.length === 0)
         {
