@@ -27,9 +27,28 @@
         <cftry>
             <cfquery name="attempts">
                 SELECT u.user_id, u.email, la.success, la.IP_addr, la.device_type, la.comment, la.timestamp
-                FROM login_attempts AS la INNER JOIN users AS u ON la.user_id = u.user_id
+                FROM login_attempts AS la LEFT JOIN users AS u ON la.user_id = u.user_id
                 WHERE la.timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP">
                 AND la.timestamp <= <cfqueryparam value="#to#" cfsqltype="CF_SQL_TIMESTAMP">
+            </cfquery>
+            <cfcatch type="any">
+                <cfreturn>
+            </cfcatch>
+        </cftry>
+
+        <cfreturn attempts/>
+    </cffunction>
+
+    <cffunction name="getForgotAttempts" access="public" output="false" returntype="query">
+        <cfargument name="from" type="string">
+        <cfargument name="to" type="string">
+
+        <cftry>
+            <cfquery name="attempts">
+                SELECT u.user_id, u.email, fa.success, fa.IP_addr, fa.device_type, fa.valid, fa.timestamp
+                FROM forgotten_attempts AS fa LEFT JOIN users AS u ON fa.user_id = u.user_id
+                WHERE fa.timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP">
+                AND fa.timestamp <= <cfqueryparam value="#to#" cfsqltype="CF_SQL_TIMESTAMP">
             </cfquery>
             <cfcatch type="any">
                 <cfreturn>
