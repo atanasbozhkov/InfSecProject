@@ -35,92 +35,100 @@
   </head>
       <script type="text/javascript">
   $(function () {
-          var container_chartAtaFleetAvg = new Highcharts.Chart({
-    chart: {
-        renderTo: 'container1',
 
-            type: 'bar',
-            height: 285
 
-          },
-          title: {
-            text: 'Fleet Average'
-          },
-          subtitle: {
-            text: 'ATA (20)'
-          },
-          xAxis: {
-            categories: ['Fleet Average'],
+    <!--- Graph Per Week --->
+    $(function () {
+    $('#container2').highcharts({
+        title: {
+            text: 'Number of forgotten attempts',
+            x: 0 //center
+        },
+        subtitle: {
+            //text: 'Source: WorldClimate.com',
+            x: 0
+        },
+        xAxis: {
+            categories: ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat',
+                'Sun']
+
+        },
+        yAxis: {
+      min: 0,
             title: {
-              text: ''
+                text: 'Attempt ()'
             },
-            labels: {
-            style: {
-                width: '12000px'
-            }
-            }
-          },
-          yAxis: {
-            min: 0,
-            title: {
-              text: 'Average',
-              align: 'high'
-            },
-            labels: {
-              overflow: 'justify'
-            }
-          },
-          tooltip: {
-            formatter: function() {
-              return ''+ this.series.name +': '+ this.y +' Average';
-            }
-          },
-          plotOptions: {
-            bar: {
-              dataLabels: {
-                enabled: true
-              }
-            },
-            series: {
-              pointWidth:10,
-                            groupPadding: .05,
-              shadow: true
-            }
-          },
-          legend: {
-            layout: 'horizontal',
-            align: 'center',
-            verticalAlign: 'bottom',
-            floating: false,
-            borderWidth: 1,
-            backgroundColor: '#FFFFFF',
-            shadow: true,
-            labelFormatter: function() {
-              return '<div class="' + this.name + '-arrow"></div><span style="font-family: \'Advent Pro\', sans-serif; font-size:12px">' + this.name +'</span><br/><span style="font-size:10px; color:#ababaa">   Total: ' + this.options.total + '</span>';
-            }
-          },
-          credits: {
-            enabled: false
-          },
-          exporting: {
-            enabled: true
-          },
-          series: [{
-        name: 'Intermediate',
-        total: '0.35',
-        data: [0.35]
-        },{
-        name: 'Lite',
-        total: '0.3',
-        data: [0.30]
-        },{
-        name: 'Heavy',
-        total: '0.1',
-        data: [0.10]
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: ''
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'Failed Attempt',
+            data: [3, 5, 3, 6, 7, 4, 2]
+
         }]
-        });
 
 
+    });
+});
+
+    <!--- Graph Per Week --->
+    $(function () {
+    $('#container1').highcharts({
+        title: {
+            text: 'Number of failed attempt',
+            x: 0 //center
+        },
+        subtitle: {
+            //text: 'Source: WorldClimate.com',
+            x: 0
+        },
+        xAxis: {
+            categories: ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat',
+                'Sun']
+
+        },
+        yAxis: {
+      min: 0,
+            title: {
+                text: 'Attempt ()'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: ''
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'Failed Attempt',
+            data: [4, 2, 1, 2, 1, 0, 0]
+
+        }]
+
+
+    });
+});
+// Main graph
       $('#container').highcharts({
           chart: {
               renderTo: 'container',
@@ -132,21 +140,26 @@
           subtitle: {
               text: 'Fake text'
           },
+          legend: {
+            enabled: false
+          },
           series: [{
-              name: 'Things',
               colorByPoint: true,
               data: [{
                   name: 'Forgotten',
+                  color: '#e67e22',
                   y: 5,
                   drilldown: 'forgotten'
               }, {
-                  name: 'Changed',
+                  name: 'Failed',
                   y: 2,
-                  drilldown: 'changed'
+                  color: '#e74c3c',
+                  drilldown: 'failed'
               }, {
-                  name: 'System',
+                  name: 'Changed',
                   y: 4,
-                  drilldown: 'system'
+                  color: '#9b59b6',
+                  drilldown: 'changed'
               }]
           }],
           drilldown: {
@@ -160,13 +173,13 @@
                       ['Sam', 1]
                   ]
               }, {
-                  id: 'changed',
+                  id: 'failed',
                   data: [
                       ['Karen', 4],
                       ['Jack', 2]
                   ]
               }, {
-                  id: 'system',
+                  id: 'changed',
                   data: [
                       ['Jake', 4],
                       ['Marina', 2],
@@ -216,13 +229,15 @@
   </div>
 
     <div class="row">
-        <div class="col-md-11"><div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div></div>
+        <div class="col-md-12"><div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div></div>
     </div>
     <div class="row" style="margin-top:10px;">
         <div class="col-md-6">
-          <div id="container1" style="min-width: 310px; height: 600px; margin: 0 auto"></div>
+          <div id="container1" style="min-width: 310px; height: 250px; margin: 0 auto"></div>
         </div>
-        <div class="col-md-5"></div>
+        <div class="col-md-6">
+          <div id="container2" style="min-width: 310px; height: 250px; margin: 0 auto"></div>
+        </div>
     </div>
     <div class="row">
         <div class="col-md-1"></div>
