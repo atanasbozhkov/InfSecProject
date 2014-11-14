@@ -39,7 +39,7 @@
 
     <!--- Graph Per Week --->
     $(function () {
-    $('#container2').highcharts({
+    $('#container2').highcharts('StockChart',{
         title: {
             text: 'Number of forgotten attempts',
             x: 0 //center
@@ -75,7 +75,7 @@
         },
         series: [{
             name: 'Failed Attempt',
-            data: [3, 5, 3, 6, 7, 4, 2]
+            data: [3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2]
 
         }]
 
@@ -85,7 +85,7 @@
 
     <!--- Graph Per Week --->
     $(function () {
-    $('#container1').highcharts({
+    $('#container1').highcharts('StockChart',{
         title: {
             text: 'Number of failed attempt',
             x: 0 //center
@@ -121,7 +121,7 @@
         },
         series: [{
             name: 'Failed Attempt',
-            data: [4, 2, 1, 2, 1, 0, 0]
+            data: [4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,]
 
         }]
 
@@ -233,10 +233,10 @@
     </div>
     <div class="row" style="margin-top:10px;">
         <div class="col-md-6">
-          <div id="container1" style="min-width: 310px; height: 250px; margin: 0 auto"></div>
+          <div id="container1" style="min-width: 310px; height: 350px; margin: 0 auto"></div>
         </div>
         <div class="col-md-6">
-          <div id="container2" style="min-width: 310px; height: 250px; margin: 0 auto"></div>
+          <div id="container2" style="min-width: 310px; height: 350px; margin: 0 auto"></div>
         </div>
     </div>
     <div class="row">
@@ -252,7 +252,7 @@
     <script src="assets/js/vendor/jquery.min.js"></script>
     <script src="assets/js/flat-ui.min.js"></script>
     <!-- Load the charts -->
-    <script src="assets/js/highcharts/highcharts.js"></script>
+    <script src="http://code.highcharts.com/stock/highstock.js"></script>
     <script src="http://code.highcharts.com/modules/drilldown.js"></script>
     <script src="assets/js/highcharts/modules/exporting.js"></script>
     <!-- <script src="docs/assets/js/application.js"></script> -->
