@@ -143,7 +143,20 @@
           legend: {
             enabled: false
           },
+		  
+		  xAxis: {
+			  
+            categories: ['Forgotten', 'Failed', 'Changed'],
+			title: {
+                text: null
+            }
+        },
+		  
+		  
+		  
+		  
           series: [{
+			
               colorByPoint: true,
               data: [{
                   name: 'Forgotten',
