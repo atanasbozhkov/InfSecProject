@@ -1,4 +1,4 @@
-<cfcomponent displayname="registerModel" hint="user register model">
+<cfcomponent displayname="userModel" hint="user data operation model">
 
     <cffunction name="getUser" access="public" output="false" returntype="query">
         <cfargument name="email" type="string">
