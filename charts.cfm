@@ -1,7 +1,34 @@
 <!--- cf function --->
 <cfajaxproxy cfc="components.auth" jsclassname="auth">
+
+
+
+
+<!--- Get Fail Successful and Fail attempts for a specific time interval --->
+
+<cfinvoke component="components.visualisation" method="getLoginAttempts" returnVariable="testReturn">
+	<cfinvokeargument name="timeFrom" value="2013-01-01 00:00:00">
+	<cfinvokeargument name="timeTo" value="2014-01-01 00:00:00">
+</cfinvoke>
+
+
+<!-- <cfoutput>#testReturn#</cfoutput> -->
+
+<cfscript>
+	writeOutput("<script> var data = "&testReturn&";</script>");
+</cfscript>
+
+
+<!---------------------------------------------------->
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
+
+
+
   <head>
     <meta charset="utf-8">
     <title>Charts</title>
@@ -33,7 +60,13 @@
     <script src="assets/js/jquery8.js"></script>
 
   </head>
-      <script type="text/javascript">
+  
+  
+  
+  
+<script type="text/javascript">
+
+
   $(function () {
 
 
@@ -128,56 +161,67 @@
 
     });
 });
+
+
+
 // Main graph
-      $('#container').highcharts({
-          chart: {
+
+var options = {
+
+
+	chart: {
               renderTo: 'container',
               type: 'column'
-          },
-          title: {
-              text: 'Forgot Password per Month per User'
-          },
-          subtitle: {
-              text: 'Fake text'
-          },
-          legend: {
+    },
+          
+	title: {
+              text: 'Results for the last 24h'
+    },
+	
+    subtitle: {
+              text: 'Forgotten-Fail-changed'
+    },
+    legend: {
             enabled: false
-          },
+    },
 		  
-		  xAxis: {
+	xAxis: {
 			  
-            categories: ['Forgotten', 'Failed', 'Changed'],
-			title: {
-                text: null
-            }
-        },
+        categories: ['Forgotten', 'Failed', 'Changed'],
+		title: {
+            text: null
+        }
+    },
 		  
 		  
 		  
 		  
-          series: [{
+    series: [{
 			
-              colorByPoint: true,
-              data: [{
-                  name: 'Forgotten',
-                  color: '#e67e22',
-                  y: 5,
-                  drilldown: 'forgotten'
-              }, {
+        colorByPoint: true,
+        data: [{
+            name: 'Forgotten',
+					color: '#e67e22',
+					y: 5,
+					drilldown: 'forgotten'
+            }, {
                   name: 'Failed',
-                  y: 2,
+                  y: data.TOTALFAIL,
                   color: '#e74c3c',
                   drilldown: 'failed'
-              }, {
+            }, {
                   name: 'Changed',
                   y: 4,
                   color: '#9b59b6',
                   drilldown: 'changed'
-              }]
+            }]
           }],
-          drilldown: {
-              series: [{
-                  id: 'forgotten',
+		  
+		  
+		  
+        drilldown: {
+            series: [{
+				id: 'forgotten',
                   data: [
                       ['Nasco', 4],
                       ['Jospeph', 2],
@@ -185,13 +229,13 @@
                       ['Nicolas', 2],
                       ['Sam', 1]
                   ]
-              }, {
+            }, {
                   id: 'failed',
                   data: [
                       ['Karen', 4],
                       ['Jack', 2]
                   ]
-              }, {
+            }, {
                   id: 'changed',
                   data: [
                       ['Jake', 4],
@@ -201,8 +245,21 @@
               }]
           }
 
-      });
+      
 
+};	  
+
+//Column chart
+//options.chart.renderTo = 'container';
+//options.chart.type = 'column';
+//var chart1 = new Highcharts.Chart(options);
+	  
+// Pie
+options.chart.renderTo = 'container';
+options.chart.type = 'pie';
+var chart2 = new Highcharts.Chart(options);
+	  
+	  
 // Activate the side menu
   $("#menu-toggle").click(function(e) {
           e.preventDefault();
@@ -273,5 +330,8 @@
     <script>
       videojs.options.flash.swf = "assets/js/vendors/video-js.swf"
     </script>
+	
+	
+	
   </body>
 </html>
