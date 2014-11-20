@@ -68,7 +68,7 @@
                 }
                 $("#message").html('<center>' + result + '</center>');
             });
-            instance.resetPassword(pass, pass_re);
+            instance.resetPassword(pass, pass_re, "<cfoutput>#url['token']#</cfoutput>");
         }
         </script>
     </head>

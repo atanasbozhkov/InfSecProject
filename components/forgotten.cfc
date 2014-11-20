@@ -92,12 +92,21 @@
     <cffunction name="resetPassword" output="false" access="remote" returntype="any">
         <cfargument name="pass" type="string" required="true">
         <cfargument name="pass_re" type="string" required="true">
+        <cfargument name="token" type="string" required="true">
 
         <cfif compare(pass, pass_re) neq 0>
             <cfreturn false>
         </cfif>
 
         <cfif SESSION.tokenValid eq 0>
+            <!--- someone reset password using invalid token --->
+            <cfinvoke component="models.logModel" method="forgottenAttempt">
+                <cfinvokeargument name="user_id" value="0">
+                <cfinvokeargument name="success" value="0">
+                <cfinvokeargument name="token" value="#token#">
+                <cfinvokeargument name="valid" value="0">
+                <cfinvokeargument name="answer" value="0">
+            </cfinvoke>
             <cfreturn false>
         </cfif>
 
