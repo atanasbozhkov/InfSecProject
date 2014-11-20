@@ -32,8 +32,8 @@
         </cfif>
 
         <cfif NOT IsUserLoggedIn()>
-            <cfinclude template="index.cfm">
-            <cfreturn false>
+            <cflocation url="index.cfm">
+            <cfreturn true>
         </cfif>
 
     </cffunction>
