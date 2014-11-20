@@ -1,28 +1,12 @@
 <!--- cf function --->
 <cfajaxproxy cfc="components.auth" jsclassname="auth">
-
-
-
-
 <!--- Get Fail Successful and Fail attempts for a specific time interval --->
-
 <cfinvoke component="components.visualisation" method="getLoginAttempts" returnVariable="testReturn">
 	<cfinvokeargument name="timeFrom" value="2013-01-01 00:00:00">
 	<cfinvokeargument name="timeTo" value="2014-01-01 00:00:00">
 </cfinvoke>
 
-
-<!-- <cfoutput>#testReturn#</cfoutput> -->
-
-<cfscript>
-	writeOutput("<script> var data = "&testReturn&";</script>");
-</cfscript>
-
-
 <!---------------------------------------------------->
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -165,7 +149,7 @@
 
 
 // Main graph
-
+var data = <cfoutput>#testReturn#</cfoutput>;
 var options = {
 
 
