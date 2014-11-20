@@ -14,9 +14,6 @@
             <cfreturn serializeJSON(result)>
         </cfif>
 
-        <cfset salt = hash(rand("SHA1PRNG"), "SHA-512")>
-        <cfset hash = hash(password&salt, "SHA-512")>
-
         <cfinvoke component="models.userModel" method="getUser" returnvariable="userData">
             <cfinvokeargument name="email" value="#email#">
         </cfinvoke>
@@ -37,11 +34,9 @@
             <cfreturn serializeJSON(result)>
         </cfif>
 
-        <cfinvoke component="models.userModel" method="updatePassword" returnvariable="passwordID">
-            <cfinvokeargument name="email" value="#email#">
+        <cfinvoke component="models.passwordModel" method="updatePassword" returnvariable="passwordID">
             <cfinvokeargument name="userid" value="#userID#">
-            <cfinvokeargument name="hash" value="#hash#">
-            <cfinvokeargument name="salt" value="#salt#">
+            <cfinvokeargument name="password" value="#password#">
         </cfinvoke>
 
         <cfif passwordID eq false>

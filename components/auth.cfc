@@ -23,12 +23,10 @@
             </cfif>
         </cflogin>
 
-        <cfif auth>
-            <cfinvoke component="models.logModel" method="loginAttempt">
-                <cfinvokeargument name="email" value="#email#">
-                <cfinvokeargument name="success" value="#auth#">
-            </cfinvoke>
-        </cfif>
+        <cfinvoke component="models.logModel" method="loginAttempt">
+            <cfinvokeargument name="user_id" value="#loginQuery.user_id#">
+            <cfinvokeargument name="success" value="#auth#">
+        </cfinvoke>
 
         <cfreturn auth>
     </cffunction>
@@ -38,7 +36,7 @@
     </cffunction>
 
     <cffunction name="secQues" access="remote" returntype="boolean">
-        <cfargument name="email" type="string" required="true">
+        <cfargument name="user_id" type="string" required="true">
         <cfargument name="answer" type="string" required="true">
         <!--- check security answer --->
         <cfreturn true>

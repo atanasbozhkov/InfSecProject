@@ -42,12 +42,14 @@
         function submit()
         {
             var email = $("#forgot-name").val(),
-                answer = $("#forgot-answer").val(),
+                // answer = $("#forgot-answer").val(),
+                answer = "",
                 instance = new forgotten();
 
-            if (email.length === 0 || answer.length === 0)
+            // if (email.length === 0 || answer.length === 0)
+            if (email.length === 0)
             {
-                $("#message").html("<h4>You must enter text in both the User Name and Password fields.</h4>");
+                $("#message").html("<h4>You must enter your email in the field.</h4>");
                 return;
             }
 
@@ -75,10 +77,10 @@
                     <label class="login-field-icon fui-user" for="forgot-name"></label>
                 </div>
 
-                <div class="form-group">
+                <!--- <div class="form-group">
                     <input name="saftyAnswer" type="text" class="form-control login-field" value="" placeholder="Security Answer" id="forgot-answer" />
                     <label class="login-field-icon fui-lock" for="forgot-answer"></label>
-                </div>
+                </div> --->
 
                 <div id="submit" class="btn btn-primary btn-lg btn-block" onClick="return submit()">Submit</div>
             </div>
