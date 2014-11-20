@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Fail attempts</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  
+ 
+
+
+     
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+<div id="container" style="min-width: 310px; height: 400px; margin: 300 auto"></div>
+	
+
+
+
+
+ 
+  <style>
+    body { font-size: 75%; }
+    label, input { display:block; }
+    input.text { margin-bottom:12px; width:95%; padding: .4em; }
+    fieldset { padding:0; border:0; margin-top:25px; }
+    h1 { font-size: 1.2em; margin: .6em 0; }
+    div#users-contain { width: 350px; margin: 20px 0; }
+    div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+    div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+    .ui-dialog .ui-state-error { padding: .3em; }
+    .validateTips { border: 1px solid transparent; padding: 0.3em; }
+  </style>
+  
+  
+  
+  <script>
+  $(function() {
+    var dialog, form,
+ 
+      // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
+      emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+      name = $( "#name" ),
+      email = $( "#email" ),
+      password = $( "#password" ),
+      allFields = $( [] ).add( name ).add( email ).add( password ),
+      tips = $( ".validateTips" );
+ 
+    function updateTips( t ) {
+      tips
+        .text( t )
+        .addClass( "ui-state-highlight" );
+      setTimeout(function() {
+        tips.removeClass( "ui-state-highlight", 1500 );
+      }, 500 );
+    }
+ 
+    function checkLength( o, n, min, max ) {
+      if ( o.val().length > max || o.val().length < min ) {
+        o.addClass( "ui-state-error" );
+        updateTips( "Length of " + n + " must be between " +
+          min + " and " + max + "." );
+        return false;
+      } else {
+        return true;
+      }
+    }
+ 
+    function checkRegexp( o, regexp, n ) {
+      if ( !( regexp.test( o.val() ) ) ) {
+        o.addClass( "ui-state-error" );
+        updateTips( n );
+        return false;
+      } else {
+        return true;
+      }
+    }
+ 
+   
+   function addUser() {
+      var valid = true;
+      allFields.removeClass( "ui-state-error" );
+ 
+      valid = valid && checkLength( name, "username", 3, 16 );
+      valid = valid && checkLength( email, "email", 6, 80 );
+      valid = valid && checkLength( password, "password", 5, 16 );
+ 
+      valid = valid && checkRegexp( name, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
+      valid = valid && checkRegexp( email, emailRegex, "eg. ui@jquery.com" );
+      valid = valid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
+ 
+      if ( valid ) {
+        $( "#users tbody" ).append( "<tr>" +
+          "<td>" + name.val() + "</td>" +
+          "<td>" + email.val() + "</td>" +
+          "<td>" + password.val() + "</td>" +
+        "</tr>" );
+        dialog.dialog( "close" );
+      }
+      return valid;
+    }
+ 
+    dialog = $( "#dialog-form" ).dialog({
+      autoOpen: false,
+      height: 300,
+      width: 350,
+      modal: true,
+      buttons: {
+        "Create an account": addUser,
+        Cancel: function() {
+          dialog.dialog( "close" );
+        }
+      },
+      close: function() {
+        form[ 0 ].reset();
+        allFields.removeClass( "ui-state-error" );
+      }
+    });
+ 
+    form = dialog.find( "form" ).on( "submit", function( event ) {
+      event.preventDefault();
+      addUser();
+    });
+ 
+    $( "#create-user" ).button().on( "click", function() {
+      dialog.dialog( "open" );
+    });
+  });
+  </script>
+  
+  
+  
+</head>
+<body>
+ 
+ 
+ 
+<div id="dialog-form" title="Create new user">
+  <p class="validateTips">All form fields are required.</p>
+ 
+  <form>
+    <fieldset>
+      <label for="name">Name</label>
+      <input type="text" name="name" id="name" value="Jane Smith" class="text ui-widget-content ui-corner-all">
+      <label for="email">Email</label>
+      <input type="text" name="email" id="email" value="jane@smith.com" class="text ui-widget-content ui-corner-all">
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" value="xxxxxxx" class="text ui-widget-content ui-corner-all">
+ 
+      <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+    </fieldset>
+  </form>
+</div>
+ 
+ 
+<div id="users-contain" class="ui-widget">
+  <h1>Existing Users:</h1>
+  <table id="users" class="ui-widget ui-widget-content">
+    <thead>
+      <tr class="ui-widget-header ">
+        <th>Name</th>
+        <th>Email</th>
+        <th>Attempts</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Nikolaos Hadjis</td>
+        <td>hadjis.doe@example.com</td>
+        <td>36</td>
+		 <tr>
+        <td>Nikolaos Hadjis</td>
+        <td>hadjis.doe@example.com</td>
+        <td>32</td>
+		 <tr>
+        <td>Nikolaos Hadjis</td>
+        <td>hadjis.doe@example.com</td>
+        <td>30</td>
+		 <tr>
+        <td>Nikolaos Hadjis</td>
+        <td>hadjis.doe@example.com</td>
+        <td>30</td>
+		 <tr>
+        <td>Nikolaos Hadjis</td>
+        <td>hadjis.doe@example.com</td>
+        <td>29</td>
+		<tr>
+		<td>Nikolaos Hadjis</td>
+        <td>hadjis.doe@example.com</td>
+        <td>28</td>
+		<tr>
+		<td>Nikolaos Hadjis</td>
+        <td>hadjis.doe@example.com</td>
+        <td>28</td>
+		<tr>
+		<td>Nikolaos Hadjis</td>
+        <td>hadjis.doe@example.com</td>
+        <td>28</td>
+		<tr>
+		<td>Nikolaos Hadjis</td>
+        <td>hadjis.doe@example.com</td>
+        <td>27</td>
+		<tr>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<button id="create-user">Next Page</button>
+ 
+ 
+ 
+ <script>
+var chart1;
+
+$(document).ready(function () {
+    $('#container').highcharts({
+        chart: {
+            type: 'spline'
+        },
+        title: {
+            text: 'Snow depth at Vikjafjellet, Norway'
+        },
+        subtitle: {
+            text: 'Irregular time data in Highcharts JS'
+        },
+        xAxis: {
+            title: {
+        enabled: true,
+        text: 'Hours of the Day'
+    },
+    type: 'datetime',
+
+    dateTimeLabelFormats : {
+        hour: '%I %p',
+        minute: '%I:%M %p'
+    }
+        },
+        yAxis: {
+            title: {
+                text: 'Number of attempts'
+            },
+            min: 0
+        },
+        tooltip: {
+            headerFormat: '<b>{series.name}</b><br>',
+            pointFormat: '{point.x:%e. %b}: {point.y:.2f} m'
+        },
+
+        series: [{
+            name: 'Fail attempts',
+            // Define the data points. All series have a dummy year
+            // of 1970/71 in order to be compared on the same x axis. Note
+            // that in JavaScript, months start at 0 for January, 1 for February etc.
+            data: [
+                [Date.UTC(1970,  9, 27), 0   ],
+                [Date.UTC(1970, 10, 10), 0.6 ],
+                [Date.UTC(1970, 10, 18), 0.7 ],
+                [Date.UTC(1970, 11,  2), 0.8 ],
+                [Date.UTC(1970, 11,  9), 0.6 ],
+                [Date.UTC(1970, 11, 16), 0.6 ],
+                [Date.UTC(1970, 11, 28), 0.67],
+                [Date.UTC(1971,  0,  1), 0.81],
+                [Date.UTC(1971,  0,  8), 0.78],
+                [Date.UTC(1971,  0, 12), 0.98],
+                [Date.UTC(1971,  0, 27), 1.84],
+                [Date.UTC(1971,  1, 10), 1.80],
+                [Date.UTC(1971,  1, 18), 1.80],
+                [Date.UTC(1971,  1, 24), 1.92],
+                [Date.UTC(1971,  2,  4), 2.49],
+                [Date.UTC(1971,  2, 11), 2.79],
+                [Date.UTC(1971,  2, 15), 2.73],
+                [Date.UTC(1971,  2, 25), 2.61],
+                [Date.UTC(1971,  3,  2), 2.76],
+                [Date.UTC(1971,  3,  6), 2.82],
+                [Date.UTC(1971,  3, 13), 2.8 ],
+                [Date.UTC(1971,  4,  3), 2.1 ],
+                [Date.UTC(1971,  4, 26), 1.1 ],
+                [Date.UTC(1971,  5,  9), 0.25],
+                [Date.UTC(1971,  5, 12), 0   ]
+            ]
+        }, {
+            name: 'Forgotten',
+            data: [
+                [Date.UTC(1970,  9, 18), 0   ],
+                [Date.UTC(1970,  9, 26), 0.2 ],
+                [Date.UTC(1970, 11,  1), 0.47],
+                [Date.UTC(1970, 11, 11), 0.55],
+                [Date.UTC(1970, 11, 25), 1.38],
+                [Date.UTC(1971,  0,  8), 1.38],
+                [Date.UTC(1971,  0, 15), 1.38],
+                [Date.UTC(1971,  1,  1), 1.38],
+                [Date.UTC(1971,  1,  8), 1.48],
+                [Date.UTC(1971,  1, 21), 1.5 ],
+                [Date.UTC(1971,  2, 12), 1.89],
+                [Date.UTC(1971,  2, 25), 2.0 ],
+                [Date.UTC(1971,  3,  4), 1.94],
+                [Date.UTC(1971,  3,  9), 1.91],
+                [Date.UTC(1971,  3, 13), 1.75],
+                [Date.UTC(1971,  3, 19), 1.6 ],
+                [Date.UTC(1971,  4, 25), 0.6 ],
+                [Date.UTC(1971,  4, 31), 0.35],
+                [Date.UTC(1971,  5,  7), 0   ]
+            ]
+        }, {
+            name: 'Changed',
+            data: [
+                [Date.UTC(1970,  9,  9), 0   ],
+                [Date.UTC(1970,  9, 14), 0.15],
+                [Date.UTC(1970, 10, 28), 0.35],
+                [Date.UTC(1970, 11, 12), 0.46],
+                [Date.UTC(1971,  0,  1), 0.59],
+                [Date.UTC(1971,  0, 24), 0.58],
+                [Date.UTC(1971,  1,  1), 0.62],
+                [Date.UTC(1971,  1,  7), 0.65],
+                [Date.UTC(1971,  1, 23), 0.77],
+                [Date.UTC(1971,  2,  8), 0.77],
+                [Date.UTC(1971,  2, 14), 0.79],
+                [Date.UTC(1971,  2, 24), 0.86],
+                [Date.UTC(1971,  3,  4), 0.8 ],
+                [Date.UTC(1971,  3, 18), 0.94],
+                [Date.UTC(1971,  3, 24), 0.9 ],
+                [Date.UTC(1971,  4, 16), 0.39],
+                [Date.UTC(1971,  4, 21), 0   ]
+            ]
+        }]
+    }).setOptions(Highcharts.theme);
+});
+</script>
+ 
+ 
+ 
+ 
+</body>
+</html>

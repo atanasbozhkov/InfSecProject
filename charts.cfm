@@ -19,6 +19,7 @@
 </cfscript>
 
 
+
 <!---------------------------------------------------->
 
 
@@ -119,6 +120,22 @@
     <!--- Graph Per Week --->
     $(function () {
     $('#container1').highcharts('StockChart',{
+	
+	hart: {
+                events: {
+                    load: function () {
+                        this.setTitle(null, {
+                            text: 'Built chart in ' + (new Date() - start) + 'ms'
+                        });
+                    }
+                },
+                zoomType: 'x'
+            },
+
+	
+	
+	
+	
         title: {
             text: 'Number of failed attempt',
             x: 0 //center
@@ -132,6 +149,47 @@
                 'Sun']
 
         },
+		
+		rangeSelector: {
+                
+                buttons: [{
+                    type: 'day',
+                    count: 1,
+                    text: '1d'
+                }, {
+                    type: 'day',
+                    count: 3,
+                    text: '3d'
+                }, 
+                          
+                {
+                    
+                    type: 'week',
+                    count: 1,
+                    text: '1w'
+                }, {
+                    type: 'month',
+                    count: 1,
+                    text: '1m'
+                }, {
+                    type: 'month',
+                    count: 6,
+                    text: '6m'
+                }, {
+                    type: 'year',
+                    count: 1,
+                    text: '1y'
+                }, {
+                    type: 'all',
+                    text: 'All'
+                }],
+                selected: 3
+            },
+			
+			
+			
+			
+			
         yAxis: {
       min: 0,
             title: {
@@ -144,7 +202,7 @@
             }]
         },
         tooltip: {
-            valueSuffix: ''
+            valueDecimals: 1
         },
         legend: {
             layout: 'vertical',
@@ -152,11 +210,26 @@
             verticalAlign: 'middle',
             borderWidth: 0
         },
+		/*
         series: [{
             name: 'Failed Attempt',
-            data: [4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,]
+            data: [4, 2, 1, 2, 1, 0, 0,4, 10, 10, 10, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,]
 
-        }]
+			
+                
+        }]*/
+		series: [{
+               name: 'Failed Attempt',
+                 data: [4, 2, 1, 2, 1, 0, 0,4, 10, 10, 10, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,]
+,
+
+                pointStart: Date.UTC(2004, 3, 1),
+                pointInterval: 3600 * 1000,
+                tooltip: {
+                    valueDecimals: 1,
+                    //valueSuffix: '°C'
+                }
+            }]
 
 
     });
@@ -192,36 +265,51 @@ var options = {
             text: null
         }
     },
-		  
-		  
-		  
-		  
-    series: [{
+	 plotOptions: {
+            series: {
+                cursor: 'pointer',
+                point: {
+                    events: {
+                        click: 
+						    
+						
+						function () {
+                            open_popup();
+                        }
+                    }
+                }
+            }
+        },
+	
+	
+	  
+		series: [{
 			
-        colorByPoint: true,
-        data: [{
-            name: 'Forgotten',
-					color: '#e67e22',
-					y: 5,
-					drilldown: 'forgotten'
-            }, {
+              colorByPoint: true,
+              data: [{
+                  name: 'Forgotten',
+                  color: '#e67e22',
+                  y: 5,
+                  drilldown: 'forgotten'
+              }, {
                   name: 'Failed',
-                  y: data.TOTALFAIL,
+                  y: 2,
                   color: '#e74c3c',
                   drilldown: 'failed'
-            }, {
+              }, {
                   name: 'Changed',
                   y: 4,
                   color: '#9b59b6',
                   drilldown: 'changed'
-            }]
-          }],
+              }]
+          }]
 		  
 		  
-		  
-        drilldown: {
-            series: [{
-				id: 'forgotten',
+		  /*
+		  ,
+          drilldown: {
+              series: [{
+                  id: 'forgotten',
                   data: [
                       ['Nasco', 4],
                       ['Jospeph', 2],
@@ -229,13 +317,13 @@ var options = {
                       ['Nicolas', 2],
                       ['Sam', 1]
                   ]
-            }, {
+              }, {
                   id: 'failed',
                   data: [
                       ['Karen', 4],
                       ['Jack', 2]
                   ]
-            }, {
+              }, {
                   id: 'changed',
                   data: [
                       ['Jake', 4],
@@ -243,8 +331,9 @@ var options = {
                       ['Ivan', 2]
                   ]
               }]
-          }
-
+          }*/
+		  
+          
       
 
 };	  
@@ -258,7 +347,8 @@ var options = {
 options.chart.renderTo = 'container';
 options.chart.type = 'pie';
 var chart2 = new Highcharts.Chart(options);
-	  
+
+ 
 	  
 // Activate the side menu
   $("#menu-toggle").click(function(e) {
@@ -319,6 +409,13 @@ var chart2 = new Highcharts.Chart(options);
 </div>
 
 
+
+
+
+
+
+
+
     <script src="assets/js/vendor/jquery.min.js"></script>
     <script src="assets/js/flat-ui.min.js"></script>
     <!-- Load the charts -->
@@ -333,5 +430,15 @@ var chart2 = new Highcharts.Chart(options);
 	
 	
 	
+	
+	
+	<script>
+    function open_popup() {
+        window.open('popup.html', 'chart title', 'width=1680px height=1050px');
+    }
+</script>
+	
+	
   </body>
 </html>
+
