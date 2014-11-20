@@ -31,14 +31,28 @@
         
     </cffunction>
 
+    <cffunction name="getForgottenAttemptsByUserId" access="public" output="false" returntype="query">
+        <cfargument name="user_id" type="string">
+
+        <cfquery name="forgottenRecord">
+            SELECT forgot_id, user_id FROM forgotten_attempts
+            WHERE user_id = "#user_id#" 
+            AND timestamp > current_timestamp() - INTERVAL 12 HOUR
+            AND timestamp < current_timestamp()
+            AND valid = 1
+        </cfquery>
+
+        <cfreturn forgottenRecord>
+    </cffunction>
+
     <cffunction name="getForgottenAttempt" access="public" output="false" returntype="query">
         <cfargument name="token" type="string">
 
         <cfquery name="forgottenRecord">
             SELECT forgot_id, user_id FROM forgotten_attempts
             WHERE token = "#token#" 
-            AND DATE(timestamp) > current_timestamp() - INTERVAL 24 HOUR
-            AND DATE(timestamp) < current_timestamp()
+            AND timestamp > current_timestamp() - INTERVAL 24 HOUR
+            AND timestamp < current_timestamp()
             AND valid = 1
         </cfquery>
 

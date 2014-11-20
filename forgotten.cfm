@@ -61,7 +61,7 @@
                     result = 'Email link sent successfully. Please check your email in a few minutes.';
                 }
                 else {
-                    result = 'There was an error while sending the reset link. Please contact the administrators';
+                    result = 'Email has sent in the past 12 hours.';
                 }
                 $("#message").html('<center>' + result + '</center>');
             });
