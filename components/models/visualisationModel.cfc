@@ -63,4 +63,60 @@
 
         <cfreturn attempts/>
     </cffunction>
+
+    <cffunction name="getForgotCount" access="public" output="false" returntype="query">
+        <cfargument name="from" type="string">
+        <cfargument name="to" type="string">
+
+        <cfquery name="forgotCount">
+            SELECT
+            (SELECT COUNT(forgot_id) FROM forgotten_attempts AS fa 
+                WHERE fa.success = 1 
+                AND fa.timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP">
+                AND fa.timestamp <= <cfqueryparam value="#to#" cfsqltype="CF_SQL_TIMESTAMP">
+            ) as successCount,
+            (SELECT COUNT(forgot_id) FROM forgotten_attempts AS fa
+                WHERE fa.success = 0 
+                AND fa.timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP"> 
+                AND fa.timestamp <= <cfqueryparam value="#to#" cfsqltype="CF_SQL_TIMESTAMP">
+            ) as failCount
+        </cfquery>
+        <cfreturn forgotCount>
+    </cffunction>
+
+    <cffunction name="getLoginCount" access="public" output="false" returntype="query">
+        <cfargument name="from" type="string">
+        <cfargument name="to" type="string">
+
+        <cfquery name="loginCount">
+            SELECT
+            (SELECT COUNT(attempt_id) FROM login_attempts AS la
+                WHERE la.success = 1
+                AND la.timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP">
+                AND la.timestamp <= <cfqueryparam value="#to#" cfsqltype="CF_SQL_TIMESTAMP">
+            ) as successCount,
+            (SELECT COUNT(attempt_id) FROM login_attempts AS la
+                WHERE la.success = 0
+                AND la.timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP"> 
+                AND la.timestamp <= <cfqueryparam value="#to#" cfsqltype="CF_SQL_TIMESTAMP">
+            ) as failCount
+        </cfquery>
+        <cfreturn loginCount>
+    </cffunction>
+
+    <cffunction name="getPWChangedCount" access="public" output="false" returntype="query">
+        <cfargument name="from" type="string">
+        <cfargument name="to" type="string">
+
+        <cfquery name="pwChangedCount">
+            SELECT SUM(changes.count) AS changed_amount FROM
+            (SELECT user_id, COUNT(pass_id)-1 AS count
+                FROM passwords
+                WHERE timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP"> 
+                AND timestamp <= <cfqueryparam value="#to#" cfsqltype="CF_SQL_TIMESTAMP">
+                GROUP BY user_id
+            ) AS changes
+        </cfquery>
+        <cfreturn pwChangedCount>
+    </cffunction>
 </cfcomponent>

@@ -92,7 +92,10 @@
             data = data || {};
             if (data.STATUS)
             {
-                alert("success");
+                $("#message").html("Account Created. Redirect to the index page in 5 seconds");
+                setTimeout(function() {
+                    window.location.href = "index.cfm";
+                }, 5000);
             }
             else
             {

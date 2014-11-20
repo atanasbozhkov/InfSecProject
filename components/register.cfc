@@ -14,10 +14,7 @@
             <cfreturn serializeJSON(result)>
         </cfif>
 
-        <cfset salt = hash(rand("SHA1PRNG"), "SHA-512")>
-        <cfset hash = hash(password&salt, "SHA-512")>
-
-        <cfinvoke component="models.registerModel" method="getUser" returnvariable="userData">
+        <cfinvoke component="models.userModel" method="getUser" returnvariable="userData">
             <cfinvokeargument name="email" value="#email#">
         </cfinvoke>
 
@@ -26,7 +23,7 @@
             <cfreturn serializeJSON(result)>
         </cfif>
 
-        <cfinvoke component="models.registerModel" method="createUser" returnvariable="userID">
+        <cfinvoke component="models.userModel" method="createUser" returnvariable="userID">
             <cfinvokeargument name="email" value="#email#">
             <cfinvokeargument name="firstname" value="#firstname#">
             <cfinvokeargument name="lastname" value="#lastname#">
@@ -37,15 +34,13 @@
             <cfreturn serializeJSON(result)>
         </cfif>
 
-        <cfinvoke component="models.registerModel" method="updatePassword" returnvariable="passwordID">
-            <cfinvokeargument name="email" value="#email#">
+        <cfinvoke component="models.passwordModel" method="updatePassword" returnvariable="passwordID">
             <cfinvokeargument name="userid" value="#userID#">
-            <cfinvokeargument name="hash" value="#hash#">
-            <cfinvokeargument name="salt" value="#salt#">
+            <cfinvokeargument name="password" value="#password#">
         </cfinvoke>
 
         <cfif passwordID eq false>
-            <cfinvoke component="models.registerModel" method="removeUser">
+            <cfinvoke component="models.userModel" method="removeUser">
                 <cfinvokeargument name="userid" value="#userID#">
             </cfinvoke>
             <cfset result.msg = "Error Occur">
