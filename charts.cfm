@@ -284,13 +284,17 @@ var options = {
                     events: {
                         click:
 
-
-						function () {
+						
+					
+						
+						function (event) {
+						if (this.options.id != "Forgotten"){
                             open_popup();
-                        }
+						}
+                        
                     }
                 }
-            }
+            }}
         },
 
 
@@ -307,43 +311,27 @@ var options = {
                   name: 'Failed',
                   y: data.LOGIN.FAILCOUNT,
                   color: '#e74c3c',
-                  drilldown: 'failed'
+                  //drilldown: 'failed'
               }, {
                   name: 'Changed',
                   y: data.PASSWORDCHANGED.CHANGED_AMOUNT,
                   color: '#9b59b6',
-                  drilldown: 'changed'
+                  //drilldown: 'changed'
               }]
           }]
 
 
-		  /*
+		  
 		  ,
           drilldown: {
               series: [{
                   id: 'forgotten',
                   data: [
-                      ['Nasco', 4],
-                      ['Jospeph', 2],
-                      ['Kelvin', 1],
-                      ['Nicolas', 2],
-                      ['Sam', 1]
-                  ]
-              }, {
-                  id: 'failed',
-                  data: [
-                      ['Karen', 4],
-                      ['Jack', 2]
-                  ]
-              }, {
-                  id: 'changed',
-                  data: [
-                      ['Jake', 4],
-                      ['Marina', 2],
-                      ['Ivan', 2]
+                      ['Fail Forgotten Password attempts', data.FORGOTTEN.FAILCOUNT],
+                      ['Successful Forgotten Password attempts', data.FORGOTTEN.SUCCESSCOUNT]
                   ]
               }]
-          }*/
+          }
 
 
 
