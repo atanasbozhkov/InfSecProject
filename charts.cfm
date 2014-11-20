@@ -16,7 +16,7 @@
 <!-- <cfoutput>#testReturn#</cfoutput> -->
 
 <cfscript>
-	writeOutput("<script> var data = "&testReturn&";</script>");
+	writeOutput("<script> var dataa= "&testReturn&";</script>");
 </cfscript>
 
 
@@ -70,9 +70,12 @@
   //Get the data from the db
 
   var db = new db();
+
+  var forgotenCount;
+
   db.setCallbackHandler(function  (data) {
     console.log(data)
-
+    window.data = data;
   })
   db.statNumber('1999-01-01','2015-01-01');
 
@@ -298,16 +301,16 @@ var options = {
               data: [{
                   name: 'Forgotten',
                   color: '#e67e22',
-                  y: 5,
+                  y: data.FORGOTTEN.FAILCOUNT + data.FORGOTTEN.SUCCESSCOUNT,
                   drilldown: 'forgotten'
               }, {
                   name: 'Failed',
-                  y: 2,
+                  y: data.LOGIN.FAILCOUNT,
                   color: '#e74c3c',
                   drilldown: 'failed'
               }, {
                   name: 'Changed',
-                  y: 4,
+                  y: data.PASSWORDCHANGED.CHANGED_AMOUNT,
                   color: '#9b59b6',
                   drilldown: 'changed'
               }]
