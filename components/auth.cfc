@@ -1,6 +1,6 @@
 <cfcomponent displayname="authenticationController" hint="login">
 
-    <cffunction name="login" access="remote" returntype="string">
+    <cffunction name="login" access="remote" returntype="boolean">
         <cfargument name="username" type="string" required="true">
         <cfargument name="password" type="string" required="true">
         <cfif IsUserLoggedIn()>
@@ -28,4 +28,12 @@
     <cffunction name="logout" access="remote" returntype="void">
         <cflogout>
     </cffunction>
+
+    <cffunction name="secQues" access="remote" returntype="boolean">
+        <cfargument name="username" type="string" required="true">
+        <cfargument name="answer" type="string" required="true">
+        <!--- check security answer --->
+        <cfreturn true>
+    </cffunction>
+    
 </cfcomponent>
