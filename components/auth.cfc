@@ -15,7 +15,7 @@
                     <cfinvokeargument name="email" value="#email#">
                 </cfinvoke>
                 <cfif loginQuery.RecordCount eq 1>
-                    <cfif compare(loginQuery.password, hash(password&loginQuery.salt, "SHA-512")) eq 0>
+                    <cfif compare(loginQuery.password, hash(password&loginQuery.salt, "SHA-512")) eq 0 AND loginQuery.role_id eq 2>
                         <cfloginuser name="#email#" Password = "#loginQuery.password#" roles="admin">
                         <cfset auth = true>
                     </cfif>
@@ -41,5 +41,5 @@
         <!--- check security answer --->
         <cfreturn true>
     </cffunction>
-    
+
 </cfcomponent>

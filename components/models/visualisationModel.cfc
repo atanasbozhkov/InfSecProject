@@ -7,6 +7,9 @@
         <cfreturn getNames/>
     </cffunction>
 
+	
+	
+	
     <cffunction name="getForgotten" access="public" output="false" returntype="any">
         <cfargument name="fromDate" type="string" required="true">
         <cfargument name="toDate" type="string" required="true">
@@ -19,6 +22,9 @@
         <cfreturn data>
     </cffunction>
 
+	
+	
+	
     <cffunction name="getLoginAttempts" access="public" output="false" returntype="query">
         <!--- format yyyy-mm-dd hh:mm:ss --->
         <cfargument name="from" type="string">

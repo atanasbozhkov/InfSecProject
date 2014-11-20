@@ -1,12 +1,30 @@
 <!--- cf function --->
 <cfajaxproxy cfc="components.auth" jsclassname="auth">
+<cfajaxproxy cfc="components.visualisation" jsclassname="db">
+
+
+
+
 <!--- Get Fail Successful and Fail attempts for a specific time interval --->
+
 <cfinvoke component="components.visualisation" method="getLoginAttempts" returnVariable="testReturn">
 	<cfinvokeargument name="timeFrom" value="2013-01-01 00:00:00">
 	<cfinvokeargument name="timeTo" value="2014-01-01 00:00:00">
 </cfinvoke>
 
+
+<!-- <cfoutput>#testReturn#</cfoutput> -->
+
+<cfscript>
+	writeOutput("<script> var dataa= "&testReturn&";</script>");
+</cfscript>
+
+
+
 <!---------------------------------------------------->
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -44,11 +62,22 @@
     <script src="assets/js/jquery8.js"></script>
 
   </head>
-  
-  
-  
-  
+
+
+
+
 <script type="text/javascript">
+  //Get the data from the db
+
+  var db = new db();
+
+  var forgotenCount;
+
+  db.setCallbackHandler(function  (data) {
+    console.log(data)
+    window.data = data;
+  })
+  db.statNumber('1999-01-01','2015-01-01');
 
 
   $(function () {
@@ -103,6 +132,22 @@
     <!--- Graph Per Week --->
     $(function () {
     $('#container1').highcharts('StockChart',{
+
+	hart: {
+                events: {
+                    load: function () {
+                        this.setTitle(null, {
+                            text: 'Built chart in ' + (new Date() - start) + 'ms'
+                        });
+                    }
+                },
+                zoomType: 'x'
+            },
+
+
+
+
+
         title: {
             text: 'Number of failed attempt',
             x: 0 //center
@@ -116,6 +161,47 @@
                 'Sun']
 
         },
+
+		rangeSelector: {
+
+                buttons: [{
+                    type: 'day',
+                    count: 1,
+                    text: '1d'
+                }, {
+                    type: 'day',
+                    count: 3,
+                    text: '3d'
+                },
+
+                {
+
+                    type: 'week',
+                    count: 1,
+                    text: '1w'
+                }, {
+                    type: 'month',
+                    count: 1,
+                    text: '1m'
+                }, {
+                    type: 'month',
+                    count: 6,
+                    text: '6m'
+                }, {
+                    type: 'year',
+                    count: 1,
+                    text: '1y'
+                }, {
+                    type: 'all',
+                    text: 'All'
+                }],
+                selected: 3
+            },
+
+
+
+
+
         yAxis: {
       min: 0,
             title: {
@@ -128,7 +214,7 @@
             }]
         },
         tooltip: {
-            valueSuffix: ''
+            valueDecimals: 1
         },
         legend: {
             layout: 'vertical',
@@ -136,11 +222,26 @@
             verticalAlign: 'middle',
             borderWidth: 0
         },
+		/*
         series: [{
             name: 'Failed Attempt',
-            data: [4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,]
+            data: [4, 2, 1, 2, 1, 0, 0,4, 10, 10, 10, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,]
 
-        }]
+
+
+        }]*/
+		series: [{
+               name: 'Failed Attempt',
+                 data: [4, 2, 1, 2, 1, 0, 0,4, 10, 10, 10, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,]
+,
+
+                pointStart: Date.UTC(2004, 3, 1),
+                pointInterval: 3600 * 1000,
+                tooltip: {
+                    valueDecimals: 1,
+                    //valueSuffix: '°C'
+                }
+            }]
 
 
     });
@@ -149,7 +250,7 @@
 
 
 // Main graph
-var data = <cfoutput>#testReturn#</cfoutput>;
+
 var options = {
 
 
@@ -157,55 +258,70 @@ var options = {
               renderTo: 'container',
               type: 'column'
     },
-          
+
 	title: {
               text: 'Results for the last 24h'
     },
-	
+
     subtitle: {
               text: 'Forgotten-Fail-changed'
     },
     legend: {
             enabled: false
     },
-		  
+
 	xAxis: {
-			  
+
         categories: ['Forgotten', 'Failed', 'Changed'],
 		title: {
             text: null
         }
     },
-		  
-		  
-		  
-		  
-    series: [{
-			
-        colorByPoint: true,
-        data: [{
-            name: 'Forgotten',
-					color: '#e67e22',
-					y: 5,
-					drilldown: 'forgotten'
-            }, {
+	 plotOptions: {
+            series: {
+                cursor: 'pointer',
+                point: {
+                    events: {
+                        click:
+
+
+						function () {
+                            open_popup();
+                        }
+                    }
+                }
+            }
+        },
+
+
+
+		series: [{
+
+              colorByPoint: true,
+              data: [{
+                  name: 'Forgotten',
+                  color: '#e67e22',
+                  y: data.FORGOTTEN.FAILCOUNT + data.FORGOTTEN.SUCCESSCOUNT,
+                  drilldown: 'forgotten'
+              }, {
                   name: 'Failed',
-                  y: data.TOTALFAIL,
+                  y: data.LOGIN.FAILCOUNT,
                   color: '#e74c3c',
                   drilldown: 'failed'
-            }, {
+              }, {
                   name: 'Changed',
-                  y: 4,
+                  y: data.PASSWORDCHANGED.CHANGED_AMOUNT,
                   color: '#9b59b6',
                   drilldown: 'changed'
-            }]
-          }],
-		  
-		  
-		  
-        drilldown: {
-            series: [{
-				id: 'forgotten',
+              }]
+          }]
+
+
+		  /*
+		  ,
+          drilldown: {
+              series: [{
+                  id: 'forgotten',
                   data: [
                       ['Nasco', 4],
                       ['Jospeph', 2],
@@ -213,13 +329,13 @@ var options = {
                       ['Nicolas', 2],
                       ['Sam', 1]
                   ]
-            }, {
+              }, {
                   id: 'failed',
                   data: [
                       ['Karen', 4],
                       ['Jack', 2]
                   ]
-            }, {
+              }, {
                   id: 'changed',
                   data: [
                       ['Jake', 4],
@@ -227,23 +343,25 @@ var options = {
                       ['Ivan', 2]
                   ]
               }]
-          }
+          }*/
 
-      
 
-};	  
+
+
+};
 
 //Column chart
 //options.chart.renderTo = 'container';
 //options.chart.type = 'column';
 //var chart1 = new Highcharts.Chart(options);
-	  
+
 // Pie
 options.chart.renderTo = 'container';
 options.chart.type = 'pie';
 var chart2 = new Highcharts.Chart(options);
-	  
-	  
+
+
+
 // Activate the side menu
   $("#menu-toggle").click(function(e) {
           e.preventDefault();
@@ -303,6 +421,13 @@ var chart2 = new Highcharts.Chart(options);
 </div>
 
 
+
+
+
+
+
+
+
     <script src="assets/js/vendor/jquery.min.js"></script>
     <script src="assets/js/flat-ui.min.js"></script>
     <!-- Load the charts -->
@@ -314,8 +439,18 @@ var chart2 = new Highcharts.Chart(options);
     <script>
       videojs.options.flash.swf = "assets/js/vendors/video-js.swf"
     </script>
-	
-	
-	
+
+
+
+
+
+	<script>
+    function open_popup() {
+        window.open('popup.html', 'chart title', 'width=1680px height=1050px');
+    }
+</script>
+
+
   </body>
 </html>
+
