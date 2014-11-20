@@ -77,9 +77,8 @@
 
         <div class="login-form" onKeyPress="return checkSubmit(event)">
           <cflogin>
-          <cfform action="" method="Post" name="loginForm"> 
             <div class="form-group">
-              <input name="j_username" type="text" class="form-control login-field" value="" placeholder="Enter your name" id="login-name" />
+              <input name="j_username" type="text" class="form-control login-field" value="" placeholder="Enter your email" id="login-name" />
               <label class="login-field-icon fui-user" for="login-name"></label>
             </div>
 
@@ -89,8 +88,7 @@
             </div>
 
             <div id="submitLogin" class="btn btn-primary btn-lg btn-block" onClick="return submitLogin()">Log in</div>
-            <a class="login-link" href="#">Forgot your password?</a>
-          </cfform>
+            <a class="login-link" href="forgotten.cfm">Forgot your password?</a>
           </cflogin>
         </div>
       </div>
