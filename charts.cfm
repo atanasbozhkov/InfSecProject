@@ -68,19 +68,31 @@
 
 <script type="text/javascript">
   //Get the data from the db
+  var mainChartData = function(){
+    var db = new this();
+    db.setCallbackHandler(function  (data) {
+      console.log(data)
+      console.log("hahaha")
+      chart(data)
+      console.log(window.data)
+    })
+    db.statNumber('1999-01-01','2015-01-01');
+  }.bind(db)
 
-  var db = new db();
+  var damn = function(){
+    var db = new this();
+    db.setCallbackHandler(function  (aa) {
+      console.log(aa)
+      console.log("damn?")
 
-  var forgotenCount;
-
-  db.setCallbackHandler(function  (data) {
-    console.log(data)
-    window.data = data;
-  })
-  db.statNumber('1999-01-01','2015-01-01');
+      // window.data = data;
+    })
+    db.getForgotAttempts('1999-01-01','2015-01-01');
+  }.bind(db)
 
 
-  $(function () {
+
+  function chart(data) {
 
 
     <!--- Graph Per Week --->
@@ -284,14 +296,14 @@ var options = {
                     events: {
                         click:
 
-						
-					
-						
+
+
+
 						function (event) {
 						if (this.options.id != "Forgotten"){
                             open_popup();
 						}
-                        
+
                     }
                 }
             }}
@@ -321,7 +333,7 @@ var options = {
           }]
 
 
-		  
+
 		  ,
           drilldown: {
               series: [{
@@ -355,7 +367,7 @@ var chart2 = new Highcharts.Chart(options);
           e.preventDefault();
           $("#wrapper").toggleClass("active");
   });
-  });
+  };
 
       function logoutSubmit()
       {
@@ -365,6 +377,9 @@ var chart2 = new Highcharts.Chart(options);
           });
           instance.logout();
       }
+      $(document).ready(function () {
+        mainChartData();
+      });
       </script>
 
   <body>
