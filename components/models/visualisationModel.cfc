@@ -119,7 +119,7 @@
         <cfargument name="to" type="string">
 
         <cfquery name="attemptsDetail">
-            SELECT u.user_id, u.email, u.first_name, u.last_name, COUNT(*) AS fail_attempts
+            SELECT u.user_id, u.email, u.first_name, u.last_name, COUNT(*) AS fail_attempts, la.timestamp
             FROM login_attempts AS la LEFT JOIN users AS u ON la.user_id = u.user_id 
             WHERE la.success = 0 
             AND la.timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP">  
@@ -136,7 +136,7 @@
         <cfargument name="to" type="string">
 
         <cfquery name="attemptsDetail">
-            SELECT u.user_id, u.email, u.first_name, u.last_name, COUNT(*) AS fail_attempts
+            SELECT u.user_id, u.email, u.first_name, u.last_name, COUNT(*) AS fail_attempts, fa.timestamp
             FROM forgotten_attempts AS fa LEFT JOIN users AS u ON fa.user_id = u.user_id
             WHERE fa.success = 0
             AND fa.timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP">
@@ -153,7 +153,7 @@
         <cfargument name="to" type="string">
 
         <cfquery name="attemptsDetail">
-            SELECT u.user_id, u.email, u.first_name, u.last_name, COUNT(*) AS changed_amount
+            SELECT u.user_id, u.email, u.first_name, u.last_name, COUNT(*) AS changed_amount, p.timestamp
             FROM passwords AS p LEFT JOIN users AS u ON p.user_id = u.user_id
             WHERE p.timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP">
             AND p.timestamp <= <cfqueryparam value="#to#" cfsqltype="CF_SQL_TIMESTAMP">
