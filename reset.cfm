@@ -61,14 +61,17 @@
                 var result = "";
 
                 if (res) {
-                    result = 'Password reset';
+                    result = 'Password reset. Redirect to the index page in 5 seconds';
+                    setTimeout(function() {
+                        window.location.href = "index.cfm";
+                    }, 5000);
                 }
                 else {
                     result = 'There was an error while resetting the password. Please require another reset password email again.';
                 }
                 $("#message").html('<center>' + result + '</center>');
             });
-            instance.resetPassword(pass, pass_re);
+            instance.resetPassword(pass, pass_re, "<cfoutput>#url['token']#</cfoutput>");
         }
         </script>
     </head>

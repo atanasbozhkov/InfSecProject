@@ -8,6 +8,18 @@
             <cfinvokeargument name="email" value="#email#">
         </cfinvoke>
 
+        <!--- user not exist --->
+        <cfif userData.RecordCount eq 0>
+            <cfinvoke component="models.logModel" method="forgottenAttempt">
+                <cfinvokeargument name="user_id" value="0">
+                <cfinvokeargument name="success" value="0">
+                <cfinvokeargument name="token" value="0">
+                <cfinvokeargument name="valid" value="0">
+                <cfinvokeargument name="answer" value="0">
+            </cfinvoke>
+            <cfreturn true>
+        </cfif>
+
         <cfinvoke component="auth" method="secQues" returnvariable="auth">
             <cfinvokeargument name="user_id" value="#userData.user_id#">
             <cfinvokeargument name="answer" value="#answer#">
@@ -23,6 +35,22 @@
                 <cfinvokeargument name="answer" value="0">
             </cfinvoke>
             <cfreturn true>
+        </cfif>
+
+        <!--- check forgot frequency, reject if token is valid and issued with 12 hours --->
+        <cfinvoke component="models.passwordModel" method="getForgottenAttemptsByUserId" returnvariable="attempts">
+            <cfinvokeargument name="user_id" value="#userData.user_id#">
+        </cfinvoke>
+        
+        <cfif attempts.RecordCount gt 0>
+            <cfinvoke component="models.logModel" method="forgottenAttempt">
+                <cfinvokeargument name="user_id" value="#userData.user_id#">
+                <cfinvokeargument name="success" value="#auth#">
+                <cfinvokeargument name="token" value="0">
+                <cfinvokeargument name="valid" value="0">
+                <cfinvokeargument name="answer" value="0">
+            </cfinvoke>
+            <cfreturn false>
         </cfif>
         
         <cfset token=hash(RandRange(0,1000000),'SHA-1')>
@@ -92,12 +120,21 @@
     <cffunction name="resetPassword" output="false" access="remote" returntype="any">
         <cfargument name="pass" type="string" required="true">
         <cfargument name="pass_re" type="string" required="true">
+        <cfargument name="token" type="string" required="true">
 
         <cfif compare(pass, pass_re) neq 0>
             <cfreturn false>
         </cfif>
 
         <cfif SESSION.tokenValid eq 0>
+            <!--- someone reset password using invalid token --->
+            <cfinvoke component="models.logModel" method="forgottenAttempt">
+                <cfinvokeargument name="user_id" value="0">
+                <cfinvokeargument name="success" value="0">
+                <cfinvokeargument name="token" value="#token#">
+                <cfinvokeargument name="valid" value="0">
+                <cfinvokeargument name="answer" value="0">
+            </cfinvoke>
             <cfreturn false>
         </cfif>
 

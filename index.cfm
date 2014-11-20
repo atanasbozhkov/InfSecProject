@@ -1,3 +1,7 @@
+<cfif IsUserLoggedIn()>
+    <cflocation url="charts.cfm">
+</cfif>
+
 <cfajaxproxy cfc="components.auth" jsclassname="auth">
 <!DOCTYPE html>
 <html lang="en">
