@@ -47,14 +47,22 @@
 
     <cffunction name="getForgottenAttempt" access="public" output="false" returntype="query">
         <cfargument name="token" type="string">
+        <cfargument name="requireValid" type="boolean">
 
-        <cfquery name="forgottenRecord">
-            SELECT forgot_id, user_id FROM forgotten_attempts
-            WHERE token = "#token#" 
-            AND timestamp > current_timestamp() - INTERVAL 24 HOUR
-            AND timestamp < current_timestamp()
-            AND valid = 1
-        </cfquery>
+        <cfif requireValid>
+            <cfquery name="forgottenRecord">
+                SELECT forgot_id, user_id FROM forgotten_attempts
+                WHERE token = "#token#" 
+                AND timestamp > current_timestamp() - INTERVAL 24 HOUR
+                AND timestamp < current_timestamp()
+                AND valid = 1
+            </cfquery>
+        <cfelse>
+            <cfquery name="forgottenRecord">
+                SELECT forgot_id, user_id FROM forgotten_attempts
+                WHERE token = "#token#" 
+            </cfquery>
+        </cfif>
 
         <cfreturn forgottenRecord>
     </cffunction>
@@ -66,6 +74,22 @@
             <cfquery>
                 UPDATE forgotten_attempts SET valid = '0'
                     WHERE user_id = '#user_id#'
+            </cfquery>
+            <cfcatch type="any">
+                <cfreturn false>
+            </cfcatch>
+        </cftry>
+
+        <cfreturn true>
+    </cffunction>
+
+    <cffunction name="markSuccess" access="public" output="false" returntype="boolean">
+        <cfargument name="forgot_id" type="string">
+
+        <cftry>
+            <cfquery>
+                UPDATE forgotten_attempts SET success = '1'
+                    WHERE forgot_id = '#forgot_id#'
             </cfquery>
             <cfcatch type="any">
                 <cfreturn false>

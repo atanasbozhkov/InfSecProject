@@ -29,7 +29,7 @@
             <!--- return true here prevent hacker try email and answer, but no email sent --->
             <cfinvoke component="models.logModel" method="forgottenAttempt">
                 <cfinvokeargument name="user_id" value="#userData.user_id#">
-                <cfinvokeargument name="success" value="#auth#">
+                <cfinvokeargument name="success" value="0">
                 <cfinvokeargument name="token" value="0">
                 <cfinvokeargument name="valid" value="0">
                 <cfinvokeargument name="answer" value="0">
@@ -38,24 +38,25 @@
         </cfif>
 
         <!--- check forgot frequency, reject if token is valid and issued with 12 hours --->
-        <cfinvoke component="models.passwordModel" method="getForgottenAttemptsByUserId" returnvariable="attempts">
+        <!--- changed to capcha --->
+        <!--- <cfinvoke component="models.passwordModel" method="getForgottenAttemptsByUserId" returnvariable="attempts">
             <cfinvokeargument name="user_id" value="#userData.user_id#">
         </cfinvoke>
         
         <cfif attempts.RecordCount gt 0>
             <cfinvoke component="models.logModel" method="forgottenAttempt">
                 <cfinvokeargument name="user_id" value="#userData.user_id#">
-                <cfinvokeargument name="success" value="#auth#">
+                <cfinvokeargument name="success" value="0">
                 <cfinvokeargument name="token" value="0">
                 <cfinvokeargument name="valid" value="0">
                 <cfinvokeargument name="answer" value="0">
             </cfinvoke>
             <cfreturn false>
-        </cfif>
+        </cfif> --->
         
         <cfset token=hash(RandRange(0,1000000),'SHA-1')>
         <cfset valid = 1>
-        <cfset answer = 0>
+        <cfset answer = 1>
 
         <!--- revoke the previous tokens --->
         <cfinvoke component="models.passwordModel" method="revokeToken">
@@ -64,7 +65,7 @@
 
         <cfinvoke component="models.logModel" method="forgottenAttempt">
             <cfinvokeargument name="user_id" value="#userData.user_id#">
-            <cfinvokeargument name="success" value="#auth#">
+            <cfinvokeargument name="success" value="0">
             <cfinvokeargument name="token" value="#token#">
             <cfinvokeargument name="valid" value="#valid#">
             <cfinvokeargument name="answer" value="#answer#">
@@ -102,6 +103,7 @@
 
         <cfinvoke component="models.passwordModel" method="getForgottenAttempt" returnvariable="record">
             <cfinvokeargument name="token" value="#token#">
+            <cfinvokeargument name="requireValid" value="true">
         </cfinvoke>
 
         <cfif record.RecordCount neq 1>
@@ -146,6 +148,15 @@
         <cfif isBoolean(passwordID) AND passwordID eq false>
             <cfreturn false>
         </cfif>
+
+        <cfinvoke component="models.passwordModel" method="getForgottenAttempt" returnvariable="record">
+            <cfinvokeargument name="token" value="#token#">
+            <cfinvokeargument name="requireValid" value="false">
+        </cfinvoke>
+
+        <cfinvoke component="models.passwordModel" method="markSuccess">
+            <cfinvokeargument name="forgot_id" value="#record.forgot_id#">
+        </cfinvoke>
 
         <cfset SESSION.tokenValid = 0>
         <cfset SESSION.user_id = 0>
