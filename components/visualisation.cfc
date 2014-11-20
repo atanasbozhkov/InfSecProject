@@ -157,4 +157,79 @@
 
         <cfreturn SerializeJSON(counts)>
     </cffunction>
+
+    <cffunction name="getLoginFailDetail" access="remote" returntype="string">
+        <!--- time format: yyyy-mm-dd hh:mm:ss --->
+        <cfargument name="timeFrom" type="string" required="true">
+        <cfargument name="timeTo" type="string" required="true">
+
+        <cfinvoke method="checkTime" returnvariable="validTime">
+            <cfinvokeargument name="from" value="#timeFrom#">
+            <cfinvokeargument name="to" value="#timeTo#">
+        </cfinvoke>
+        <cfif NOT validTime>
+            <cfreturn "{}">
+        </cfif>
+
+        <cfinvoke component="models.visualisationModel" method="getFailAttemptsDetail" returnvariable="failQuery">
+            <cfinvokeargument name="from" value="#timeFrom#">
+            <cfinvokeargument name="to" value="#timeTo#">
+        </cfinvoke>
+
+        <cfinvoke method="queryParseToJSON" returnvariable="json">
+            <cfinvokeargument name="rawQuery" value="#failQuery#">
+        </cfinvoke>
+
+        <cfreturn json>
+    </cffunction>
+
+    <cffunction name="getForgottenFailDetail" access="remote" returntype="string">
+        <!--- time format: yyyy-mm-dd hh:mm:ss --->
+        <cfargument name="timeFrom" type="string" required="true">
+        <cfargument name="timeTo" type="string" required="true">
+
+        <cfinvoke method="checkTime" returnvariable="validTime">
+            <cfinvokeargument name="from" value="#timeFrom#">
+            <cfinvokeargument name="to" value="#timeTo#">
+        </cfinvoke>
+        <cfif NOT validTime>
+            <cfreturn "{}">
+        </cfif>
+
+        <cfinvoke component="models.visualisationModel" method="getForgottenAttemptsDetail" returnvariable="failQuery">
+            <cfinvokeargument name="from" value="#timeFrom#">
+            <cfinvokeargument name="to" value="#timeTo#">
+        </cfinvoke>
+
+        <cfinvoke method="queryParseToJSON" returnvariable="json">
+            <cfinvokeargument name="rawQuery" value="#failQuery#">
+        </cfinvoke>
+
+        <cfreturn json>
+    </cffunction>
+
+    <cffunction name="getPwChangedDetail" access="remote" returntype="string">
+        <!--- time format: yyyy-mm-dd hh:mm:ss --->
+        <cfargument name="timeFrom" type="string" required="true">
+        <cfargument name="timeTo" type="string" required="true">
+
+        <cfinvoke method="checkTime" returnvariable="validTime">
+            <cfinvokeargument name="from" value="#timeFrom#">
+            <cfinvokeargument name="to" value="#timeTo#">
+        </cfinvoke>
+        <cfif NOT validTime>
+            <cfreturn "{}">
+        </cfif>
+
+        <cfinvoke component="models.visualisationModel" method="getPasswordChangedDetail" returnvariable="query">
+            <cfinvokeargument name="from" value="#timeFrom#">
+            <cfinvokeargument name="to" value="#timeTo#">
+        </cfinvoke>
+
+        <cfinvoke method="queryParseToJSON" returnvariable="json">
+            <cfinvokeargument name="rawQuery" value="#query#">
+        </cfinvoke>
+
+        <cfreturn json>
+    </cffunction>
 </cfcomponent>
