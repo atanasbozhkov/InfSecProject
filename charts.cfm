@@ -1,5 +1,6 @@
 <!--- cf function --->
 <cfajaxproxy cfc="components.auth" jsclassname="auth">
+<cfajaxproxy cfc="components.visualisation" jsclassname="db">
 
 
 
@@ -61,11 +62,19 @@
     <script src="assets/js/jquery8.js"></script>
 
   </head>
-  
-  
-  
-  
+
+
+
+
 <script type="text/javascript">
+  //Get the data from the db
+
+  var db = new db();
+  db.setCallbackHandler(function  (data) {
+    console.log(data)
+
+  })
+  db.statNumber('1999-01-01','2015-01-01');
 
 
   $(function () {
@@ -120,7 +129,7 @@
     <!--- Graph Per Week --->
     $(function () {
     $('#container1').highcharts('StockChart',{
-	
+
 	hart: {
                 events: {
                     load: function () {
@@ -132,10 +141,10 @@
                 zoomType: 'x'
             },
 
-	
-	
-	
-	
+
+
+
+
         title: {
             text: 'Number of failed attempt',
             x: 0 //center
@@ -149,9 +158,9 @@
                 'Sun']
 
         },
-		
+
 		rangeSelector: {
-                
+
                 buttons: [{
                     type: 'day',
                     count: 1,
@@ -160,10 +169,10 @@
                     type: 'day',
                     count: 3,
                     text: '3d'
-                }, 
-                          
+                },
+
                 {
-                    
+
                     type: 'week',
                     count: 1,
                     text: '1w'
@@ -185,11 +194,11 @@
                 }],
                 selected: 3
             },
-			
-			
-			
-			
-			
+
+
+
+
+
         yAxis: {
       min: 0,
             title: {
@@ -215,8 +224,8 @@
             name: 'Failed Attempt',
             data: [4, 2, 1, 2, 1, 0, 0,4, 10, 10, 10, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,]
 
-			
-                
+
+
         }]*/
 		series: [{
                name: 'Failed Attempt',
@@ -246,20 +255,20 @@ var options = {
               renderTo: 'container',
               type: 'column'
     },
-          
+
 	title: {
               text: 'Results for the last 24h'
     },
-	
+
     subtitle: {
               text: 'Forgotten-Fail-changed'
     },
     legend: {
             enabled: false
     },
-		  
+
 	xAxis: {
-			  
+
         categories: ['Forgotten', 'Failed', 'Changed'],
 		title: {
             text: null
@@ -270,9 +279,9 @@ var options = {
                 cursor: 'pointer',
                 point: {
                     events: {
-                        click: 
-						    
-						
+                        click:
+
+
 						function () {
                             open_popup();
                         }
@@ -280,11 +289,11 @@ var options = {
                 }
             }
         },
-	
-	
-	  
+
+
+
 		series: [{
-			
+
               colorByPoint: true,
               data: [{
                   name: 'Forgotten',
@@ -303,8 +312,8 @@ var options = {
                   drilldown: 'changed'
               }]
           }]
-		  
-		  
+
+
 		  /*
 		  ,
           drilldown: {
@@ -332,24 +341,24 @@ var options = {
                   ]
               }]
           }*/
-		  
-          
-      
 
-};	  
+
+
+
+};
 
 //Column chart
 //options.chart.renderTo = 'container';
 //options.chart.type = 'column';
 //var chart1 = new Highcharts.Chart(options);
-	  
+
 // Pie
 options.chart.renderTo = 'container';
 options.chart.type = 'pie';
 var chart2 = new Highcharts.Chart(options);
 
- 
-	  
+
+
 // Activate the side menu
   $("#menu-toggle").click(function(e) {
           e.preventDefault();
@@ -427,18 +436,18 @@ var chart2 = new Highcharts.Chart(options);
     <script>
       videojs.options.flash.swf = "assets/js/vendors/video-js.swf"
     </script>
-	
-	
-	
-	
-	
+
+
+
+
+
 	<script>
     function open_popup() {
         window.open('popup.html', 'chart title', 'width=1680px height=1050px');
     }
 </script>
-	
-	
+
+
   </body>
 </html>
 
