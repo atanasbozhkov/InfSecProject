@@ -41,11 +41,11 @@
 
         function submit()
         {
-            var username = $("#forgot-name").val(),
+            var email = $("#forgot-name").val(),
                 answer = $("#forgot-answer").val(),
                 instance = new forgotten();
 
-            if (username.length === 0 || answer.length === 0)
+            if (email.length === 0 || answer.length === 0)
             {
                 $("#message").html("<h4>You must enter text in both the User Name and Password fields.</h4>");
                 return;
@@ -55,7 +55,7 @@
             {
                 var result = "";
 
-                if (res === 1) {
+                if (res) {
                     result = 'Email link sent successfully. Please check your email in a few minutes.';
                 }
                 else {
@@ -63,7 +63,7 @@
                 }
                 $("#message").html('<center>' + result + '</center>');
             });
-            instance.sendLink(username, answer);
+            instance.sendLink(email, answer);
         }
         </script>
     </head>

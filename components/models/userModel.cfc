@@ -4,7 +4,7 @@
         <cfargument name="email" type="string">
 
         <cfquery name="userQuery">
-            SELECT users.email FROM users
+            SELECT users.email, users.user_id FROM users
             WHERE users.email = '#email#'
         </cfquery>
         <cfreturn userQuery/>
