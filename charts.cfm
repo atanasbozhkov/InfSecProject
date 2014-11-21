@@ -325,6 +325,10 @@ $(document).ready(function() {
       <cfif IsUserLoggedIn()>
           <cfoutput>
               <a onClick="logoutSubmit()">Logout</a>
+              <a href="changePass.cfm">Settings</a>
+              <a href="createAdmin.cfm">Admin</a>
+
+
           </cfoutput>
       </cfif>
       </li>
