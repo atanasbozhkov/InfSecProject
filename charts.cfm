@@ -299,14 +299,14 @@ $(document).ready(function() {
        <li class="sidebar-brand"><a id="menu-toggle" href="#">Menu</a></li>
   </ul>
     <ul class="sidebar-nav" id="sidebar">
-      <li><a href='forgotten.cfm'>Forgotten</a></li>
-      <li><a>link2</a></li>
+      <li><a href='charts.cfm'>Dashboard</a></li>
+      <!--- <li><a>link2</a></li> --->
       <li>
       <cfif IsUserLoggedIn()>
           <cfoutput>
+              <a href="settings.cfm">Settings</a>
               <a onClick="logoutSubmit()">Logout</a>
-              <a href="changePass.cfm">Settings</a>
-              <a href="createAdmin.cfm">Admin</a>
+              <!--- <a href="createAdmin.cfm">Admin</a> --->
 
 
           </cfoutput>
