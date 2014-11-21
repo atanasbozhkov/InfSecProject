@@ -13,7 +13,7 @@
 
         <cfloop query="rawQuery">
             <cfset record = structNew()>
-            
+
             <cfloop list="#rawQuery.columnList#" index="col">
                 <cfset record[col] = rawQuery[col][currentrow]>
             </cfloop>
@@ -110,6 +110,30 @@
         <cfreturn json>
     </cffunction>
 
+    <cffunction name="getForgotAttemptsPerDay" access="remote" returntype="string">
+        <!--- time format: yyyy-mm-dd hh:mm:ss --->
+        <cfargument name="timeFrom" type="string" required="true">
+        <cfargument name="timeTo" type="string" required="true">
+
+        <cfinvoke method="checkTime" returnvariable="validTime">
+            <cfinvokeargument name="from" value="#timeFrom#">
+            <cfinvokeargument name="to" value="#timeTo#">
+        </cfinvoke>
+        <cfif NOT validTime>
+            <cfreturn "{}">
+        </cfif>
+
+        <cfinvoke component="models.visualisationModel" method="getForgotAttemptsPerDay" returnvariable="attempts">
+            <cfinvokeargument name="from" value="#timeFrom#">
+            <cfinvokeargument name="to" value="#timeTo#">
+        </cfinvoke>
+
+        <cfinvoke method="queryParseToJSON" returnvariable="json">
+            <cfinvokeargument name="rawQuery" value="#attempts#">
+        </cfinvoke>
+        <cfreturn json>
+    </cffunction>
+
     <cffunction name="statNumber" access="remote" returntype="string">
         <!--- time format: yyyy-mm-dd hh:mm:ss --->
         <cfargument name="timeFrom" type="string" required="true">
@@ -127,25 +151,25 @@
             <cfinvokeargument name="from" value="#timeFrom#">
             <cfinvokeargument name="to" value="#timeTo#">
         </cfinvoke>
-        
+
         <cfinvoke method="queryParseToJSON" returnvariable="forgotten">
             <cfinvokeargument name="rawQuery" value="#forgotAttempts#">
         </cfinvoke>
-        
+
         <cfinvoke component="models.visualisationModel" method="getLoginCount" returnvariable="loginAttempts">
             <cfinvokeargument name="from" value="#timeFrom#">
             <cfinvokeargument name="to" value="#timeTo#">
         </cfinvoke>
-        
+
         <cfinvoke method="queryParseToJSON" returnvariable="login">
             <cfinvokeargument name="rawQuery" value="#loginAttempts#">
         </cfinvoke>
-        
+
         <cfinvoke component="models.visualisationModel" method="getPWChangedCount" returnvariable="changedPWCount">
             <cfinvokeargument name="from" value="#timeFrom#">
             <cfinvokeargument name="to" value="#timeTo#">
         </cfinvoke>
-        
+
         <cfinvoke method="queryParseToJSON" returnvariable="pw">
             <cfinvokeargument name="rawQuery" value="#changedPWCount#">
         </cfinvoke>

@@ -67,99 +67,151 @@
 
 
 <script type="text/javascript">
-  //Get the data from the db
-  var mainChartData = function(){
+
+var mainChartData = function() {
     var db = new this();
-    db.setCallbackHandler(function  (data) {
-      console.log(data)
-      console.log("hahaha")
-      chart(data)
-      console.log(window.data)
+    db.setCallbackHandler(function(data) {
+        chart(data)
     })
-    db.statNumber('1999-01-01','2015-01-01');
-  }.bind(db)
-
-  var damn = function(){
+    db.statNumber('1999-01-01', '2015-01-01');
+}.bind(db)
+var getForgotten = function() {
     var db = new this();
-    db.setCallbackHandler(function  (aa) {
-      console.log(aa)
-      console.log("damn?")
-
-      // window.data = data;
+    db.setCallbackHandler(function(forgotten) {
+        // console.log(forgotten)
+        // var forgot = forgotten.SUCCESS.concat(forgotten.FAIL)
+        var array = [];
+        for (var i = 0; i < forgotten.length; i++) {
+            array.push([Date.parse(forgotten[i].DATE), forgotten[i].DAYCOUNT]);
+        };
+        console.log(array);
+        failedChart(array)
     })
-    db.getForgotAttempts('1999-01-01','2015-01-01');
-  }.bind(db)
+    db.getForgotAttemptsPerDay('1999-01-01', '2015-01-01');
+}.bind(db)
 
-
-
-  function chart(data) {
-
-
-    <!--- Graph Per Week --->
-    $(function () {
-    $('#container2').highcharts('StockChart',{
-        title: {
-            text: 'Number of forgotten attempts',
-            x: 0 //center
-        },
-        subtitle: {
-            //text: 'Source: WorldClimate.com',
-            x: 0
-        },
-        xAxis: {
-            categories: ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat',
-                'Sun']
-
-        },
-        yAxis: {
-      min: 0,
+function chart(data) {
+        // Main graph
+        var options = {
+            chart: {
+                renderTo: 'container',
+                type: 'column'
+            },
             title: {
-                text: 'Attempt ()'
+                text: 'Results for the last 24h'
             },
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#808080'
-            }]
-        },
-        tooltip: {
-            valueSuffix: ''
-        },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
-            borderWidth: 0
-        },
-        series: [{
-            name: 'Failed Attempt',
-            data: [3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2,3, 5, 3, 6, 7, 4, 2]
-
-        }]
-
-
-    });
-});
-
-    <!--- Graph Per Week --->
-    $(function () {
-    $('#container1').highcharts('StockChart',{
-
-	hart: {
-                events: {
-                    load: function () {
-                        this.setTitle(null, {
-                            text: 'Built chart in ' + (new Date() - start) + 'ms'
-                        });
+            subtitle: {
+                text: 'Forgotten-Fail-changed'
+            },
+            legend: {
+                enabled: false
+            },
+            xAxis: {
+                categories: ['Forgotten', 'Failed', 'Changed'],
+                title: {
+                    text: null
+                }
+            },
+            plotOptions: {
+                series: {
+                    cursor: 'pointer',
+                    point: {
+                        events: {
+                            click: function(event) {
+                                if (this.options.id != "Forgotten") {
+                                    open_popup();
+                                }
+                            }
+                        }
                     }
-                },
-                zoomType: 'x'
+                }
             },
-
-
-
-
-
+            series: [{
+                colorByPoint: true,
+                data: [{
+                    name: 'Forgotten',
+                    color: '#e67e22',
+                    y: data.FORGOTTEN.FAILCOUNT + data.FORGOTTEN.SUCCESSCOUNT,
+                    drilldown: 'forgotten'
+                }, {
+                    name: 'Failed',
+                    y: data.LOGIN.FAILCOUNT,
+                    color: '#e74c3c',
+                    //drilldown: 'failed'
+                }, {
+                    name: 'Changed',
+                    y: data.PASSWORDCHANGED.CHANGED_AMOUNT,
+                    color: '#9b59b6',
+                    //drilldown: 'changed'
+                }]
+            }],
+            drilldown: {
+                series: [{
+                    id: 'forgotten',
+                    data: [
+                        ['Fail Forgotten Password attempts', data.FORGOTTEN.FAILCOUNT],
+                        ['Successful Forgotten Password attempts', data.FORGOTTEN.SUCCESSCOUNT]
+                    ]
+                }]
+            }
+        };
+        options.chart.renderTo = 'container';
+        options.chart.type = 'pie';
+        var chart2 = new Highcharts.Chart(options);
+        <!--- Graph Per Week --->
+        $(function() {
+            $('#container2').highcharts('StockChart', {
+                title: {
+                    text: 'Number of forgotten attempts',
+                    x: 0 //center
+                },
+                subtitle: {
+                    //text: 'Source: WorldClimate.com',
+                    x: 0
+                },
+                xAxis: {
+                    categories: ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun']
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Attempt ()'
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                    }]
+                },
+                tooltip: {
+                    valueSuffix: ''
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    borderWidth: 0
+                },
+                series: [{
+                    name: 'Failed Attempt',
+                    data: [3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2]
+                }]
+            });
+        });
+    }
+    <!--- Graph Per Week --->
+function failedChart(data) {
+    $('#container1').highcharts('StockChart', {
+        hart: {
+            events: {
+                load: function() {
+                    this.setTitle(null, {
+                        text: 'Built chart in ' + (new Date() - start) + 'ms'
+                    });
+                }
+            },
+            zoomType: 'x'
+        },
         title: {
             text: 'Number of failed attempt',
             x: 0 //center
@@ -169,53 +221,41 @@
             x: 0
         },
         xAxis: {
-            categories: ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat',
-                'Sun']
-
+            categories: ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun']
         },
-
-		rangeSelector: {
-
-                buttons: [{
-                    type: 'day',
-                    count: 1,
-                    text: '1d'
-                }, {
-                    type: 'day',
-                    count: 3,
-                    text: '3d'
-                },
-
-                {
-
-                    type: 'week',
-                    count: 1,
-                    text: '1w'
-                }, {
-                    type: 'month',
-                    count: 1,
-                    text: '1m'
-                }, {
-                    type: 'month',
-                    count: 6,
-                    text: '6m'
-                }, {
-                    type: 'year',
-                    count: 1,
-                    text: '1y'
-                }, {
-                    type: 'all',
-                    text: 'All'
-                }],
-                selected: 3
-            },
-
-
-
-
-
+        rangeSelector: {
+            buttons: [{
+                type: 'day',
+                count: 1,
+                text: '1d'
+            }, {
+                type: 'day',
+                count: 3,
+                text: '3d'
+            }, {
+                type: 'week',
+                count: 1,
+                text: '1w'
+            }, {
+                type: 'month',
+                count: 1,
+                text: '1m'
+            }, {
+                type: 'month',
+                count: 6,
+                text: '6m'
+            }, {
+                type: 'year',
+                count: 1,
+                text: '1y'
+            }, {
+                type: 'all',
+                text: 'All'
+            }],
+            selected: 3
+        },
         yAxis: {
-      min: 0,
+            min: 0,
             title: {
                 text: 'Attempt ()'
             },
@@ -234,152 +274,40 @@
             verticalAlign: 'middle',
             borderWidth: 0
         },
-		/*
         series: [{
             name: 'Failed Attempt',
-            data: [4, 2, 1, 2, 1, 0, 0,4, 10, 10, 10, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,]
-
-
-
-        }]*/
-		series: [{
-               name: 'Failed Attempt',
-                 data: [4, 2, 1, 2, 1, 0, 0,4, 10, 10, 10, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,4, 2, 1, 2, 1, 0, 0,]
-,
-
-                pointStart: Date.UTC(2004, 3, 1),
-                pointInterval: 3600 * 1000,
-                tooltip: {
-                    valueDecimals: 1,
-                    //valueSuffix: '°C'
-                }
-            }]
-
-
+            data: data,
+            pointStart: Date.UTC(2004, 3, 1),
+            pointInterval: 3600 * 1000,
+            tooltip: {
+                valueDecimals: 1,
+                //valueSuffix: '°C'
+            }
+        }]
     });
-});
-
-
-
-// Main graph
-
-var options = {
-
-
-	chart: {
-              renderTo: 'container',
-              type: 'column'
-    },
-
-	title: {
-              text: 'Results for the last 24h'
-    },
-
-    subtitle: {
-              text: 'Forgotten-Fail-changed'
-    },
-    legend: {
-            enabled: false
-    },
-
-	xAxis: {
-
-        categories: ['Forgotten', 'Failed', 'Changed'],
-		title: {
-            text: null
-        }
-    },
-	 plotOptions: {
-            series: {
-                cursor: 'pointer',
-                point: {
-                    events: {
-                        click:
-
-
-
-
-						function (event) {
-						if (this.options.id != "Forgotten"){
-                            open_popup();
-						}
-
-                    }
-                }
-            }}
-        },
-
-
-
-		series: [{
-
-              colorByPoint: true,
-              data: [{
-                  name: 'Forgotten',
-                  color: '#e67e22',
-                  y: data.FORGOTTEN.FAILCOUNT + data.FORGOTTEN.SUCCESSCOUNT,
-                  drilldown: 'forgotten'
-              }, {
-                  name: 'Failed',
-                  y: data.LOGIN.FAILCOUNT,
-                  color: '#e74c3c',
-                  //drilldown: 'failed'
-              }, {
-                  name: 'Changed',
-                  y: data.PASSWORDCHANGED.CHANGED_AMOUNT,
-                  color: '#9b59b6',
-                  //drilldown: 'changed'
-              }]
-          }]
-
-
-
-		  ,
-          drilldown: {
-              series: [{
-                  id: 'forgotten',
-                  data: [
-                      ['Fail Forgotten Password attempts', data.FORGOTTEN.FAILCOUNT],
-                      ['Successful Forgotten Password attempts', data.FORGOTTEN.SUCCESSCOUNT]
-                  ]
-              }]
-          }
-
-
-
-
+    //Column chart
+    //options.chart.renderTo = 'container';
+    //options.chart.type = 'column';
+    //var chart1 = new Highcharts.Chart(options);
+    // Pie
+    // Activate the side menu
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("active");
+    });
 };
 
-//Column chart
-//options.chart.renderTo = 'container';
-//options.chart.type = 'column';
-//var chart1 = new Highcharts.Chart(options);
-
-// Pie
-options.chart.renderTo = 'container';
-options.chart.type = 'pie';
-var chart2 = new Highcharts.Chart(options);
-
-
-
-// Activate the side menu
-  $("#menu-toggle").click(function(e) {
-          e.preventDefault();
-          $("#wrapper").toggleClass("active");
-  });
-  };
-
-      function logoutSubmit()
-      {
-          var instance = new auth();
-          instance.setCallbackHandler(function(){
-              location.reload();
-          });
-          instance.logout();
-      }
-      $(document).ready(function () {
-        mainChartData();
-      });
+function logoutSubmit() {
+    var instance = new auth();
+    instance.setCallbackHandler(function() {
+        location.reload();
+    });
+    instance.logout();
+}
+$(document).ready(function() {
+    mainChartData();
+    getForgotten();
+});
       </script>
 
   <body>

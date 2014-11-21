@@ -58,20 +58,38 @@
         <cfreturn attempts/>
     </cffunction>
 
+    <cffunction name="getForgotAttemptsPerDay" access="public" output="false" returntype="query">
+        <cfargument name="from" type="string">
+        <cfargument name="to" type="string">
+
+        <cftry>
+            <cfquery name="counts">
+                SELECT  DATE(timestamp) Date, COUNT(DISTINCT forgot_id) dayCount
+                FROM    `forgotten_attempts`
+                GROUP BY  DATE(timestamp)
+            </cfquery>
+            <cfcatch type="any">
+                <cfreturn>
+            </cfcatch>
+        </cftry>
+
+        <cfreturn counts/>
+    </cffunction>
+
     <cffunction name="getForgotCount" access="public" output="false" returntype="query">
         <cfargument name="from" type="string">
         <cfargument name="to" type="string">
 
         <cfquery name="forgotCount">
             SELECT
-            (SELECT COUNT(forgot_id) FROM forgotten_attempts AS fa 
-                WHERE fa.success = 1 
+            (SELECT COUNT(forgot_id) FROM forgotten_attempts AS fa
+                WHERE fa.success = 1
                 AND fa.timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP">
                 AND fa.timestamp <= <cfqueryparam value="#to#" cfsqltype="CF_SQL_TIMESTAMP">
             ) as successCount,
             (SELECT COUNT(forgot_id) FROM forgotten_attempts AS fa
-                WHERE fa.success = 0 
-                AND fa.timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP"> 
+                WHERE fa.success = 0
+                AND fa.timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP">
                 AND fa.timestamp <= <cfqueryparam value="#to#" cfsqltype="CF_SQL_TIMESTAMP">
             ) as failCount
         </cfquery>
@@ -91,7 +109,7 @@
             ) as successCount,
             (SELECT COUNT(attempt_id) FROM login_attempts AS la
                 WHERE la.success = 0
-                AND la.timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP"> 
+                AND la.timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP">
                 AND la.timestamp <= <cfqueryparam value="#to#" cfsqltype="CF_SQL_TIMESTAMP">
             ) as failCount
         </cfquery>
@@ -106,7 +124,7 @@
             SELECT SUM(changes.count) AS changed_amount FROM
             (SELECT user_id, COUNT(pass_id)-1 AS count
                 FROM passwords
-                WHERE timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP"> 
+                WHERE timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP">
                 AND timestamp <= <cfqueryparam value="#to#" cfsqltype="CF_SQL_TIMESTAMP">
                 GROUP BY user_id
             ) AS changes
@@ -120,11 +138,11 @@
 
         <cfquery name="attemptsDetail">
             SELECT u.user_id, u.email, u.first_name, u.last_name, COUNT(*) AS fail_attempts, la.timestamp
-            FROM login_attempts AS la LEFT JOIN users AS u ON la.user_id = u.user_id 
-            WHERE la.success = 0 
-            AND la.timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP">  
+            FROM login_attempts AS la LEFT JOIN users AS u ON la.user_id = u.user_id
+            WHERE la.success = 0
+            AND la.timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP">
             AND la.timestamp <= <cfqueryparam value="#to#" cfsqltype="CF_SQL_TIMESTAMP">
-            GROUP BY u.user_id 
+            GROUP BY u.user_id
             ORDER BY fail_attempts DESC
         </cfquery>
 
