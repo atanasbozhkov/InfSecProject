@@ -75,7 +75,10 @@
 
         instance.setCallbackHandler(function(res) {
           if (res) {
-              $('#message').html('Password changed');
+              $('#message').html('Password changed. System will logout in 1 second.');
+              setTimeout(function() {
+                  logoutSubmit();
+              }, 1000);
           }
           else {
               $('#message').html('Error occur. Please check the information you inputted is correct.');
