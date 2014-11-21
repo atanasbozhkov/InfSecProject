@@ -1,3 +1,7 @@
+<cfinvoke component="components.forgotten" method="resetInit">
+    <cfinvokeargument name="token" value="#url['token']#">
+</cfinvoke>
+
 <cfajaxproxy cfc="components.forgotten" jsclassname="forgotten">
 <!DOCTYPE html>
 <html lang="en">
@@ -31,6 +35,7 @@
           <script src="assets/js/vendor/respond.min.js"></script>
         <![endif]-->
         <script type="text/javascript">
+
         function checkSubmit(e)
         {
            if(e && e.keyCode == 13)
@@ -41,15 +46,13 @@
 
         function submit()
         {
-            var email = $("#forgot-name").val(),
-                // answer = $("#forgot-answer").val(),
-                answer = "",
+            var pass = $("#new-pass").val(),
+                pass_re = $("#retype-pass").val(),
                 instance = new forgotten();
 
-            // if (email.length === 0 || answer.length === 0)
-            if (email.length === 0)
+            if (pass.length === 0 || pass_re.length === 0)
             {
-                $("#message").html("<h4>You must enter your email in the field.</h4>");
+                $("#message").html("<h4>You must enter your password in both fields.</h4>");
                 return;
             }
 
@@ -58,14 +61,17 @@
                 var result = "";
 
                 if (res) {
-                    result = 'Email link sent successfully. Please check your email in a few minutes.';
+                    result = 'Password reset. Redirect to the index page in 5 seconds';
+                    setTimeout(function() {
+                        window.location.href = "index.cfm";
+                    }, 5000);
                 }
                 else {
-                    result = 'Email has sent in the past 12 hours.';
+                    result = 'There was an error while resetting the password. Please require another reset password email again.';
                 }
                 $("#message").html('<center>' + result + '</center>');
             });
-            instance.sendLink(email, answer);
+            instance.resetPassword(pass, pass_re, "<cfoutput>#url['token']#</cfoutput>");
         }
         </script>
     </head>
@@ -73,14 +79,14 @@
         <div class="login-screen">
             <div class="login-form" onKeyPress="return checkSubmit(event)">
                 <div class="form-group">
-                    <input name="username" type="text" class="form-control login-field" value="" placeholder="Enter your email" id="forgot-name" />
-                    <label class="login-field-icon fui-user" for="forgot-name"></label>
+                    <input name="password" type="password" class="form-control login-field" value="" placeholder="Enter your new password" id="new-pass" />
+                    <label class="login-field-icon fui-lock" for="new-pass"></label>
                 </div>
 
-                <!--- <div class="form-group">
-                    <input name="saftyAnswer" type="text" class="form-control login-field" value="" placeholder="Security Answer" id="forgot-answer" />
-                    <label class="login-field-icon fui-lock" for="forgot-answer"></label>
-                </div> --->
+                <div class="form-group">
+                    <input name="retypedPassword" type="password" class="form-control login-field" value="" placeholder="Retype your password" id="retype-pass" />
+                    <label class="login-field-icon fui-lock" for="retype-pass"></label>
+                </div>
 
                 <div id="submit" class="btn btn-primary btn-lg btn-block" onClick="return submit()">Submit</div>
             </div>

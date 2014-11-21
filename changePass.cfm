@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8">
-    <title>TeamD InfSec Project Register</title>
+    <title>account maintenance</title>
     <meta name="description" content=""/>
 
     <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
@@ -23,6 +23,10 @@
     .login-form {
       max-width: 50vw;
     }
+	
+	.adminlogin-form {
+      max-width: 50vw;
+    }
     </style>
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
     <!--[if lt IE 9]>
@@ -32,52 +36,47 @@
 </head>
 
 <body>
-
+<div class="login-icon">
+  <h4><small>Password System Maintenance </small></h4>
+        </div>
+ 
 
 <div>
       <div class="login-screen">
-        <div class="login-icon">
-          <h4><small>Register </small></h4>
-        </div>
+        
 
         <div class="login-form">
-          <!--- <div class="form-group">
-            <input name="username" type="text" class="form-control login-field" value="" placeholder="Username" id="reg-name" />
-            <label class="login-field-icon fui-user" for="reg-name"></label>
-          </div> --->
+        
 
           <div class="form-group">
-            <input name="email" type="text" class="form-control login-field" value="" placeholder="Email" id="reg-email" />
+            <input name="email" type="text" class="form-control login-field" value="" placeholder="Enter your email" id="reg-email" />
             <label class="login-field-icon fui-mail" for="reg-email"></label>
           </div>
           
           
           <div class="form-group">
-            <input name="password" type="password" class="form-control login-field" value="" placeholder="Password" id="reg-pass" />
+            <input name="password" type="password" class="form-control login-field" value="" placeholder="Old password" id="reg-pass" />
             <label class="login-field-icon fui-lock" for="reg-pass"></label>
           </div>
 
 
 <div class="form-group">
-            <input name="firstname" type="text" class="form-control login-field" value="" placeholder="Firstname" id="reg-firstname" />
-            <label class="login-field-icon fui-user" for="reg-firstname"></label>
+            <input name="password" type="password" class="form-control login-field" value="" placeholder="New password" id="reg-newpass" />
+            <label class="login-field-icon fui-lock" for="reg-newpass"></label>
           </div>
           
+       <div class="form-group">
+            <input name="password" type="password" class="form-control login-field" value="" placeholder="Re-enter new password" id="reg-newpass" />
+            <label class="login-field-icon fui-lock" for="reg-newpass"></label>
+          </div>   
           
-          <div class="form-group">
-            <input name="lastname" type="text" class="form-control login-field" value="" placeholder="Lastname" id="reg-lastname" />
-            <label class="login-field-icon fui-user" for="reg-lastname"></label>
-          </div>
+          
+          
+          <div class="btn btn-primary btn-lg btn-block" onClick="submitNewpass()">Change Password</div>
 
-          <!--- specfic function --->
-          <!--- <input type="Hidden" name="method" value="register"> --->
-          <!-----<a class="btn btn-primary btn-lg btn-block" href="charts.html">Log in</a> --->
-          <!--- <input class="btn btn-primary btn-lg btn-block" type="submit" name="reg_submit" value="Register"/> --->
-          <div class="btn btn-primary btn-lg btn-block" onClick="submitRegister()">Register</div>
-
-        </div>
-      </div>
-    </div>
+        </div>     
+  </div>
+</div>
 
     <div><h4 id="message"></h4></div>
 
@@ -92,10 +91,7 @@
             data = data || {};
             if (data.STATUS)
             {
-                $("#message").html("Account Created. Redirect to the index page in 5 seconds");
-                setTimeout(function() {
-                    window.location.href = "index.cfm";
-                }, 5000);
+                alert("success");
             }
             else
             {
@@ -103,11 +99,14 @@
             }
         }
 
-        function submitRegister()
+      
+		
+		//function submitNewpass()
+		function submitNewpass()
         {
-            var instance = new register();
+            var instance = new adminpage();
             instance.setCallbackHandler(formSubmissionHandler);
-            instance.register($("#reg-email").val(), $("#reg-pass").val(), $("#reg-firstname").val(), $("#reg-lastname").val());
+            instance.adminpage($("#reg-email").val(), $("#reg-pass").val(), $("#reg-newpass").val(), $("#reg-newpass").val());
         }
     </script>
 
