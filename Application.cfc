@@ -6,7 +6,7 @@
     <cfset This.loginstorage="session">
     <cfset This.datasource = "PGT_TEAM_D_2014_TEST">
 
-    <cfset protectList = "charts.cfm">
+    <cfset protectList = "charts.cfm,settings.cfm">
 
     <!--- trigger when the first time the application run --->
     <cffunction name="onApplicationStart">

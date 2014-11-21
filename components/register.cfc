@@ -51,4 +51,30 @@
         <cfset result.msg = "success created account">
         <cfreturn serializeJSON(result)>
     </cffunction>
+
+    <cffunction name="registerAdmin" access="remote" returntype="any">
+        <cfargument name="email" type="string" required="true">
+        <cfargument name="password" type="string" required="true">
+        <cfargument name="firstname" type="string" required="true">
+        <cfargument name="lastname" type="string" required="true">
+
+        <cfinvoke component="register" method="register" returnvariable="registerStatus">
+            <cfinvokeargument name="email" value="#email#">
+            <cfinvokeargument name="password" value="#password#">
+            <cfinvokeargument name="firstname" value="#firstname#">
+            <cfinvokeargument name="lastname" value="#lastname#">
+        </cfinvoke>
+
+        <cfset returnStruct = deserializeJSON(registerStatus)>
+
+        <cfif returnStruct.status neq true>
+            <cfreturn false>
+        </cfif>
+
+        <cfinvoke component="models.userModel" method="changeRoleToAdmin" returnvariable="changedSuccess">
+            <cfinvokeargument name="email" value="#email#">
+        </cfinvoke>
+
+        <cfreturn true>
+    </cffunction>
 </cfcomponent>

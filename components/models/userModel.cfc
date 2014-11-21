@@ -36,4 +36,20 @@
         </cfquery>
     </cffunction>
 
+    <cffunction name="changeRoleToAdmin" access="public" output="false" returntype="boolean">
+        <cfargument name="email" type="string">
+        
+        <cftry>
+            <cfquery name="createUser" result="insertUserResult">
+                UPDATE users SET role_id = '2'
+                    WHERE email = '#email#'
+            </cfquery>
+            <cfcatch type="any">
+                <cfreturn false>
+            </cfcatch>
+        </cftry>
+
+        <cfreturn true>
+    </cffunction>
+
 </cfcomponent>

@@ -1,31 +1,7 @@
 <!--- cf function --->
 <cfajaxproxy cfc="components.auth" jsclassname="auth">
-<cfajaxproxy cfc="components.visualisation" jsclassname="db">
-
-
-
-
-<!--- Get Fail Successful and Fail attempts for a specific time interval --->
-
-<cfinvoke component="components.visualisation" method="getLoginAttempts" returnVariable="testReturn">
-    <cfinvokeargument name="timeFrom" value="2013-01-01 00:00:00">
-    <cfinvokeargument name="timeTo" value="2014-01-01 00:00:00">
-</cfinvoke>
-
-
-<!-- <cfoutput>#testReturn#</cfoutput> -->
-
-<cfscript>
-    writeOutput("<script> var dataa= "&testReturn&";</script>");
-</cfscript>
-
-
-
-<!---------------------------------------------------->
-
-
-
-
+<cfajaxproxy cfc="components.settings" jsclassname="settings">
+<cfajaxproxy cfc="components.register" jsclassname="register">
 <!DOCTYPE html>
 <html lang="en">
 
@@ -83,11 +59,55 @@
         });
         instance.logout();
     }
-    $(document).ready(function() {
-        mainChartData();
-        getForgotten();
-    });
-          </script>
+
+    function submitNewpass() {
+        $('#message').html('');
+
+        var instance = new settings(),
+            oldPass = $('#change-pass').val(),
+            newPass = $('#change-newpass').val(),
+            retypePass = $('#change-repass').val();
+
+        if (newPass !== retypePass) {
+            $('#message').html('New Password not match');
+            return;
+        }
+
+        instance.setCallbackHandler(function(res) {
+          if (res) {
+              $('#message').html('Password changed');
+          }
+          else {
+              $('#message').html('Error occur. Please check the information you inputted is correct.');
+          }
+        });
+        instance.changeAdminPassword(oldPass, newPass, retypePass);
+    }
+
+    function submitRegister() {
+        $('#message').html('');
+        var instance = new register(),
+            email = $('#reg-email').val(),
+            password = $('#reg-pass').val(),
+            firstname = $('#reg-firstname').val(),
+            lastname = $('#reg-lastname').val();
+
+        // if (newPass !== retypePass) {
+        //     $('#message').html('New Password not match');
+        //     return;
+        // }
+
+        instance.setCallbackHandler(function(res) {
+          if (res) {
+              $('#message').html('Admin Created');
+          }
+          else {
+              $('#message').html('Error occur. Please contact the system administrator.');
+          }
+        });
+        instance.registerAdmin(email, password, firstname, lastname);
+    }
+    </script>
   </head>
 
   <body>
@@ -118,26 +138,20 @@
                   <div class="login-form">
                     <p> Change current password </p>
 
-<!---                     <div class="form-group">
-                      <input name="email" type="text" class="form-control login-field" value="" placeholder="Enter your email" id="reg-email" />
-                      <label class="login-field-icon fui-mail" for="reg-email"></label>
+                    <div class="form-group">
+                      <input name="password" type="password" class="form-control login-field" value="" placeholder="Old password" id="change-pass" />
+                      <label class="login-field-icon fui-lock" for="change-pass"></label>
                     </div>
- --->
+
 
                     <div class="form-group">
-                      <input name="password" type="password" class="form-control login-field" value="" placeholder="Old password" id="reg-pass" />
-                      <label class="login-field-icon fui-lock" for="reg-pass"></label>
+                      <input name="password" type="password" class="form-control login-field" value="" placeholder="New password" id="change-newpass" />
+                      <label class="login-field-icon fui-lock" for="change-newpass"></label>
                     </div>
 
-
-          <div class="form-group">
-                      <input name="password" type="password" class="form-control login-field" value="" placeholder="New password" id="reg-newpass" />
-                      <label class="login-field-icon fui-lock" for="reg-newpass"></label>
-                    </div>
-
-                 <div class="form-group">
-                      <input name="password" type="password" class="form-control login-field" value="" placeholder="Re-enter new password" id="reg-newpass" />
-                      <label class="login-field-icon fui-lock" for="reg-newpass"></label>
+                    <div class="form-group">
+                      <input name="password" type="password" class="form-control login-field" value="" placeholder="Re-enter new password" id="change-repass" />
+                      <label class="login-field-icon fui-lock" for="change-repass"></label>
                     </div>
 
 
@@ -149,6 +163,7 @@
 
         </div>
     </div>
+    <div id="message"></div>
     <div class="row" style="margin-top:10px;">
         <div class="col-md-12">
           <div class="adminlogin-form">
