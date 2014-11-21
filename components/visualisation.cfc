@@ -134,6 +134,30 @@
         <cfreturn json>
     </cffunction>
 
+    <cffunction name="getFailedAttemptsPerDay" access="remote" returntype="string">
+        <!--- time format: yyyy-mm-dd hh:mm:ss --->
+        <cfargument name="timeFrom" type="string" required="true">
+        <cfargument name="timeTo" type="string" required="true">
+
+        <cfinvoke method="checkTime" returnvariable="validTime">
+            <cfinvokeargument name="from" value="#timeFrom#">
+            <cfinvokeargument name="to" value="#timeTo#">
+        </cfinvoke>
+        <cfif NOT validTime>
+            <cfreturn "{}">
+        </cfif>
+
+        <cfinvoke component="models.visualisationModel" method="getFailedAttemptsPerDay" returnvariable="attempts">
+            <cfinvokeargument name="from" value="#timeFrom#">
+            <cfinvokeargument name="to" value="#timeTo#">
+        </cfinvoke>
+
+        <cfinvoke method="queryParseToJSON" returnvariable="json">
+            <cfinvokeargument name="rawQuery" value="#attempts#">
+        </cfinvoke>
+        <cfreturn json>
+    </cffunction>
+
     <cffunction name="statNumber" access="remote" returntype="string">
         <!--- time format: yyyy-mm-dd hh:mm:ss --->
         <cfargument name="timeFrom" type="string" required="true">

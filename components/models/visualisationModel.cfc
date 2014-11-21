@@ -76,6 +76,25 @@
         <cfreturn counts/>
     </cffunction>
 
+    <cffunction name="getFailedAttemptsPerDay" access="public" output="false" returntype="query">
+        <cfargument name="from" type="string">
+        <cfargument name="to" type="string">
+
+        <cftry>
+            <cfquery name="counts">
+                SELECT  DATE(timestamp) Date, COUNT(DISTINCT attempt_id) totalCount
+                FROM    login_attempts
+                WHERE   success = 0
+                GROUP BY  DATE(timestamp)
+            </cfquery>
+            <cfcatch type="any">
+                <cfreturn>
+            </cfcatch>
+        </cftry>
+
+        <cfreturn counts/>
+    </cffunction>
+
     <cffunction name="getForgotCount" access="public" output="false" returntype="query">
         <cfargument name="from" type="string">
         <cfargument name="to" type="string">

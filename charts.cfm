@@ -75,23 +75,42 @@ var mainChartData = function() {
     })
     db.statNumber('1999-01-01', '2015-01-01');
 }.bind(db)
+
+//
 var getForgotten = function() {
     var db = new this();
     db.setCallbackHandler(function(forgotten) {
-        // console.log(forgotten)
-        // var forgot = forgotten.SUCCESS.concat(forgotten.FAIL)
+      // console.log()
         var array = [];
         for (var i = 0; i < forgotten.length; i++) {
             array.push([Date.parse(forgotten[i].DATE), forgotten[i].DAYCOUNT]);
         };
-        console.log(array);
-        failedChart(array)
+        forgottenChart(array)
     })
     db.getForgotAttemptsPerDay('1999-01-01', '2015-01-01');
 }.bind(db)
-
+//
+var getFailed = function() {
+    var db = new this();
+    db.setCallbackHandler(function(failed) {
+        console.log(failed)
+        // var forgot = failed.SUCCESS.concat(failed.FAIL)
+        var array = [];
+        for (var i = 0; i < failed.length; i++) {
+            array.push([Date.parse(failed[i].DATE), failed[i].TOTALCOUNT]);
+        };
+        console.log(array);
+        console.log('deba')
+        failedChart(array)
+    })
+    db.getFailedAttemptsPerDay('1999-01-01', '2015-01-01');
+}.bind(db)
+//
+getFailed();
+//
 function chart(data) {
         // Main graph
+
         var options = {
             chart: {
                 renderTo: 'container',
@@ -155,65 +174,64 @@ function chart(data) {
                 }]
             }
         };
+        // options end
         options.chart.renderTo = 'container';
         options.chart.type = 'pie';
         var chart2 = new Highcharts.Chart(options);
-        <!--- Graph Per Week --->
-        $(function() {
-            $('#container2').highcharts('StockChart', {
-                title: {
-                    text: 'Number of forgotten attempts',
-                    x: 0 //center
-                },
-                subtitle: {
-                    //text: 'Source: WorldClimate.com',
-                    x: 0
-                },
-                xAxis: {
-                    categories: ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun']
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'Attempt ()'
-                    },
-                    plotLines: [{
-                        value: 0,
-                        width: 1,
-                        color: '#808080'
-                    }]
-                },
-                tooltip: {
-                    valueSuffix: ''
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle',
-                    borderWidth: 0
-                },
-                series: [{
-                    name: 'Failed Attempt',
-                    data: [3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2, 3, 5, 3, 6, 7, 4, 2]
-                }]
-            });
-        });
     }
+    //^ chart function end
     <!--- Graph Per Week --->
+function forgottenChart(data){
+  <!--- Graph Per Week --->
+  $(function() {
+      $('#container2').highcharts('StockChart', {
+          title: {
+              text: 'Number of forgotten attempts',
+              x: 0 //center
+          },
+          subtitle: {
+              //text: 'Source: WorldClimate.com',
+              x: 0
+          },
+          xAxis: {
+              categories: ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun']
+          },
+          yAxis: {
+              min: 0,
+              title: {
+                  text: 'Attempt ()'
+              },
+              plotLines: [{
+                  value: 0,
+                  width: 1,
+                  color: '#808080'
+              }]
+          },
+          tooltip: {
+              valueSuffix: ''
+          },
+          legend: {
+              layout: 'vertical',
+              align: 'right',
+              verticalAlign: 'middle',
+              borderWidth: 0
+          },
+          series: [{
+              name: 'Forgotten attempt',
+              data: data
+          }]
+      });
+  });
+}
+
+
 function failedChart(data) {
+  $(function() {
+    console.log(data)
+    console.log('waat')
     $('#container1').highcharts('StockChart', {
-        hart: {
-            events: {
-                load: function() {
-                    this.setTitle(null, {
-                        text: 'Built chart in ' + (new Date() - start) + 'ms'
-                    });
-                }
-            },
-            zoomType: 'x'
-        },
         title: {
-            text: 'Number of failed attempt',
+            text: 'Number of failed attempts',
             x: 0 //center
         },
         subtitle: {
@@ -222,37 +240,6 @@ function failedChart(data) {
         },
         xAxis: {
             categories: ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun']
-        },
-        rangeSelector: {
-            buttons: [{
-                type: 'day',
-                count: 1,
-                text: '1d'
-            }, {
-                type: 'day',
-                count: 3,
-                text: '3d'
-            }, {
-                type: 'week',
-                count: 1,
-                text: '1w'
-            }, {
-                type: 'month',
-                count: 1,
-                text: '1m'
-            }, {
-                type: 'month',
-                count: 6,
-                text: '6m'
-            }, {
-                type: 'year',
-                count: 1,
-                text: '1y'
-            }, {
-                type: 'all',
-                text: 'All'
-            }],
-            selected: 3
         },
         yAxis: {
             min: 0,
@@ -266,7 +253,7 @@ function failedChart(data) {
             }]
         },
         tooltip: {
-            valueDecimals: 1
+            valueSuffix: ''
         },
         legend: {
             layout: 'vertical',
@@ -275,28 +262,21 @@ function failedChart(data) {
             borderWidth: 0
         },
         series: [{
-            name: 'Failed Attempt',
-            data: data,
-            pointStart: Date.UTC(2004, 3, 1),
-            pointInterval: 3600 * 1000,
-            tooltip: {
-                valueDecimals: 1,
-                //valueSuffix: '°C'
-            }
+            name: 'Failed attempt',
+            data: data
         }]
     });
-    //Column chart
-    //options.chart.renderTo = 'container';
-    //options.chart.type = 'column';
-    //var chart1 = new Highcharts.Chart(options);
+  });
+}
+
     // Pie
     // Activate the side menu
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("active");
-    });
-};
 
+
+$("#menu-toggle").click(function(e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("active");
+});
 function logoutSubmit() {
     var instance = new auth();
     instance.setCallbackHandler(function() {
