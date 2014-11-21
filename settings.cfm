@@ -118,11 +118,11 @@
                   <div class="login-form">
                     <p> Change current password </p>
 
-                    <div class="form-group">
+<!---                     <div class="form-group">
                       <input name="email" type="text" class="form-control login-field" value="" placeholder="Enter your email" id="reg-email" />
                       <label class="login-field-icon fui-mail" for="reg-email"></label>
                     </div>
-
+ --->
 
                     <div class="form-group">
                       <input name="password" type="password" class="form-control login-field" value="" placeholder="Old password" id="reg-pass" />
