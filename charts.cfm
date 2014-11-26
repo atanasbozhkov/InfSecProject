@@ -138,7 +138,7 @@ function chart(data) {
                         events: {
                             click: function(event) {
                                 if (this.options.id != "Forgotten") {
-                                    open_popup();
+                                    open_link();
                                 }
                             }
                         }
@@ -360,8 +360,9 @@ $(document).ready(function() {
 
 
 	<script>
-    function open_popup() {
-        window.open('popup.html', 'chart title', 'width=1680px height=1050px');
+    function open_link() {
+        // window.open('popup.html', 'chart title', 'width=1680px height=1050px');
+        window.location.href = 'popup.cfm';
     }
 </script>
 
