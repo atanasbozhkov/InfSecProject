@@ -26,6 +26,9 @@
 
         <cfset auth = false>
 
+        <cfset SESSION.user_id = -1>
+        <cfset SESSION.email = "">
+
         <cflogin>
             <cfif email neq "" AND password neq "">
                 <cfinvoke method="checkPw" returnvariable="authSuccess">
