@@ -246,11 +246,13 @@ function failedChart(data) {
             title: {
                 text: 'Attempt ()'
             },
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#808080'
-            }]
+            plotLines:[{
+                    value:1.5,
+                    color: '#ff0000',
+                    width:2,
+                    zIndex:4,
+                    label:{text:'Average'}
+                }]
         },
         tooltip: {
             valueSuffix: ''
