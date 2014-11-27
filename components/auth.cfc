@@ -28,31 +28,39 @@
 
         <cfset SESSION.user_id = -1>
         <cfset SESSION.email = "">
+        <cfset userId = -1>
 
         <cflogin>
             <cfif email neq "" AND password neq "">
-                <cfinvoke method="checkPw" returnvariable="authSuccess">
-                    <cfinvokeargument name="email" value="#email#">
-                    <cfinvokeargument name="password" value="#password#">
-                </cfinvoke>
-                
-                <cfif authSuccess>
-                    <cfloginuser name="#email#" Password = "#password#" roles="admin">
-                    <cfset auth = true>
 
-                    <cfinvoke component="models.userModel" method="getUser" returnvariable="userData">
+                <cfinvoke component="models.userModel" method="getUser" returnvariable="userData">
+                    <cfinvokeargument name="email" value="#email#">
+                </cfinvoke>
+
+                <cfif userData.RecordCount neq 0>
+                    <cfset userId = userData.user_id>
+
+                    <cfinvoke method="checkPw" returnvariable="authSuccess">
                         <cfinvokeargument name="email" value="#email#">
+                        <cfinvokeargument name="password" value="#password#">
                     </cfinvoke>
-                    <cfset SESSION.user_id = userData.user_id>
-                    <cfset SESSION.email = userData.email>
+                    
+                    <cfif authSuccess>
+                        <cfloginuser name="#email#" Password = "#password#" roles="admin">
+                        <cfset auth = true>
+
+                        <cfset SESSION.user_id = userData.user_id>
+                        <cfset SESSION.email = userData.email>
+                    </cfif>
+
                 </cfif>
+
+                <cfinvoke component="models.logModel" method="loginAttempt">
+                    <cfinvokeargument name="user_id" value="#userId#">
+                    <cfinvokeargument name="success" value="#auth#">
+                </cfinvoke>
             </cfif>
         </cflogin>
-
-        <cfinvoke component="models.logModel" method="loginAttempt">
-            <cfinvokeargument name="user_id" value="#SESSION.user_id#">
-            <cfinvokeargument name="success" value="#auth#">
-        </cfinvoke>
 
         <cfreturn auth>
     </cffunction>

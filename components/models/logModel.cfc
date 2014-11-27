@@ -14,7 +14,7 @@
         <cftry>
             <cfquery name="insertAttempt" result="insertedResult">
                 INSERT INTO login_attempts (user_id, success, IP_addr, device_type, comment)
-                        VALUES ("#user_id#", "#success#", "", "", "")
+                        VALUES ("#user_id#", "#success#", "#CGI.REMOTE_ADDR#", "", "")
             </cfquery>
             <cfcatch type="any">
                 <cfreturn false>
@@ -42,7 +42,7 @@
         <cftry>
             <cfquery name="insertAttempt" result="insertedResult">
                 INSERT INTO forgotten_attempts (user_id, token, valid, answer, success, IP_addr, device_type)
-                        VALUES ("#user_id#", "#token#", "#valid#", "#answer#", "#success#", "", "")
+                        VALUES ("#user_id#", "#token#", "#valid#", "#answer#", "#success#", "#CGI.REMOTE_ADDR#", "")
             </cfquery>
             <cfcatch type="any">
                 <cfreturn false>
