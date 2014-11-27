@@ -1,6 +1,51 @@
 <!doctype html>
 <html lang="en">
 <head>
+
+<style>
+table {
+    width:50%;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+    text-align: left;
+	
+}
+table#t01 tr:nth-child(even) {
+    background-color: #eee;
+}
+table#t01 tr:nth-child(odd) {
+   background-color:#fff;
+}
+table#t01 th	{
+	
+    background-color: gray;
+    color: white;
+}
+
+#t01 {
+	margin-left:115px;
+    width:350px;
+    float:left;
+    padding:10px;
+	margin-top: 62px;
+}
+
+#t02 {
+	margin-top: 80px;
+	margin-left:258px;
+    width:350px;
+    float:left;
+    padding:10px;	      
+}
+
+</style>
+
+
   <meta charset="utf-8">
   <title>Fail attempts</title>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
@@ -9,13 +54,25 @@
   <link rel="stylesheet" href="/resources/demos/style.css">
  <style type="text/css">
 #container {
-  float: right;
-  width: 60vw;
+  text-align:center;
+  padding:5px;
+  
 }
 #containerLeft {
-  float: left;
-  width: 40vw;
+  line-height:30px;
+    background-color:#eeeeee;
+    height:300px;
+    width:100px;
+    float:left;
+    padding:5px; 
   }
+  
+#containerRight {
+	width:350px;
+    float:left;
+    padding:10px;
+  }  
+  
  </style>
 
 
@@ -25,28 +82,8 @@
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
-<div id="container"></div>
-
-
-
-
-
-
-  <style>
-    body { font-size: 75%; }
-    label, input { display:block; }
-    input.text { margin-bottom:12px; width:95%; padding: .4em; }
-    fieldset { padding:0; border:0; margin-top:25px; }
-    h1 { font-size: 1.2em; margin: .6em 0; }
-    div#users-contain { width: 350px; margin: 20px 0; }
-    div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
-    div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
-    .ui-dialog .ui-state-error { padding: .3em; }
-    .validateTips { border: 1px solid transparent; padding: 0.3em; }
-  </style>
-
-
-
+<div id="container">
+</div>
 
 
 
@@ -54,60 +91,117 @@
 <body>
 
 
-
-
-<div id="users-contain" class="ui-widget">
-  <h1>Existing Users:</h1>
-  <table id="containerLeft" class="ui-widget ui-widget-content">
-    <thead>
-      <tr class="ui-widget-header ">
-        <th>Name</th>
-        <th>Email</th>
-        <th>Attempts</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Nikolaos Hadjis</td>
+ 
+<table id="t02">
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Attempts</th>
+  </tr>
+  <tr>
+     <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>36</td>
-		 <tr>
-        <td>Nikolaos Hadjis</td>
+  </tr>
+  <tr>
+    <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>32</td>
-		 <tr>
-        <td>Nikolaos Hadjis</td>
+  </tr>
+  <tr>
+    <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>30</td>
-		 <tr>
-        <td>Nikolaos Hadjis</td>
+  </tr>
+   <tr>
+    <td>Nikolaos Hadjis</td>
+        <td>hadjis.doe@example.com</td>
+        <td>28</td>
+  </tr>
+   <tr>
+    <td>Nikolaos Hadjis</td>
+        <td>hadjis.doe@example.com</td>
+        <td>28</td>
+  </tr>
+   <tr>
+    <td>Nikolaos Hadjis</td>
+        <td>hadjis.doe@example.com</td>
+        <td>24</td>
+  </tr>
+   <tr>
+    <td>Nikolaos Hadjis</td>
+        <td>hadjis.doe@example.com</td>
+        <td>20</td>
+  </tr>
+   <tr>
+    <td>Nikolaos Hadjis</td>
+        <td>hadjis.doe@example.com</td>
+        <td>17</td>
+  </tr>
+   <tr>
+    <td>Nikolaos Hadjis</td>
+        <td>hadjis.doe@example.com</td>
+        <td>6</td>
+  </tr>
+</table>
+
+<br>
+
+<table id="t01">
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Attempts</th>
+  </tr>
+  <tr>
+     <td>Nikolaos Hadjis</td>
+        <td>hadjis.doe@example.com</td>
+        <td>36</td>
+  </tr>
+  <tr>
+    <td>Nikolaos Hadjis</td>
+        <td>hadjis.doe@example.com</td>
+        <td>32</td>
+  </tr>
+  <tr>
+    <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>30</td>
-		 <tr>
-        <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>29</td>
-		<tr>
-		<td>Nikolaos Hadjis</td>
+  </tr>
+   <tr>
+    <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>28</td>
-		<tr>
-		<td>Nikolaos Hadjis</td>
+  </tr>
+   <tr>
+    <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>28</td>
-		<tr>
-		<td>Nikolaos Hadjis</td>
+  </tr>
+   <tr>
+    <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
-        <td>28</td>
-		<tr>
-		<td>Nikolaos Hadjis</td>
+        <td>24</td>
+  </tr>
+   <tr>
+    <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
-        <td>27</td>
-		<tr>
-      </tr>
-    </tbody>
-  </table>
+        <td>20</td>
+  </tr>
+   <tr>
+    <td>Nikolaos Hadjis</td>
+        <td>hadjis.doe@example.com</td>
+        <td>17</td>
+  </tr>
+   <tr>
+    <td>Nikolaos Hadjis</td>
+        <td>hadjis.doe@example.com</td>
+        <td>6</td>
+  </tr>
+</table>
 </div>
+
+
 
 <!-- <button id="create-user">Next Page</button> -->
 
