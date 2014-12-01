@@ -97,51 +97,61 @@ table#t01 th	{
     <th>Name</th>
     <th>Email</th>
     <th>Attempts</th>
+    
   </tr>
   <tr>
      <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>36</td>
+        
   </tr>
   <tr>
     <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>32</td>
+        
   </tr>
   <tr>
     <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>30</td>
+        
   </tr>
    <tr>
     <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>28</td>
+        
   </tr>
    <tr>
     <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>28</td>
+        
   </tr>
    <tr>
     <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>24</td>
+        
   </tr>
    <tr>
     <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>20</td>
+        
   </tr>
    <tr>
     <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>17</td>
+        
   </tr>
    <tr>
     <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>6</td>
+        
   </tr>
 </table>
 
@@ -152,51 +162,61 @@ table#t01 th	{
     <th>Name</th>
     <th>Email</th>
     <th>Attempts</th>
+    <th>Title</th>
   </tr>
   <tr>
      <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>36</td>
+        <td>23</td>
   </tr>
   <tr>
     <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>32</td>
+        <td>21</td>
   </tr>
   <tr>
     <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>30</td>
+        <td>34</td>
   </tr>
    <tr>
     <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>28</td>
+        <td>22</td>
   </tr>
    <tr>
     <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>28</td>
+        <td>11</td>
   </tr>
    <tr>
     <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>24</td>
+        <td>55</td>
   </tr>
    <tr>
     <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>20</td>
+        <td>36</td>
   </tr>
    <tr>
     <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>17</td>
+        <td>12</td>
   </tr>
    <tr>
     <td>Nikolaos Hadjis</td>
         <td>hadjis.doe@example.com</td>
         <td>6</td>
+        <td>15</td>
   </tr>
 </table>
 </div>
