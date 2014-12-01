@@ -28,19 +28,20 @@ table#t01 th	{
 }
 
 #t01 {
-	margin-left:115px;
-    width:350px;
-    float:left;
+    width:45vw;
+    float:right;
     padding:10px;
 	margin-top: 62px;
 }
 
 #t02 {
 	margin-top: 80px;
-	margin-left:258px;
-    width:350px;
+    width:45vw;
     float:left;
     padding:10px;
+}
+body {
+  min-width: 750px;
 }
 
 </style>
