@@ -64,16 +64,60 @@
   </head>
 
 
+ <script type="text/javascript">
+ 
+ function getCurrentDate() {
+
+ 
+  var d = new Date();
+    var curr_date = d.getDate();
+    var curr_month = d.getMonth() + 1; //Months are zero based
+    var curr_year = d.getFullYear();
+	var currentDate=curr_year  + "-" + curr_month + "-" + curr_date;
+	
+	
+	
+	return currentDate;
+ 
+}
+
+
+ function getWeekAgo() {
+
+ 
+	var oneWeekAgo = new Date();
+	oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+	var pre_date = oneWeekAgo.getDate();
+    var pre_month = oneWeekAgo.getMonth() + 1; //Months are zero based
+    var pre_year = oneWeekAgo.getFullYear();
+	
+	var beforeOneWeek=pre_year  + "-" + pre_month + "-" + pre_date;
+	
+	
+	
+	return beforeOneWeek;
+	
+ 
+}
+ 
+</script>
+
 
 
 <script type="text/javascript">
 
+//document.write(getCurrentDate()+ "  -----------------------------");
+//document.write( getWeekAgo()+ "---*******----------");
+
+
 var mainChartData = function() {
     var db = new this();
+	
     db.setCallbackHandler(function(data) {
         chart(data)
     })
     db.statNumber('1999-01-01', '2015-01-01');
+	//db.statNumber(getWeekAgo() , getCurrentDate());
 }.bind(db)
 
 //
@@ -192,7 +236,7 @@ function chart(data) {
                     y: data.FORGOTTEN.FAILCOUNT,
 					 myData: data.FORGOTTEN.FAILCOUNT
                 }, {
-                    name: 'Successful-Forgotten',
+                    name: 'Successful-Forgotten attempts',
                     y: data.FORGOTTEN.SUCCESSCOUNT,
 					myData: data.FORGOTTEN.SUCCESSCOUNT,
                     color: '#e74c3c'
@@ -218,27 +262,20 @@ function forgottenChart(data){
               text: 'Number of forgotten attempts',
               x: 0 //center
           },
-          subtitle: {
-              //text: 'Source: WorldClimate.com',
-              x: 0
-          },
-          xAxis: {
-              categories: ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun']
-          },
           yAxis: {
-              min: 0,
-              title: {
-                  text: 'Attempt ()'
-              },
-              plotLines: [{
-                  value: 0,
-                  width: 1,
-                  color: '#808080'
-              }]
+             min: 0,
+            title: {
+                text: 'Attempt Count'
+            },
+            plotLines:[{
+                    value:1.5,
+                    color: '#ff0000',
+                    width: 3,
+                    zIndex:4,
+                    label:{text:'Average'}
+                }]
           },
-          tooltip: {
-              valueSuffix: ''
-          },
+         
           legend: {
               layout: 'vertical',
               align: 'right',
@@ -263,29 +300,22 @@ function failedChart(data) {
             text: 'Number of failed attempts',
             x: 0 //center
         },
-        subtitle: {
-            //text: 'Source: WorldClimate.com',
-            x: 0
-        },
-        xAxis: {
-            categories: ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun']
-        },
+        
+	
         yAxis: {
             min: 0,
             title: {
-                text: 'Attempt ()'
+                text: 'Attempt Count'
             },
             plotLines:[{
                     value:1.5,
                     color: '#ff0000',
-                    width:2,
+                    width: 3,
                     zIndex:4,
                     label:{text:'Average'}
                 }]
         },
-        tooltip: {
-            valueSuffix: ''
-        },
+       
         legend: {
             layout: 'vertical',
             align: 'right',
