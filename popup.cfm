@@ -1,212 +1,282 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
+<script type="text/javascript">
+// Debug
+console.clear();
+</script>
 
-<style>
-table {
-    width:50%;
+
+  <head>
+    <meta charset="utf-8">
+    <title>Charts</title>
+    <meta name="description" content="Flat UI Kit Free is a Twitter Bootstrap Framework design and Theme, this responsive framework includes a PSD and HTML version."/>
+
+    <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
+
+    <!-- Loading Bootstrap -->
+    <link href="assets/css/vendor/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Loading Flat UI -->
+    <link href="assets/css/flat-ui.css" rel="stylesheet">
+    <!-- <link href="docs/assets/css/demo.css" rel="stylesheet"> -->
+
+    <!--- Load the css for the side menu  --->
+    <link href="assets/css/menu.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <style type="text/css">
+    body {
+      background-color: #1abc9c;
+    }
+    table {
+        width:100%;
+    }
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    th, td {
+        padding: 5px;
+        text-align: left;
+
+    }
+    table#t01 tr:nth-child(even) {
+        background-color: #eee;
+    }
+    table#t01 tr:nth-child(odd) {
+       background-color:#fff;
+    }
+    table#t01 th  {
+
+        background-color: gray;
+        color: white;
+    }
+    table#t02 tr:nth-child(even) {
+        background-color: #eee;
+    }
+    table#t02 tr:nth-child(odd) {
+       background-color:#fff;
+    }
+    table#t02 th  {
+
+        background-color: gray;
+        color: white;
+    }
+
+    </style>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+    <!--[if lt IE 9]>
+      <script src="assets/js/vendor/html5shiv.js"></script>
+      <script src="assets/js/vendor/respond.min.js"></script>
+    <![endif]-->
+    <script src="assets/js/jquery8.js"></script>
+
+  </head>
+
+
+
+
+<script type="text/javascript">
+    // Activate the side menu
+
+
+$("#menu-toggle").click(function(e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("active");
+});
+function logoutSubmit() {
+    var instance = new auth();
+    instance.setCallbackHandler(function() {
+        location.reload();
+    });
+    instance.logout();
 }
-table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
-}
-th, td {
-    padding: 5px;
-    text-align: left;
+$(document).ready(function() {
+});
+      </script>
 
-}
-table#t01 tr:nth-child(even) {
-    background-color: #eee;
-}
-table#t01 tr:nth-child(odd) {
-   background-color:#fff;
-}
-table#t01 th	{
+  <body>
+    <div id="wrapper" class="active">
 
-    background-color: gray;
-    color: white;
-}
-
-#t01 {
-    width:45vw;
-    float:right;
-    padding:10px;
-	margin-top: 62px;
-}
-
-#t02 {
-	margin-top: 80px;
-    width:45vw;
-    float:left;
-    padding:10px;
-}
-body {
-  min-width: 750px;
-}
-
-</style>
+  <!-- Sidebar -->
+  <div id="sidebar-wrapper">
+  <ul id="sidebar_menu" class="sidebar-nav">
+       <li class="sidebar-brand"><a id="menu-toggle" href="#">Menu</a></li>
+  </ul>
+    <ul class="sidebar-nav" id="sidebar">
+      <li><a href='charts.cfm'>Dashboard</a></li>
+      <!--- <li><a>link2</a></li> --->
+      <li>
+      <cfif IsUserLoggedIn()>
+          <cfoutput>
+              <a href="settings.cfm">Settings</a>
+              <a onClick="logoutSubmit()">Logout</a>
+              <!--- <a href="createAdmin.cfm">Admin</a> --->
 
 
-  <meta charset="utf-8">
-  <title>Fail attempts</title>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
- <style type="text/css">
-#container {
-  text-align:center;
-  padding:5px;
+          </cfoutput>
+      </cfif>
+      </li>
+    </ul>
+  </div>
 
-}
-#containerLeft {
-  line-height:30px;
-    background-color:#eeeeee;
-    height:300px;
-    width:100px;
-    float:left;
-    padding:5px;
-  }
+    <div class="row">
+        <div class="col-md-12"><div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div></div>
+    </div>
+    <div class="row" style="margin-top:10px;">
+        <div class="col-md-6">
+          <table id="t01">
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Attempts</th>
+            </tr>
+            <tr>
+               <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>36</td>
+            </tr>
+            <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>32</td>
+            </tr>
+            <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>30</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>28</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>28</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>24</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>20</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>17</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>6</td>
+            </tr>
+          </table>
 
-#containerRight {
-	width:350px;
-    float:left;
-    padding:10px;
-  }
-
- </style>
-
-
-
-
-
-<script src="http://code.highcharts.com/highcharts.js"></script>
-<script src="http://code.highcharts.com/modules/exporting.js"></script>
-
-<div id="container">
+        </div>
+        <div class="col-md-6">
+          <table id="t02">
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Attempts</th>
+            </tr>
+            <tr>
+               <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>36</td>
+            </tr>
+            <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>32</td>
+            </tr>
+            <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>30</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>28</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>28</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>24</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>20</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>17</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>6</td>
+            </tr>
+          </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+    </div>
+    <div class="row"></div>
 </div>
 
 
-
-</head>
-<body>
-
-
-
-<table id="t02">
-  <tr>
-    <th>Name</th>
-    <th>Email</th>
-    <th>Attempts</th>
-  </tr>
-  <tr>
-     <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>36</td>
-  </tr>
-  <tr>
-    <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>32</td>
-  </tr>
-  <tr>
-    <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>30</td>
-  </tr>
-   <tr>
-    <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>28</td>
-  </tr>
-   <tr>
-    <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>28</td>
-  </tr>
-   <tr>
-    <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>24</td>
-  </tr>
-   <tr>
-    <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>20</td>
-  </tr>
-   <tr>
-    <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>17</td>
-  </tr>
-   <tr>
-    <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>6</td>
-  </tr>
-</table>
 
 <br>
 
-<table id="t01">
-  <tr>
-    <th>Name</th>
-    <th>Email</th>
-    <th>Attempts</th>
-  </tr>
-  <tr>
-     <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>36</td>
-  </tr>
-  <tr>
-    <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>32</td>
-  </tr>
-  <tr>
-    <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>30</td>
-  </tr>
-   <tr>
-    <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>28</td>
-  </tr>
-   <tr>
-    <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>28</td>
-  </tr>
-   <tr>
-    <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>24</td>
-  </tr>
-   <tr>
-    <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>20</td>
-  </tr>
-   <tr>
-    <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>17</td>
-  </tr>
-   <tr>
-    <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>6</td>
-  </tr>
-</table>
 </div>
 
 
 
-<!-- <button id="create-user">Next Page</button> -->
 
 
 
+
+    <script src="assets/js/vendor/jquery.min.js"></script>
+    <script src="assets/js/flat-ui.min.js"></script>
+    <!-- Load the charts -->
+    <script src="http://code.highcharts.com/stock/highstock.js"></script>
+    <script src="http://code.highcharts.com/modules/drilldown.js"></script>
+    <script src="assets/js/highcharts/modules/exporting.js"></script>
+    <!-- <script src="docs/assets/js/application.js"></script> -->
+
+    <script>
+      videojs.options.flash.swf = "assets/js/vendors/video-js.swf"
+    </script>
+
+
+
+
+
+    <script>
+    function open_link() {
+        // window.open('popup.html', 'chart title', 'width=1680px height=1050px');
+        window.location.href = 'popup.cfm';
+    }
+</script>
  <script>
 var chart1;
 
@@ -325,5 +395,8 @@ $(document).ready(function () {
 
 
 
-</body>
+
+
+  </body>
 </html>
+
