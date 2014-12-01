@@ -13,7 +13,7 @@ table, th, td {
 th, td {
     padding: 5px;
     text-align: left;
-	
+
 }
 table#t01 tr:nth-child(even) {
     background-color: #eee;
@@ -22,7 +22,7 @@ table#t01 tr:nth-child(odd) {
    background-color:#fff;
 }
 table#t01 th	{
-	
+
     background-color: gray;
     color: white;
 }
@@ -40,7 +40,7 @@ table#t01 th	{
 	margin-left:258px;
     width:350px;
     float:left;
-    padding:10px;	      
+    padding:10px;
 }
 
 </style>
@@ -51,12 +51,11 @@ table#t01 th	{
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-  <link rel="stylesheet" href="/resources/demos/style.css">
  <style type="text/css">
 #container {
   text-align:center;
   padding:5px;
-  
+
 }
 #containerLeft {
   line-height:30px;
@@ -64,15 +63,15 @@ table#t01 th	{
     height:300px;
     width:100px;
     float:left;
-    padding:5px; 
+    padding:5px;
   }
-  
+
 #containerRight {
 	width:350px;
     float:left;
     padding:10px;
-  }  
-  
+  }
+
  </style>
 
 
@@ -91,7 +90,7 @@ table#t01 th	{
 <body>
 
 
- 
+
 <table id="t02">
   <tr>
     <th>Name</th>
@@ -218,7 +217,7 @@ $(document).ready(function () {
         title: {
             text: 'User detail for the last 24 hours'
         },
-       
+
         xAxis: {
             title: {
         enabled: true,
@@ -319,7 +318,7 @@ $(document).ready(function () {
                 [Date.UTC(1971,  4, 21), 0   ]
             ]
         }]
-    }).setOptions(Highcharts.theme);
+    });
 });
 </script>
 
