@@ -117,7 +117,7 @@ function chart(data) {
                 type: 'column'
             },
             title: {
-                text: 'Results for the last 24h'
+                text: 'Total number of attempts in the last 7 days'
             },
             subtitle: {
                 text: 'Forgotten-Fail-changed'
@@ -126,10 +126,8 @@ function chart(data) {
                 enabled: false
             },
             xAxis: {
-                categories: ['Forgotten', 'Failed', 'Changed'],
-                title: {
-                    text: null
-                }
+                categories: ['Forgotten', 'Failed', 'Changed']
+                
             },
             plotOptions: {
                 series: {
@@ -145,32 +143,63 @@ function chart(data) {
                     }
                 }
             },
+			
+			tooltip: {
+				formatter: function () {
+					return 'Now <b>'+ this.point.myData +'<br/>'+ 'Expected value: <b>' + '100' + '</b>';
+					
+				}
+			},
+			
             series: [{
+				name: 'Last 7 days',
+		
                 colorByPoint: true,
                 data: [{
                     name: 'Forgotten',
                     color: '#e67e22',
                     y: data.FORGOTTEN.FAILCOUNT + data.FORGOTTEN.SUCCESSCOUNT,
+					 myData: data.FORGOTTEN.FAILCOUNT + data.FORGOTTEN.SUCCESSCOUNT,
                     drilldown: 'forgotten'
                 }, {
                     name: 'Failed',
                     y: data.LOGIN.FAILCOUNT,
+					myData: data.LOGIN.FAILCOUNT,
                     color: '#e74c3c',
                     //drilldown: 'failed'
                 }, {
                     name: 'Changed',
                     y: data.PASSWORDCHANGED.CHANGED_AMOUNT,
+					myData: data.PASSWORDCHANGED.CHANGED_AMOUNT,
                     color: '#9b59b6',
                     //drilldown: 'changed'
                 }]
-            }],
+            }
+			
+			
+			
+			
+			],
             drilldown: {
                 series: [{
+					name: 'Last 7 days',
                     id: 'forgotten',
-                    data: [
-                        ['Fail Forgotten Password attempts', data.FORGOTTEN.FAILCOUNT],
-                        ['Successful Forgotten Password attempts', data.FORGOTTEN.SUCCESSCOUNT]
-                    ]
+             
+						
+			data: [{
+                    name: 'Fail-Forgotten Password attempts',
+                    color: '#e67e22',
+                    y: data.FORGOTTEN.FAILCOUNT,
+					 myData: data.FORGOTTEN.FAILCOUNT
+                }, {
+                    name: 'Successful-Forgotten',
+                    y: data.FORGOTTEN.SUCCESSCOUNT,
+					myData: data.FORGOTTEN.SUCCESSCOUNT,
+                    color: '#e74c3c'
+                   
+                }
+							
+					]
                 }]
             }
         };

@@ -1,118 +1,282 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Fail attempts</title>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-  <link rel="stylesheet" href="/resources/demos/style.css">
- <style type="text/css">
-#container {
-  float: right;
-  width: 60vw;
+<script type="text/javascript">
+// Debug
+console.clear();
+</script>
+
+
+  <head>
+    <meta charset="utf-8">
+    <title>Charts</title>
+    <meta name="description" content="Flat UI Kit Free is a Twitter Bootstrap Framework design and Theme, this responsive framework includes a PSD and HTML version."/>
+
+    <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0">
+
+    <!-- Loading Bootstrap -->
+    <link href="assets/css/vendor/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Loading Flat UI -->
+    <link href="assets/css/flat-ui.css" rel="stylesheet">
+    <!-- <link href="docs/assets/css/demo.css" rel="stylesheet"> -->
+
+    <!--- Load the css for the side menu  --->
+    <link href="assets/css/menu.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <style type="text/css">
+    body {
+      background-color: #1abc9c;
+    }
+    table {
+        width:100%;
+    }
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    th, td {
+        padding: 5px;
+        text-align: left;
+
+    }
+    table#t01 tr:nth-child(even) {
+        background-color: #eee;
+    }
+    table#t01 tr:nth-child(odd) {
+       background-color:#fff;
+    }
+    table#t01 th  {
+
+        background-color: gray;
+        color: white;
+    }
+    table#t02 tr:nth-child(even) {
+        background-color: #eee;
+    }
+    table#t02 tr:nth-child(odd) {
+       background-color:#fff;
+    }
+    table#t02 th  {
+
+        background-color: gray;
+        color: white;
+    }
+
+    </style>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+    <!--[if lt IE 9]>
+      <script src="assets/js/vendor/html5shiv.js"></script>
+      <script src="assets/js/vendor/respond.min.js"></script>
+    <![endif]-->
+    <script src="assets/js/jquery8.js"></script>
+
+  </head>
+
+
+
+
+<script type="text/javascript">
+    // Activate the side menu
+
+
+$("#menu-toggle").click(function(e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("active");
+});
+function logoutSubmit() {
+    var instance = new auth();
+    instance.setCallbackHandler(function() {
+        location.reload();
+    });
+    instance.logout();
 }
-#containerLeft {
-  float: left;
-  width: 40vw;
-  }
- </style>
+$(document).ready(function() {
+});
+      </script>
+
+  <body>
+    <div id="wrapper" class="active">
+
+  <!-- Sidebar -->
+  <div id="sidebar-wrapper">
+  <ul id="sidebar_menu" class="sidebar-nav">
+       <li class="sidebar-brand"><a id="menu-toggle" href="#">Menu</a></li>
+  </ul>
+    <ul class="sidebar-nav" id="sidebar">
+      <li><a href='charts.cfm'>Dashboard</a></li>
+      <!--- <li><a>link2</a></li> --->
+      <li>
+      <cfif IsUserLoggedIn()>
+          <cfoutput>
+              <a href="settings.cfm">Settings</a>
+              <a onClick="logoutSubmit()">Logout</a>
+              <!--- <a href="createAdmin.cfm">Admin</a> --->
 
 
+          </cfoutput>
+      </cfif>
+      </li>
+    </ul>
+  </div>
 
+    <div class="row">
+        <div class="col-md-12"><div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div></div>
+    </div>
+    <div class="row" style="margin-top:10px;">
+        <div class="col-md-6">
+          <table id="t01">
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Attempts</th>
+            </tr>
+            <tr>
+               <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>36</td>
+            </tr>
+            <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>32</td>
+            </tr>
+            <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>30</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>28</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>28</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>24</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>20</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>17</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>6</td>
+            </tr>
+          </table>
 
-
-<script src="http://code.highcharts.com/highcharts.js"></script>
-<script src="http://code.highcharts.com/modules/exporting.js"></script>
-
-<div id="container"></div>
-
-
-
-
-
-
-  <style>
-    body { font-size: 75%; }
-    label, input { display:block; }
-    input.text { margin-bottom:12px; width:95%; padding: .4em; }
-    fieldset { padding:0; border:0; margin-top:25px; }
-    h1 { font-size: 1.2em; margin: .6em 0; }
-    div#users-contain { width: 350px; margin: 20px 0; }
-    div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
-    div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
-    .ui-dialog .ui-state-error { padding: .3em; }
-    .validateTips { border: 1px solid transparent; padding: 0.3em; }
-  </style>
-
-
-
-
-
-
-</head>
-<body>
-
-
-
-
-<div id="users-contain" class="ui-widget">
-  <h1>Existing Users:</h1>
-  <table id="containerLeft" class="ui-widget ui-widget-content">
-    <thead>
-      <tr class="ui-widget-header ">
-        <th>Name</th>
-        <th>Email</th>
-        <th>Attempts</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>36</td>
-		 <tr>
-        <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>32</td>
-		 <tr>
-        <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>30</td>
-		 <tr>
-        <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>30</td>
-		 <tr>
-        <td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>29</td>
-		<tr>
-		<td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>28</td>
-		<tr>
-		<td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>28</td>
-		<tr>
-		<td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>28</td>
-		<tr>
-		<td>Nikolaos Hadjis</td>
-        <td>hadjis.doe@example.com</td>
-        <td>27</td>
-		<tr>
-      </tr>
-    </tbody>
-  </table>
+        </div>
+        <div class="col-md-6">
+          <table id="t02">
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Attempts</th>
+            </tr>
+            <tr>
+               <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>36</td>
+            </tr>
+            <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>32</td>
+            </tr>
+            <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>30</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>28</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>28</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>24</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>20</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>17</td>
+            </tr>
+             <tr>
+              <td>Nikolaos Hadjis</td>
+                  <td>hadjis.doe@example.com</td>
+                  <td>6</td>
+            </tr>
+          </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-1"></div>
+    </div>
+    <div class="row"></div>
 </div>
 
-<!-- <button id="create-user">Next Page</button> -->
+
+
+<br>
+
+</div>
 
 
 
+
+
+
+
+    <script src="assets/js/vendor/jquery.min.js"></script>
+    <script src="assets/js/flat-ui.min.js"></script>
+    <!-- Load the charts -->
+    <script src="http://code.highcharts.com/stock/highstock.js"></script>
+    <script src="http://code.highcharts.com/modules/drilldown.js"></script>
+    <script src="assets/js/highcharts/modules/exporting.js"></script>
+    <!-- <script src="docs/assets/js/application.js"></script> -->
+
+    <script>
+      videojs.options.flash.swf = "assets/js/vendors/video-js.swf"
+    </script>
+
+
+
+
+
+    <script>
+    function open_link() {
+        // window.open('popup.html', 'chart title', 'width=1680px height=1050px');
+        window.location.href = 'popup.cfm';
+    }
+</script>
  <script>
 var chart1;
 
@@ -124,7 +288,7 @@ $(document).ready(function () {
         title: {
             text: 'User detail for the last 24 hours'
         },
-       
+
         xAxis: {
             title: {
         enabled: true,
@@ -225,11 +389,14 @@ $(document).ready(function () {
                 [Date.UTC(1971,  4, 21), 0   ]
             ]
         }]
-    }).setOptions(Highcharts.theme);
+    });
 });
 </script>
 
 
 
-</body>
+
+
+  </body>
 </html>
+
