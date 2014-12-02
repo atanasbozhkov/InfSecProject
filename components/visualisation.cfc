@@ -51,6 +51,7 @@
         <cfreturn true>
     </cffunction>
 
+    <!--- get all email --->
     <cffunction name="getUsername" access="remote" returntype="string">
         <cfinvoke component="models.visualisationModel" method="getUsername" returnvariable="usernames">
 
@@ -62,6 +63,7 @@
         <cfreturn SerializeJSON(json)/>
     </cffunction>
 
+    <!--- get login attempts with success and fail with detail --->
     <cffunction name="getLoginAttempts" access="remote" returntype="string">
         <!--- time format: yyyy-mm-dd hh:mm:ss --->
         <cfargument name="timeFrom" type="string" required="true">
@@ -86,6 +88,7 @@
         <cfreturn json>
     </cffunction>
 
+    <!--- get forgotten attempts with success and fail with detail --->
     <cffunction name="getForgotAttempts" access="remote" returntype="string">
         <!--- time format: yyyy-mm-dd hh:mm:ss --->
         <cfargument name="timeFrom" type="string" required="true">
@@ -158,6 +161,7 @@
         <cfreturn json>
     </cffunction>
 
+    <!--- get the statistic number of login, password changes and forgotten --->
     <cffunction name="statNumber" access="remote" returntype="string">
         <!--- time format: yyyy-mm-dd hh:mm:ss --->
         <cfargument name="timeFrom" type="string" required="true">
@@ -206,6 +210,7 @@
         <cfreturn SerializeJSON(counts)>
     </cffunction>
 
+    <!--- get the fail attempts group by user_id and sort descreaing --->
     <cffunction name="getLoginFailDetail" access="remote" returntype="string">
         <!--- time format: yyyy-mm-dd hh:mm:ss --->
         <cfargument name="timeFrom" type="string" required="true">
@@ -231,6 +236,7 @@
         <cfreturn json>
     </cffunction>
 
+    <!--- get the forgoteen fail attempts group by user_id and sort descreaing --->
     <cffunction name="getForgottenFailDetail" access="remote" returntype="string">
         <!--- time format: yyyy-mm-dd hh:mm:ss --->
         <cfargument name="timeFrom" type="string" required="true">
@@ -256,6 +262,7 @@
         <cfreturn json>
     </cffunction>
 
+    <!--- get the amount of password changes group by user_id and sort descreaing --->
     <cffunction name="getPwChangedDetail" access="remote" returntype="string">
         <!--- time format: yyyy-mm-dd hh:mm:ss --->
         <cfargument name="timeFrom" type="string" required="true">

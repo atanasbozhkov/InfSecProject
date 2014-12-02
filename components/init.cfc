@@ -13,7 +13,7 @@
         <cfreturn created>
     </cffunction>
 
-    <cffunction name="finishedSetup" access="remote" returntype="boolean">
+    <cffunction name="finishedSetup" access="public" returntype="boolean">
         <cfinvoke method="createSchema" returnvariable="created">
         <cfif created eq true>
             <cfset APPLICATION.setup = true>

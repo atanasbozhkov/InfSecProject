@@ -14,6 +14,11 @@
             <cfreturn serializeJSON(result)>
         </cfif>
 
+        <cfif NOT isValid("email", email)>
+            <cfset result.msg = "invalid email format">
+            <cfreturn serializeJSON(result)>
+        </cfif>
+
         <cfinvoke component="models.userModel" method="getUser" returnvariable="userData">
             <cfinvokeargument name="email" value="#email#">
         </cfinvoke>
