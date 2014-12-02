@@ -64,7 +64,7 @@
 
         <cftry>
             <cfquery name="counts">
-                SELECT  DATE(timestamp) Date, COUNT(DISTINCT forgot_id) dayCount
+                SELECT  DATE(timestamp) Date, COUNT(DISTINCT forgot_id) dayCount, timestamp
                 FROM    `forgotten_attempts`
                 WHERE timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP">
                 AND timestamp <= <cfqueryparam value="#to#" cfsqltype="CF_SQL_TIMESTAMP">
@@ -84,7 +84,7 @@
 
         <cftry>
             <cfquery name="counts">
-                SELECT  DATE(timestamp) Date, COUNT(DISTINCT attempt_id) totalCount
+                SELECT  DATE(timestamp) Date, COUNT(DISTINCT attempt_id) totalCount, timestamp
                 FROM    login_attempts
                 WHERE   success = 0
                 AND timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP">
@@ -155,6 +155,20 @@
         <cfreturn pwChangedCount>
     </cffunction>
 
+    <cffunction name="getPWChangedCountPerDay" access="public" output="false" returntype="query">
+        <cfargument name="from" type="string">
+        <cfargument name="to" type="string">
+
+        <cfquery name="pwChangedCount">
+            SELECT COUNT(pass_id)-1 AS count, DATE(timestamp) Date, timestamp
+            FROM passwords
+            WHERE timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP">
+            AND timestamp <= <cfqueryparam value="#to#" cfsqltype="CF_SQL_TIMESTAMP">
+            GROUP BY Date(timestamp)
+        </cfquery>
+        <cfreturn pwChangedCount>
+    </cffunction>
+
     <cffunction name="getFailAttemptsDetail" access="public" output="false" returntype="query">
         <cfargument name="from" type="string">
         <cfargument name="to" type="string">
@@ -203,6 +217,17 @@
         </cfquery>
 
         <cfreturn attemptsDetail>
+    </cffunction>
+
+    <cffunction name="getUserAmount" access="public" output="false" returntype="query">
+        <cfargument name="date" type="string">
+
+        <cfquery name="userAmount">
+            SELECT Count(u.user_id) amount FROM users AS u
+            WHERE u.date_registered <= <cfqueryparam value="#date#" cfsqltype="CF_SQL_TIMESTAMP">
+        </cfquery>
+
+        <cfreturn userAmount>
     </cffunction>
 
 </cfcomponent>

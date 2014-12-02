@@ -287,4 +287,136 @@
 
         <cfreturn json>
     </cffunction>
+
+    <cffunction name="getFailLoginExpectedValue" access="remote" returntype="string">
+        <!--- time format: yyyy-mm-dd hh:mm:ss --->
+        <cfargument name="timeFrom" type="string" required="true">
+        <cfargument name="timeTo" type="string" required="true">
+
+        <cfinvoke method="checkTime" returnvariable="validTime">
+            <cfinvokeargument name="from" value="#timeFrom#">
+            <cfinvokeargument name="to" value="#timeTo#">
+        </cfinvoke>
+        <cfif NOT validTime>
+            <cfreturn "{}">
+        </cfif>
+
+        <cfinvoke component="models.visualisationModel" method="getFailedAttemptsPerDay" returnvariable="query">
+            <cfinvokeargument name="from" value="#timeFrom#">
+            <cfinvokeargument name="to" value="#timeTo#">
+        </cfinvoke>
+
+        <cfset i = 0>
+        <cfset total = 0>
+
+        <cfloop query = "query"> 
+            <cfset groupdate = lsDateFormat(timestamp, "yyyy-mm-dd")>
+            <cfinvoke component="models.visualisationModel" method="getUserAmount" returnvariable="amountQuery">
+                <cfinvokeargument name="date" value="#groupdate#">
+            </cfinvoke>
+            <cfset temp = structNew()>
+            <cfset temp.totalCount = totalCount>
+            <cfset temp.amount = amountQuery.amount>
+            <cfset total = total+totalCount/amountQuery.amount>
+            <cfset i = i+1>
+        </cfloop> 
+
+        <cfset value = structNew()>
+        <cfif i eq 0>
+            <cfset value.expectedValue = 0>
+        <cfelse>
+            <cfset value.expectedValue = total/i>
+        </cfif>
+        <cfset value.sampleSize = i>
+
+        <cfreturn serializeJSON(value)>
+    </cffunction>
+
+    <cffunction name="getForgottenExpectedValue" access="remote" returntype="string">
+        <!--- time format: yyyy-mm-dd hh:mm:ss --->
+        <cfargument name="timeFrom" type="string" required="true">
+        <cfargument name="timeTo" type="string" required="true">
+
+        <cfinvoke method="checkTime" returnvariable="validTime">
+            <cfinvokeargument name="from" value="#timeFrom#">
+            <cfinvokeargument name="to" value="#timeTo#">
+        </cfinvoke>
+        <cfif NOT validTime>
+            <cfreturn "{}">
+        </cfif>
+
+        <cfinvoke component="models.visualisationModel" method="getForgotAttemptsPerDay" returnvariable="query">
+            <cfinvokeargument name="from" value="#timeFrom#">
+            <cfinvokeargument name="to" value="#timeTo#">
+        </cfinvoke>
+
+        <cfset i = 0>
+        <cfset total = 0>
+
+        <cfloop query = "query"> 
+            <cfset groupdate = lsDateFormat(timestamp, "yyyy-mm-dd")>
+            <cfinvoke component="models.visualisationModel" method="getUserAmount" returnvariable="amountQuery">
+                <cfinvokeargument name="date" value="#groupdate#">
+            </cfinvoke>
+            <cfset temp = structNew()>
+            <cfset temp.totalCount = dayCount>
+            <cfset temp.amount = amountQuery.amount>
+            <cfset total = total+dayCount/amountQuery.amount>
+            <cfset i = i+1>
+        </cfloop> 
+
+        <cfset value = structNew()>
+        <cfif i eq 0>
+            <cfset value.expectedValue = 0>
+        <cfelse>
+            <cfset value.expectedValue = total/i>
+        </cfif>
+        <cfset value.sampleSize = i>
+
+        <cfreturn serializeJSON(value)>
+    </cffunction>
+
+    <cffunction name="getPwChangedExpectedValue" access="remote" returntype="string">
+        <!--- time format: yyyy-mm-dd hh:mm:ss --->
+        <cfargument name="timeFrom" type="string" required="true">
+        <cfargument name="timeTo" type="string" required="true">
+
+        <cfinvoke method="checkTime" returnvariable="validTime">
+            <cfinvokeargument name="from" value="#timeFrom#">
+            <cfinvokeargument name="to" value="#timeTo#">
+        </cfinvoke>
+        <cfif NOT validTime>
+            <cfreturn "{}">
+        </cfif>
+
+        <cfinvoke component="models.visualisationModel" method="getPWChangedCountPerDay" returnvariable="query">
+            <cfinvokeargument name="from" value="#timeFrom#">
+            <cfinvokeargument name="to" value="#timeTo#">
+        </cfinvoke>
+
+        <cfset i = 0>
+        <cfset total = 0>
+
+        <cfloop query = "query"> 
+            <cfset groupdate = lsDateFormat(timestamp, "yyyy-mm-dd")>
+            <cfinvoke component="models.visualisationModel" method="getUserAmount" returnvariable="amountQuery">
+                <cfinvokeargument name="date" value="#groupdate#">
+            </cfinvoke>
+            <cfset temp = structNew()>
+            <cfset temp.totalCount = count>
+            <cfset temp.amount = amountQuery.amount>
+            <cfset total = total+count/amountQuery.amount>
+            <cfset i = i+1>
+        </cfloop> 
+
+        <cfset value = structNew()>
+        <cfif i eq 0>
+            <cfset value.expectedValue = 0>
+        <cfelse>
+            <cfset value.expectedValue = total/i>
+        </cfif>
+        <cfset value.sampleSize = i>
+
+        <cfreturn serializeJSON(value)>
+    </cffunction>
 </cfcomponent>
