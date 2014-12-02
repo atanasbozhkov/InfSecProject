@@ -128,21 +128,29 @@ var mainChartData = function() {
 
 //
 var getForgotten = function() {
-    var db = new this();
-    db.setCallbackHandler(function(forgotten) {
+    var dbModel2 = new this();
+    dbModel2.setCallbackHandler(function(forgotten) {
       // console.log()
         var array = [];
         for (var i = 0; i < forgotten.length; i++) {
             array.push([Date.parse(forgotten[i].DATE), forgotten[i].DAYCOUNT]);
         };
-        forgottenChart(array)
+        
+		var db2 = new db();
+	
+		db2.setCallbackHandler(function(data){
+		
+			forgottenChart(array, data.FORGOTTEN.FAILCOUNT + data.FORGOTTEN.SUCCESSCOUNT);
+		});
+		db2.statNumber(getWeekAgo(), getCurrentDate());
     })
-    db.getForgotAttemptsPerDay('1999-01-01', '2015-01-01');
+    dbModel2.getForgotAttemptsPerDay('1999-01-01', getCurrentDate());
 }.bind(db)
 //
 var getFailed = function() {
-    var db = new this();
-    db.setCallbackHandler(function(failed) {
+    var dbModel = new this();
+	
+    dbModel.setCallbackHandler(function(failed) {
         console.log(failed)
         // var forgot = failed.SUCCESS.concat(failed.FAIL)
         var array = [];
@@ -150,10 +158,16 @@ var getFailed = function() {
             array.push([Date.parse(failed[i].DATE), failed[i].TOTALCOUNT]);
         };
         console.log(array);
-        console.log('deba')
-        failedChart(array)
+        console.log('deba');
+		
+		var db1 = new db();
+	
+		db1.setCallbackHandler(function(data){
+			failedChart(array, data.LOGIN.FAILCOUNT);
+		});
+		db1.statNumber(getWeekAgo(), getCurrentDate());
     })
-    db.getFailedAttemptsPerDay('1999-01-01', '2015-01-01');
+    dbModel.getFailedAttemptsPerDay('1999-01-01', getCurrentDate());
 }.bind(db)
 //
 getFailed();
@@ -260,7 +274,7 @@ function chart(data) {
     }
     //^ chart function end
     <!--- Graph Per Week --->
-function forgottenChart(data){
+function forgottenChart(data, totalForgotenCount){
   <!--- Graph Per Week --->
   $(function() {
       $('#container2').highcharts('StockChart', {
@@ -274,11 +288,11 @@ function forgottenChart(data){
                 text: 'Attempt Count'
             },
             plotLines:[{
-                    value:1.5,
+                    value:totalForgotenCount/7,
                     color: '#ff0000',
                     width: 3,
                     zIndex:4,
-                    label:{text:'Average'}
+                    label:{text:'Average of the last 7 days'}
                 }]
           },
          
@@ -297,7 +311,7 @@ function forgottenChart(data){
 }
 
 
-function failedChart(data) {
+function failedChart(data, totalFail) {
   $(function() {
     console.log(data)
     console.log('waat')
@@ -314,11 +328,11 @@ function failedChart(data) {
                 text: 'Attempt Count'
             },
             plotLines:[{
-                    value:1.5,
+                    value:totalFail/7,
                     color: '#ff0000',
                     width: 3,
                     zIndex:4,
-                    label:{text:'Average'}
+                    label:{text:'Average of the last 7 days'}
                 }]
         },
        
