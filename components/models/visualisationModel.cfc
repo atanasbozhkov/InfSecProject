@@ -39,6 +39,26 @@
         <cfreturn attempts/>
     </cffunction>
 
+    <cffunction name="getFailedByUser" access="public" output="false" returntype="query">
+        <cfargument name="from" type="string">
+        <cfargument name="to" type="string">
+
+        <cftry>
+            <cfquery name="attempts">
+                SELECT user_id, count(1) FROM login_attempts
+                WHERE timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP">
+                AND timestamp <= <cfqueryparam value="#to#" cfsqltype="CF_SQL_TIMESTAMP">
+                AND success=0
+                GROUP BY user_id
+            </cfquery>
+            <cfcatch type="any">
+                <cfreturn>
+            </cfcatch>
+        </cftry>
+
+        <cfreturn attempts/>
+    </cffunction>
+
     <cffunction name="getForgotAttempts" access="public" output="false" returntype="query">
         <cfargument name="from" type="string">
         <cfargument name="to" type="string">
