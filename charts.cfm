@@ -73,7 +73,10 @@
     var curr_date = d.getDate();
     var curr_month = d.getMonth() + 1; //Months are zero based
     var curr_year = d.getFullYear();
-	var currentDate=curr_year  + "-" + curr_month + "-" + curr_date;
+    var curr_hour = d.getHours(),
+        curr_minute = d.getMinutes(),
+        curr_second = d.getSeconds();
+	var currentDate = curr_year + "-" + curr_month + "-" + curr_date + " "+curr_hour+":"+curr_minute+":"+curr_second;
 	
 	
 	
@@ -90,8 +93,11 @@
 	var pre_date = oneWeekAgo.getDate();
     var pre_month = oneWeekAgo.getMonth() + 1; //Months are zero based
     var pre_year = oneWeekAgo.getFullYear();
+    var curr_hour = oneWeekAgo.getHours(),
+        curr_minute = oneWeekAgo.getMinutes(),
+        curr_second = oneWeekAgo.getSeconds();
 	
-	var beforeOneWeek=pre_year  + "-" + pre_month + "-" + pre_date;
+	var beforeOneWeek=pre_year  + "-" + pre_month + "-" + pre_date + " "+curr_hour+":"+curr_minute+":"+curr_second;
 	
 	
 	
@@ -116,8 +122,8 @@ var mainChartData = function() {
     db.setCallbackHandler(function(data) {
         chart(data)
     })
-    db.statNumber('1999-01-01', '2015-01-01');
-	//db.statNumber(getWeekAgo() , getCurrentDate());
+    // db.statNumber('1999-01-01', '2015-01-01');
+	db.statNumber(getWeekAgo() , getCurrentDate());
 }.bind(db)
 
 //
