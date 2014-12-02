@@ -1,16 +1,19 @@
 <cfcomponent displayname="initModel" hint="initial checking">
     
     <cffunction name="getSchema" access="public" output="false" returntype="query">
+        <cfinvoke component="local.components.config" method="getConfig" returnvariable="config">
+
         <cfquery name="checkTablesQuery">
-            SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = "PGT_D_14_TEST"
+            SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = "#config.database#"
         </cfquery>
         <cfreturn checkTablesQuery/>
     </cffunction>
 
     <cffunction name="createSchema" access="public" output="false" returntype="boolean">
+        <cfinvoke component="local.components.config" method="getConfig" returnvariable="config">
         <cftry>
             <cfquery>
-                CREATE DATABASE IF NOT EXISTS PGT_D_14_TEST
+                CREATE DATABASE IF NOT EXISTS #config.database#
             </cfquery>
 
             <cfquery>
@@ -78,48 +81,53 @@
               `role_desc` varchar(40) NOT NULL
             ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
             </cfquery>
+            
+            <cftry>
+                <cfquery>
+                    ALTER TABLE `forgotten_attempts`
+                    ADD PRIMARY KEY (`forgot_id`);
+                </cfquery>
+                <cfquery>
+                    ALTER TABLE `login_attempts`
+                    ADD PRIMARY KEY (`attempt_id`);
+                </cfquery>
+                <cfquery>
+                    ALTER TABLE `passwords`
+                    ADD PRIMARY KEY (`pass_id`);
+                </cfquery>
+                <cfquery>
+                    ALTER TABLE `users`
+                    ADD PRIMARY KEY (`user_id`);
+                </cfquery>
+                <cfquery>
+                    ALTER TABLE `user_roles`
+                    ADD PRIMARY KEY (`role_id`);
+                </cfquery>
 
-            <cfquery>
-                ALTER TABLE `forgotten_attempts`
-                ADD PRIMARY KEY (`forgot_id`);
-            </cfquery>
-            <cfquery>
-                ALTER TABLE `login_attempts`
-                ADD PRIMARY KEY (`attempt_id`);
-            </cfquery>
-            <cfquery>
-                ALTER TABLE `passwords`
-                ADD PRIMARY KEY (`pass_id`);
-            </cfquery>
-            <cfquery>
-                ALTER TABLE `users`
-                ADD PRIMARY KEY (`user_id`);
-            </cfquery>
-            <cfquery>
-                ALTER TABLE `user_roles`
-                ADD PRIMARY KEY (`role_id`);
-            </cfquery>
+                <cfquery>
+                    ALTER TABLE `forgotten_attempts`
+                    MODIFY `forgot_id` int(40) unsigned NOT NULL AUTO_INCREMENT;
+                </cfquery>
+                <cfquery>
+                    ALTER TABLE `login_attempts`
+                    MODIFY `attempt_id` int(11) NOT NULL AUTO_INCREMENT;
+                </cfquery>
+                <cfquery>
+                    ALTER TABLE `passwords`
+                    MODIFY `pass_id` int(11) NOT NULL AUTO_INCREMENT;
+                </cfquery>
+                <cfquery>
+                    ALTER TABLE `users`
+                    MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+                </cfquery>
+                <cfquery>
+                    ALTER TABLE `user_roles`
+                    MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT;
+                </cfquery>
+                <cfcatch type="any">
+                </cfcatch>
+            </cftry>
 
-            <cfquery>
-                ALTER TABLE `forgotten_attempts`
-                MODIFY `forgot_id` int(40) unsigned NOT NULL AUTO_INCREMENT;
-            </cfquery>
-            <cfquery>
-                ALTER TABLE `login_attempts`
-                MODIFY `attempt_id` int(11) NOT NULL AUTO_INCREMENT;
-            </cfquery>
-            <cfquery>
-                ALTER TABLE `passwords`
-                MODIFY `pass_id` int(11) NOT NULL AUTO_INCREMENT;
-            </cfquery>
-            <cfquery>
-                ALTER TABLE `users`
-                MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
-            </cfquery>
-            <cfquery>
-                ALTER TABLE `user_roles`
-                MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT;
-            </cfquery>
 
             <cfcatch type="any">
                 <cfquery>

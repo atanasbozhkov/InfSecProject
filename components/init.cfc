@@ -13,4 +13,12 @@
         <cfreturn created>
     </cffunction>
 
+    <cffunction name="finishedSetup" access="remote" returntype="boolean">
+        <cfinvoke method="createSchema" returnvariable="created">
+        <cfif created eq true>
+            <cfset APPLICATION.setup = true>
+        </cfif>
+        <cfreturn created>
+    </cffunction>
+
 </cfcomponent>

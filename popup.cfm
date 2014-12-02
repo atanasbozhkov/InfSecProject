@@ -127,54 +127,64 @@ $(document).ready(function() {
         <div class="col-md-6">
           <table id="t01">
             <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Attempts</th>
+              <th>Username</th>
+              <th>Number of frequency</th>
+              <th>Growth</th>
+              <th>% of Average</th>
             </tr>
             <tr>
                <td>Nikolaos Hadjis</td>
                   <td>hadjis.doe@example.com</td>
                   <td>36</td>
+                  <td></td>
             </tr>
             <tr>
               <td>Nikolaos Hadjis</td>
                   <td>hadjis.doe@example.com</td>
                   <td>32</td>
+                  <td></td>
             </tr>
             <tr>
               <td>Nikolaos Hadjis</td>
                   <td>hadjis.doe@example.com</td>
                   <td>30</td>
+                  <td></td>
             </tr>
              <tr>
               <td>Nikolaos Hadjis</td>
                   <td>hadjis.doe@example.com</td>
                   <td>28</td>
+                  <td></td>
             </tr>
              <tr>
               <td>Nikolaos Hadjis</td>
                   <td>hadjis.doe@example.com</td>
                   <td>28</td>
+                  <td></td>
             </tr>
              <tr>
               <td>Nikolaos Hadjis</td>
                   <td>hadjis.doe@example.com</td>
                   <td>24</td>
+                  <td></td>
             </tr>
              <tr>
               <td>Nikolaos Hadjis</td>
                   <td>hadjis.doe@example.com</td>
                   <td>20</td>
+                  <td></td>
             </tr>
              <tr>
               <td>Nikolaos Hadjis</td>
                   <td>hadjis.doe@example.com</td>
                   <td>17</td>
+                  <td></td>
             </tr>
              <tr>
               <td>Nikolaos Hadjis</td>
                   <td>hadjis.doe@example.com</td>
                   <td>6</td>
+                  <td></td>
             </tr>
           </table>
 
@@ -182,9 +192,9 @@ $(document).ready(function() {
         <div class="col-md-6">
           <table id="t02">
             <tr>
-              <th>Name</th>
-              <th>Email</th>
+              <th>IP Address</th>
               <th>Attempts</th>
+              <th>Growth</th>
             </tr>
             <tr>
                <td>Nikolaos Hadjis</td>
