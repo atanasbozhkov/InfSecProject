@@ -288,18 +288,10 @@
         <cfreturn json>
     </cffunction>
 
-    <cffunction name="getFailLoginExpectedValue" access="remote" returntype="string">
+    <cffunction name="getFailLoginExpectedValue" access="public" returntype="struct">
         <!--- time format: yyyy-mm-dd hh:mm:ss --->
         <cfargument name="timeFrom" type="string" required="true">
         <cfargument name="timeTo" type="string" required="true">
-
-        <cfinvoke method="checkTime" returnvariable="validTime">
-            <cfinvokeargument name="from" value="#timeFrom#">
-            <cfinvokeargument name="to" value="#timeTo#">
-        </cfinvoke>
-        <cfif NOT validTime>
-            <cfreturn "{}">
-        </cfif>
 
         <cfinvoke component="models.visualisationModel" method="getFailedAttemptsPerDay" returnvariable="query">
             <cfinvokeargument name="from" value="#timeFrom#">
@@ -329,21 +321,13 @@
         </cfif>
         <cfset value.sampleSize = i>
 
-        <cfreturn serializeJSON(value)>
+        <cfreturn value>
     </cffunction>
 
-    <cffunction name="getForgottenExpectedValue" access="remote" returntype="string">
+    <cffunction name="getForgottenExpectedValue" access="public" returntype="Struct">
         <!--- time format: yyyy-mm-dd hh:mm:ss --->
         <cfargument name="timeFrom" type="string" required="true">
         <cfargument name="timeTo" type="string" required="true">
-
-        <cfinvoke method="checkTime" returnvariable="validTime">
-            <cfinvokeargument name="from" value="#timeFrom#">
-            <cfinvokeargument name="to" value="#timeTo#">
-        </cfinvoke>
-        <cfif NOT validTime>
-            <cfreturn "{}">
-        </cfif>
 
         <cfinvoke component="models.visualisationModel" method="getForgotAttemptsPerDay" returnvariable="query">
             <cfinvokeargument name="from" value="#timeFrom#">
@@ -373,21 +357,13 @@
         </cfif>
         <cfset value.sampleSize = i>
 
-        <cfreturn serializeJSON(value)>
+        <cfreturn value>
     </cffunction>
 
-    <cffunction name="getPwChangedExpectedValue" access="remote" returntype="string">
+    <cffunction name="getPwChangedExpectedValue" access="public" returntype="Struct">
         <!--- time format: yyyy-mm-dd hh:mm:ss --->
         <cfargument name="timeFrom" type="string" required="true">
         <cfargument name="timeTo" type="string" required="true">
-
-        <cfinvoke method="checkTime" returnvariable="validTime">
-            <cfinvokeargument name="from" value="#timeFrom#">
-            <cfinvokeargument name="to" value="#timeTo#">
-        </cfinvoke>
-        <cfif NOT validTime>
-            <cfreturn "{}">
-        </cfif>
 
         <cfinvoke component="models.visualisationModel" method="getPWChangedCountPerDay" returnvariable="query">
             <cfinvokeargument name="from" value="#timeFrom#">
@@ -417,6 +393,47 @@
         </cfif>
         <cfset value.sampleSize = i>
 
-        <cfreturn serializeJSON(value)>
+        <cfreturn value>
+    </cffunction>
+
+    <cffunction name="getExpectedValues" access="remote" returntype="string">
+        <!--- time format: yyyy-mm-dd hh:mm:ss --->
+        <cfargument name="timeFrom" type="string" required="true">
+        <cfargument name="timeTo" type="string" required="true">
+
+        <cfinvoke method="checkTime" returnvariable="validTime">
+            <cfinvokeargument name="from" value="#timeFrom#">
+            <cfinvokeargument name="to" value="#timeTo#">
+        </cfinvoke>
+        <cfif NOT validTime>
+            <cfreturn "{}">
+        </cfif>
+
+        <cfinvoke method="getFailLoginExpectedValue" returnvariable="failExpect">
+            <cfinvokeargument name="timeFrom" value="#timeFrom#">
+            <cfinvokeargument name="timeTo" value="#timeTo#">
+        </cfinvoke>
+
+        <cfinvoke method="getForgottenExpectedValue" returnvariable="forgottenExpected">
+            <cfinvokeargument name="timeFrom" value="#timeFrom#">
+            <cfinvokeargument name="timeTo" value="#timeTo#">
+        </cfinvoke>
+
+        <cfinvoke method="getPwChangedExpectedValue" returnvariable="pwChangeExpected">
+            <cfinvokeargument name="timeFrom" value="#timeFrom#">
+            <cfinvokeargument name="timeTo" value="#timeTo#">
+        </cfinvoke>
+
+        <cfinvoke component="models.visualisationModel" method="getUserAmount" returnvariable="amountQuery">
+            <cfinvokeargument name="date" value="#dateTimeFormat(Now(), "yyyy-mm-dd hh:nn:ss")#">
+        </cfinvoke>
+
+        <cfset result = structNew()>
+        <cfset result.fail = failExpect>
+        <cfset result.forgotten = forgottenExpected>
+        <cfset result.pwChange = pwChangeExpected>
+        <cfset result.todayUsers = amountQuery.amount>
+
+        <cfreturn serializeJSON(result)>
     </cffunction>
 </cfcomponent>
