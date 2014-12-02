@@ -66,6 +66,8 @@
             <cfquery name="counts">
                 SELECT  DATE(timestamp) Date, COUNT(DISTINCT forgot_id) dayCount
                 FROM    `forgotten_attempts`
+                WHERE timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP">
+                AND timestamp <= <cfqueryparam value="#to#" cfsqltype="CF_SQL_TIMESTAMP">
                 GROUP BY  DATE(timestamp)
             </cfquery>
             <cfcatch type="any">
@@ -85,6 +87,8 @@
                 SELECT  DATE(timestamp) Date, COUNT(DISTINCT attempt_id) totalCount
                 FROM    login_attempts
                 WHERE   success = 0
+                AND timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP">
+                AND timestamp <= <cfqueryparam value="#to#" cfsqltype="CF_SQL_TIMESTAMP">
                 GROUP BY  DATE(timestamp)
             </cfquery>
             <cfcatch type="any">
