@@ -295,6 +295,34 @@ function forgottenChart(data, totalForgotenCount){
                     label:{text:'Average of the last 7 days'}
                 }]
           },
+		   rangeSelector: {
+                
+                buttons: [{
+                    type: 'week',
+                    count: 1,
+                    text: '1w'
+                }, {
+                    type: 'week',
+                    count: 2,
+                    text: '2w'
+                }, {
+                    type: 'month',
+                    count: 1,
+                    text: '1m'
+                }, {
+                    type: 'month',
+                    count: 6,
+                    text: '6m'
+                }, {
+                    type: 'year',
+                    count: 1,
+                    text: '1y'
+                }, {
+                    type: 'all',
+                    text: 'All'
+                }],
+                selected: 2
+            },
          
           legend: {
               layout: 'vertical',
@@ -335,6 +363,34 @@ function failedChart(data, totalFail) {
                     label:{text:'Average of the last 7 days'}
                 }]
         },
+		 rangeSelector: {
+                
+                buttons: [{
+                    type: 'week',
+                    count: 1,
+                    text: '1w'
+                }, {
+                    type: 'week',
+                    count: 2,
+                    text: '2w'
+                }, {
+                    type: 'month',
+                    count: 1,
+                    text: '1m'
+                }, {
+                    type: 'month',
+                    count: 6,
+                    text: '6m'
+                }, {
+                    type: 'year',
+                    count: 1,
+                    text: '1y'
+                }, {
+                    type: 'all',
+                    text: 'All'
+                }],
+                selected: 2
+            },
        
         legend: {
             layout: 'vertical',
