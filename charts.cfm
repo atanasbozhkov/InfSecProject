@@ -53,6 +53,12 @@
     body {
       background-color: #1abc9c;
     }
+    .loading {
+        background-image: url(./assets/img/icons/loading.gif);
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+    }
     </style>
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
     <!--[if lt IE 9]>
@@ -471,13 +477,13 @@ $(document).ready(function() {
   </div>
 
     <div class="row">
-        <div class="col-md-12"><div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div></div>
+        <div class="col-md-12 loading"><div id="container" style="min-width: 310px; height: 400px; margin: 0 auto;"></div></div>
     </div>
     <div class="row" style="margin-top:10px;">
-        <div class="col-md-6">
+        <div class="col-md-6 loading">
           <div id="container1" style="min-width: 310px; height: 350px; margin: 0 auto"></div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 loading">
           <div id="container2" style="min-width: 310px; height: 350px; margin: 0 auto"></div>
         </div>
     </div>
