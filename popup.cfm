@@ -59,10 +59,11 @@ $(document).ready(function() {
           var finalArray = []
           for (var amount in chart) {
             if (chart.hasOwnProperty(amount)) {
-              finalArray.push([amount,chart[amount]])
+              finalArray.push([parseInt(amount),chart[amount]])
             }
           }
-          mainChart(finalArray);
+          mainChart(finalArray.sort());
+          console.log(finalArray.sort());
           //Now construct the tables?
           failedTable(data, systemAverage);
       })
