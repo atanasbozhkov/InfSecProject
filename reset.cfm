@@ -1,3 +1,6 @@
+<cfif NOT structKeyExists(url, "token")>
+    <cflocation url="index.cfm">
+</cfif>
 <cfinvoke component="components.forgotten" method="resetInit">
     <cfinvokeargument name="token" value="#url['token']#">
 </cfinvoke>

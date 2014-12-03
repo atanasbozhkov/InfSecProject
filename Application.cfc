@@ -51,7 +51,8 @@
             <cfreturn true>
         </cfif>
 
-        <cfif NOT IsUserLoggedIn()>
+        <!--- <cfif NOT IsUserLoggedIn()> --->
+        <cfif GetAuthUser() eq "">
             <cflocation url="index.cfm">
             <cfreturn true>
         </cfif>

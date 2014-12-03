@@ -91,11 +91,11 @@
 }
 
 
- function getWeekAgo() {
+ function getDaysAgo(day) {
 
  
 	var oneWeekAgo = new Date();
-	oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+	oneWeekAgo.setDate(oneWeekAgo.getDate() - day);
 	var pre_date = oneWeekAgo.getDate();
     var pre_month = oneWeekAgo.getMonth() + 1; //Months are zero based
     var pre_year = oneWeekAgo.getFullYear();
@@ -119,7 +119,7 @@
 <script type="text/javascript">
 
 //document.write(getCurrentDate()+ "  -----------------------------");
-//document.write( getWeekAgo()+ "---*******----------");
+//document.write( getDaysAgo(7)+ "---*******----------");
 var counter = 0,
     dataArr = {};
 function mainChartCounter(name, data) {
@@ -138,13 +138,13 @@ var mainChartData = function() {
         mainChartCounter("stat", data);
     })
     // db.statNumber('1999-01-01', '2015-01-01');
-	dbModel1.statNumber(getWeekAgo() , getCurrentDate());
+	dbModel1.statNumber(getDaysAgo(7) , getCurrentDate());
 
     dbModel2.setCallbackHandler(function(data) {
         mainChartCounter("expected", data);
     })
     // db.statNumber('1999-01-01', '2015-01-01');
-    dbModel2.getExpectedValues(getWeekAgo() , getCurrentDate());
+    dbModel2.getExpectedValues(getDaysAgo(3) , getDaysAgo(1));
 }.bind(db)
 
 //
@@ -163,7 +163,7 @@ var getForgotten = function() {
 		
 			forgottenChart(array, data.FORGOTTEN.FAILCOUNT + data.FORGOTTEN.SUCCESSCOUNT);
 		});
-		db2.statNumber(getWeekAgo(), getCurrentDate());
+		db2.statNumber(getDaysAgo(7), getCurrentDate());
     })
     dbModel2.getForgotAttemptsPerDay('1999-01-01', getCurrentDate());
 }.bind(db)
@@ -186,7 +186,7 @@ var getFailed = function() {
 		db1.setCallbackHandler(function(data){
 			failedChart(array, data.LOGIN.FAILCOUNT);
 		});
-		db1.statNumber(getWeekAgo(), getCurrentDate());
+		db1.statNumber(getDaysAgo(7), getCurrentDate());
     })
     dbModel.getFailedAttemptsPerDay('1999-01-01', getCurrentDate());
 }.bind(db)
@@ -231,6 +231,9 @@ function chart(data, expectedData) {
 			
 			tooltip: {
 				formatter: function () {
+                    if (this.point.downed) {
+                        return 'Now <b>'+ this.point.myData;
+                    }
 					return 'Now <b>'+ this.point.myData +'<br/>'+ 'Expected value: <b>' + this.point.expected + '</b>';
 					
 				}
@@ -246,21 +249,24 @@ function chart(data, expectedData) {
                     y: data.FORGOTTEN.FAILCOUNT + data.FORGOTTEN.SUCCESSCOUNT,
 					 myData: data.FORGOTTEN.FAILCOUNT + data.FORGOTTEN.SUCCESSCOUNT,
                     drilldown: 'forgotten',
-                    expected: Math.round(expectedData.FORGOTTEN.EXPECTEDVALUE * expectedData.TODAYUSERS)
+                    expected: Math.round(expectedData.FORGOTTEN.EXPECTEDVALUE * expectedData.TODAYUSERS),
+                    downed: false
                 }, {
                     name: 'Failed',
                     y: data.LOGIN.FAILCOUNT,
 					myData: data.LOGIN.FAILCOUNT,
                     color: '#e74c3c',
                     //drilldown: 'failed',
-                    expected: Math.round(expectedData.FAIL.EXPECTEDVALUE * expectedData.TODAYUSERS)
+                    expected: Math.round(expectedData.FAIL.EXPECTEDVALUE * expectedData.TODAYUSERS),
+                    downed: false
                 }, {
                     name: 'Changed',
                     y: data.PASSWORDCHANGED.CHANGED_AMOUNT,
 					myData: data.PASSWORDCHANGED.CHANGED_AMOUNT,
                     color: '#9b59b6',
                     //drilldown: 'changed',
-                    expected: Math.round(expectedData.PWCHANGE.EXPECTEDVALUE * expectedData.TODAYUSERS)
+                    expected: Math.round(expectedData.PWCHANGE.EXPECTEDVALUE * expectedData.TODAYUSERS),
+                    downed: false
                 }]
             }
 			
@@ -278,12 +284,14 @@ function chart(data, expectedData) {
                     name: 'Fail-Forgotten Password attempts',
                     color: '#e67e22',
                     y: data.FORGOTTEN.FAILCOUNT,
-					 myData: data.FORGOTTEN.FAILCOUNT
+					 myData: data.FORGOTTEN.FAILCOUNT,
+                     downed: true
                 }, {
                     name: 'Successful-Forgotten attempts',
                     y: data.FORGOTTEN.SUCCESSCOUNT,
 					myData: data.FORGOTTEN.SUCCESSCOUNT,
-                    color: '#e74c3c'
+                    color: '#e74c3c',
+                    downed: true
                    
                 }
 							
@@ -441,7 +449,7 @@ $("#menu-toggle").click(function(e) {
 function logoutSubmit() {
     var instance = new auth();
     instance.setCallbackHandler(function() {
-        location.reload();
+        setTimeout(function() {location.reload();}, 0);
     });
     instance.logout();
 }
@@ -463,7 +471,8 @@ $(document).ready(function() {
       <li><a href='charts.cfm'>Dashboard</a></li>
       <!--- <li><a>link2</a></li> --->
       <li>
-      <cfif IsUserLoggedIn()>
+      <!--- <cfif IsUserLoggedIn()> --->
+      <cfif GetAuthUser() neq "">
           <cfoutput>
               <a href="settings.cfm">Settings</a>
               <a onClick="logoutSubmit()">Logout</a>

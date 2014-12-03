@@ -20,7 +20,8 @@
     <cffunction name="login" access="remote" returntype="boolean">
         <cfargument name="email" type="string" required="true">
         <cfargument name="password" type="string" required="true">
-        <cfif IsUserLoggedIn()>
+        <!--- <cfif IsUserLoggedIn()> --->
+        <cfif GetAuthUser() eq email>
             <cfreturn true>
         </cfif>
 
