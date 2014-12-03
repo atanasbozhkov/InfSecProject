@@ -59,7 +59,11 @@ $(document).ready(function() {
           var finalArray = []
           for (var amount in chart) {
             if (chart.hasOwnProperty(amount)) {
-              finalArray.push([parseInt(amount),chart[amount]])
+              // if(amount > systemAverage){
+              if(amount > 5){
+                finalArray.push([parseInt(amount),chart[amount]])
+
+              }
             }
           }
           mainChart(finalArray.sort());
