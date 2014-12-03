@@ -1,8 +1,55 @@
+<!--- cf function --->
+<cfajaxproxy cfc="components.auth" jsclassname="auth">
+<cfajaxproxy cfc="components.visualisation" jsclassname="db">
+
+
+
+
+<!--- Get Fail Successful and Fail attempts for a specific time interval --->
+
+<cfinvoke component="components.visualisation" method="getLoginAttempts" returnVariable="testReturn">
+  <cfinvokeargument name="timeFrom" value="2013-01-01 00:00:00">
+  <cfinvokeargument name="timeTo" value="2014-01-01 00:00:00">
+</cfinvoke>
+
+
+<!-- <cfoutput>#testReturn#</cfoutput> -->
+
+<cfscript>
+  writeOutput("<script> var dataa= "&testReturn&";</script>");
+</cfscript>
+
+
 <!DOCTYPE html>
 <html lang="en">
+<script src="assets/js/jquery8.js"></script>
 <script type="text/javascript">
-// Debug
-console.clear();
+$(document).ready(function() {
+
+  // Debug
+  // console.clear();
+
+  var mainChartData = function() {
+      var db = new this();
+
+      db.setCallbackHandler(function(data) {
+          // console.log(data)
+          var chart = [];
+          for (var i = 0; i < data.length; i++) {
+              var attempts = data[i]['COUNT(1)'];
+              var users = data[i]['USER_ID'];
+              var newArr = [attempts, users];
+              chart.push(newArr);
+          };
+          console.log(chart)
+          mainChart(chart.sort());
+      })
+    db.getFailedByUser('1999-01-01', '2015-01-01');
+  }.bind(db)
+
+  //Call the function
+  mainChartData();
+});
 </script>
 
 
@@ -22,7 +69,9 @@ console.clear();
 
     <!--- Load the css for the side menu  --->
     <link href="assets/css/menu.css" rel="stylesheet">
-
+    <!--- add DataTables --->
+    <link href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
     <link rel="shortcut icon" href="img/favicon.ico">
     <style type="text/css">
     body {
@@ -128,15 +177,15 @@ $(document).ready(function() {
           <table id="t01">
             <tr>
               <th>Username</th>
-              <th>Number of frequency</th>
-              <th>Growth</th>
-              <th>% of Average</th>
+              <th>Frequency</th>
+              <th>Growth since last week</th>
+              <th>% of system average</th>
             </tr>
             <tr>
                <td>Nikolaos Hadjis</td>
-                  <td>hadjis.doe@example.com</td>
                   <td>36</td>
-                  <td></td>
+                  <td>150%</td>
+                  <td>112%</td>
             </tr>
             <tr>
               <td>Nikolaos Hadjis</td>
@@ -290,21 +339,22 @@ $(document).ready(function() {
  <script>
 var chart1;
 
-$(document).ready(function () {
+  function mainChart(data) {
+  $(function (){
     $('#container').highcharts({
         chart: {
-            type: 'spline'
+            type: 'column'
         },
         title: {
-            text: 'User detail for the last 24 hours'
+            text: 'Distribution of the failed attempts over the past week'
         },
 
         xAxis: {
             title: {
         enabled: true,
-        text: 'Hours of the Day'
+        text: 'Number of attempts'
     },
-    type: 'datetime',
+    type: 'string',
 
     dateTimeLabelFormats : {
         hour: '%I %p',
@@ -313,94 +363,22 @@ $(document).ready(function () {
         },
         yAxis: {
             title: {
-                text: 'Number of attempts'
+                text: 'Number of users'
             },
             min: 0
         },
         tooltip: {
-            headerFormat: '<b>{series.name}</b><br>',
-            pointFormat: '{point.x:%e. %b}: {point.y:.2f} m'
+            headerFormat: '<b>Info</b><br>',
+            pointFormat: 'Failed attempts: <b> {point.x} </b> <br/> Number of users: <b>{point.y} </b>'
         },
 
         series: [{
-            name: 'Fail attempts',
-            // Define the data points. All series have a dummy year
-            // of 1970/71 in order to be compared on the same x axis. Note
-            // that in JavaScript, months start at 0 for January, 1 for February etc.
-            data: [
-                [Date.UTC(1970,  9, 27), 0   ],
-                [Date.UTC(1970, 10, 10), 0.6 ],
-                [Date.UTC(1970, 10, 18), 0.7 ],
-                [Date.UTC(1970, 11,  2), 0.8 ],
-                [Date.UTC(1970, 11,  9), 0.6 ],
-                [Date.UTC(1970, 11, 16), 0.6 ],
-                [Date.UTC(1970, 11, 28), 0.67],
-                [Date.UTC(1971,  0,  1), 0.81],
-                [Date.UTC(1971,  0,  8), 0.78],
-                [Date.UTC(1971,  0, 12), 0.98],
-                [Date.UTC(1971,  0, 27), 1.84],
-                [Date.UTC(1971,  1, 10), 1.80],
-                [Date.UTC(1971,  1, 18), 1.80],
-                [Date.UTC(1971,  1, 24), 1.92],
-                [Date.UTC(1971,  2,  4), 2.49],
-                [Date.UTC(1971,  2, 11), 2.79],
-                [Date.UTC(1971,  2, 15), 2.73],
-                [Date.UTC(1971,  2, 25), 2.61],
-                [Date.UTC(1971,  3,  2), 2.76],
-                [Date.UTC(1971,  3,  6), 2.82],
-                [Date.UTC(1971,  3, 13), 2.8 ],
-                [Date.UTC(1971,  4,  3), 2.1 ],
-                [Date.UTC(1971,  4, 26), 1.1 ],
-                [Date.UTC(1971,  5,  9), 0.25],
-                [Date.UTC(1971,  5, 12), 0   ]
-            ]
-        }, {
-            name: 'Forgotten',
-            data: [
-                [Date.UTC(1970,  9, 18), 0   ],
-                [Date.UTC(1970,  9, 26), 0.2 ],
-                [Date.UTC(1970, 11,  1), 0.47],
-                [Date.UTC(1970, 11, 11), 0.55],
-                [Date.UTC(1970, 11, 25), 1.38],
-                [Date.UTC(1971,  0,  8), 1.38],
-                [Date.UTC(1971,  0, 15), 1.38],
-                [Date.UTC(1971,  1,  1), 1.38],
-                [Date.UTC(1971,  1,  8), 1.48],
-                [Date.UTC(1971,  1, 21), 1.5 ],
-                [Date.UTC(1971,  2, 12), 1.89],
-                [Date.UTC(1971,  2, 25), 2.0 ],
-                [Date.UTC(1971,  3,  4), 1.94],
-                [Date.UTC(1971,  3,  9), 1.91],
-                [Date.UTC(1971,  3, 13), 1.75],
-                [Date.UTC(1971,  3, 19), 1.6 ],
-                [Date.UTC(1971,  4, 25), 0.6 ],
-                [Date.UTC(1971,  4, 31), 0.35],
-                [Date.UTC(1971,  5,  7), 0   ]
-            ]
-        }, {
-            name: 'Changed',
-            data: [
-                [Date.UTC(1970,  9,  9), 0   ],
-                [Date.UTC(1970,  9, 14), 0.15],
-                [Date.UTC(1970, 10, 28), 0.35],
-                [Date.UTC(1970, 11, 12), 0.46],
-                [Date.UTC(1971,  0,  1), 0.59],
-                [Date.UTC(1971,  0, 24), 0.58],
-                [Date.UTC(1971,  1,  1), 0.62],
-                [Date.UTC(1971,  1,  7), 0.65],
-                [Date.UTC(1971,  1, 23), 0.77],
-                [Date.UTC(1971,  2,  8), 0.77],
-                [Date.UTC(1971,  2, 14), 0.79],
-                [Date.UTC(1971,  2, 24), 0.86],
-                [Date.UTC(1971,  3,  4), 0.8 ],
-                [Date.UTC(1971,  3, 18), 0.94],
-                [Date.UTC(1971,  3, 24), 0.9 ],
-                [Date.UTC(1971,  4, 16), 0.39],
-                [Date.UTC(1971,  4, 21), 0   ]
-            ]
+            name: 'Failed attempts',
+            data: data
         }]
     });
-});
+  });
+}
 </script>
 
 
