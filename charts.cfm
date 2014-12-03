@@ -53,6 +53,12 @@
     body {
       background-color: #1abc9c;
     }
+    .loading {
+        background-image: url(./assets/img/icons/loading.gif);
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+    }
     </style>
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
     <!--[if lt IE 9]>
@@ -114,16 +120,31 @@
 
 //document.write(getCurrentDate()+ "  -----------------------------");
 //document.write( getWeekAgo()+ "---*******----------");
-
+var counter = 0,
+    dataArr = {};
+function mainChartCounter(name, data) {
+    dataArr[name] = data;
+    counter++;
+    if (counter === 2) {
+        chart(dataArr.stat, dataArr.expected);
+    }
+}
 
 var mainChartData = function() {
-    var db = new this();
+    var dbModel1 = new this(),
+        dbModel2 = new this();
 	
-    db.setCallbackHandler(function(data) {
-        chart(data)
+    dbModel1.setCallbackHandler(function(data) {
+        mainChartCounter("stat", data);
     })
     // db.statNumber('1999-01-01', '2015-01-01');
-	db.statNumber(getWeekAgo() , getCurrentDate());
+	dbModel1.statNumber(getWeekAgo() , getCurrentDate());
+
+    dbModel2.setCallbackHandler(function(data) {
+        mainChartCounter("expected", data);
+    })
+    // db.statNumber('1999-01-01', '2015-01-01');
+    dbModel2.getExpectedValues(getWeekAgo() , getCurrentDate());
 }.bind(db)
 
 //
@@ -172,7 +193,7 @@ var getFailed = function() {
 //
 getFailed();
 //
-function chart(data) {
+function chart(data, expectedData) {
         // Main graph
 
         var options = {
@@ -210,7 +231,7 @@ function chart(data) {
 			
 			tooltip: {
 				formatter: function () {
-					return 'Now <b>'+ this.point.myData +'<br/>'+ 'Expected value: <b>' + '100' + '</b>';
+					return 'Now <b>'+ this.point.myData +'<br/>'+ 'Expected value: <b>' + this.point.expected + '</b>';
 					
 				}
 			},
@@ -224,19 +245,22 @@ function chart(data) {
                     color: '#e67e22',
                     y: data.FORGOTTEN.FAILCOUNT + data.FORGOTTEN.SUCCESSCOUNT,
 					 myData: data.FORGOTTEN.FAILCOUNT + data.FORGOTTEN.SUCCESSCOUNT,
-                    drilldown: 'forgotten'
+                    drilldown: 'forgotten',
+                    expected: Math.round(expectedData.FORGOTTEN.EXPECTEDVALUE * expectedData.TODAYUSERS)
                 }, {
                     name: 'Failed',
                     y: data.LOGIN.FAILCOUNT,
 					myData: data.LOGIN.FAILCOUNT,
                     color: '#e74c3c',
-                    //drilldown: 'failed'
+                    //drilldown: 'failed',
+                    expected: Math.round(expectedData.FAIL.EXPECTEDVALUE * expectedData.TODAYUSERS)
                 }, {
                     name: 'Changed',
                     y: data.PASSWORDCHANGED.CHANGED_AMOUNT,
 					myData: data.PASSWORDCHANGED.CHANGED_AMOUNT,
                     color: '#9b59b6',
-                    //drilldown: 'changed'
+                    //drilldown: 'changed',
+                    expected: Math.round(expectedData.PWCHANGE.EXPECTEDVALUE * expectedData.TODAYUSERS)
                 }]
             }
 			
@@ -453,13 +477,13 @@ $(document).ready(function() {
   </div>
 
     <div class="row">
-        <div class="col-md-12"><div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div></div>
+        <div class="col-md-12 loading"><div id="container" style="min-width: 310px; height: 400px; margin: 0 auto;"></div></div>
     </div>
     <div class="row" style="margin-top:10px;">
-        <div class="col-md-6">
+        <div class="col-md-6 loading">
           <div id="container1" style="min-width: 310px; height: 350px; margin: 0 auto"></div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 loading">
           <div id="container2" style="min-width: 310px; height: 350px; margin: 0 auto"></div>
         </div>
     </div>
