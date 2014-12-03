@@ -249,7 +249,7 @@ function chart(data, expectedData) {
                     y: data.FORGOTTEN.FAILCOUNT + data.FORGOTTEN.SUCCESSCOUNT,
 					 myData: data.FORGOTTEN.FAILCOUNT + data.FORGOTTEN.SUCCESSCOUNT,
                     drilldown: 'forgotten',
-                    expected: Math.round(expectedData.FORGOTTEN.EXPECTEDVALUE * expectedData.TODAYUSERS),
+                    expected: Math.round(expectedData.FORGOTTEN.EXPECTEDVALUE * expectedData.TODAYUSERS * 7),
                     downed: false
                 }, {
                     name: 'Failed',
@@ -257,7 +257,7 @@ function chart(data, expectedData) {
 					myData: data.LOGIN.FAILCOUNT,
                     color: '#e74c3c',
                     //drilldown: 'failed',
-                    expected: Math.round(expectedData.FAIL.EXPECTEDVALUE * expectedData.TODAYUSERS),
+                    expected: Math.round(expectedData.FAIL.EXPECTEDVALUE * expectedData.TODAYUSERS * 7),
                     downed: false
                 }, {
                     name: 'Changed',
@@ -265,7 +265,7 @@ function chart(data, expectedData) {
 					myData: data.PASSWORDCHANGED.CHANGED_AMOUNT,
                     color: '#9b59b6',
                     //drilldown: 'changed',
-                    expected: Math.round(expectedData.PWCHANGE.EXPECTEDVALUE * expectedData.TODAYUSERS),
+                    expected: Math.round(expectedData.PWCHANGE.EXPECTEDVALUE * expectedData.TODAYUSERS * 7),
                     downed: false
                 }]
             }
