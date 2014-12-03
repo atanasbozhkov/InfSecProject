@@ -231,6 +231,9 @@ function chart(data, expectedData) {
 			
 			tooltip: {
 				formatter: function () {
+                    if (this.point.downed) {
+                        return 'Now <b>'+ this.point.myData;
+                    }
 					return 'Now <b>'+ this.point.myData +'<br/>'+ 'Expected value: <b>' + this.point.expected + '</b>';
 					
 				}
@@ -246,21 +249,24 @@ function chart(data, expectedData) {
                     y: data.FORGOTTEN.FAILCOUNT + data.FORGOTTEN.SUCCESSCOUNT,
 					 myData: data.FORGOTTEN.FAILCOUNT + data.FORGOTTEN.SUCCESSCOUNT,
                     drilldown: 'forgotten',
-                    expected: Math.round(expectedData.FORGOTTEN.EXPECTEDVALUE * expectedData.TODAYUSERS)
+                    expected: Math.round(expectedData.FORGOTTEN.EXPECTEDVALUE * expectedData.TODAYUSERS),
+                    downed: false
                 }, {
                     name: 'Failed',
                     y: data.LOGIN.FAILCOUNT,
 					myData: data.LOGIN.FAILCOUNT,
                     color: '#e74c3c',
                     //drilldown: 'failed',
-                    expected: Math.round(expectedData.FAIL.EXPECTEDVALUE * expectedData.TODAYUSERS)
+                    expected: Math.round(expectedData.FAIL.EXPECTEDVALUE * expectedData.TODAYUSERS),
+                    downed: false
                 }, {
                     name: 'Changed',
                     y: data.PASSWORDCHANGED.CHANGED_AMOUNT,
 					myData: data.PASSWORDCHANGED.CHANGED_AMOUNT,
                     color: '#9b59b6',
                     //drilldown: 'changed',
-                    expected: Math.round(expectedData.PWCHANGE.EXPECTEDVALUE * expectedData.TODAYUSERS)
+                    expected: Math.round(expectedData.PWCHANGE.EXPECTEDVALUE * expectedData.TODAYUSERS),
+                    downed: false
                 }]
             }
 			
@@ -278,12 +284,14 @@ function chart(data, expectedData) {
                     name: 'Fail-Forgotten Password attempts',
                     color: '#e67e22',
                     y: data.FORGOTTEN.FAILCOUNT,
-					 myData: data.FORGOTTEN.FAILCOUNT
+					 myData: data.FORGOTTEN.FAILCOUNT,
+                     downed: true
                 }, {
                     name: 'Successful-Forgotten attempts',
                     y: data.FORGOTTEN.SUCCESSCOUNT,
 					myData: data.FORGOTTEN.SUCCESSCOUNT,
-                    color: '#e74c3c'
+                    color: '#e74c3c',
+                    downed: true
                    
                 }
 							
