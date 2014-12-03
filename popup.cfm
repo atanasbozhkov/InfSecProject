@@ -22,10 +22,13 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<script src="assets/js/jquery8.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<!--- add DataTables --->
+<link href="http://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css" rel="stylesheet">
+<script type="text/javascript" src="http://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript">
+  var failedResults;
 $(document).ready(function() {
-
   // Debug
   // console.clear();
 
@@ -33,13 +36,14 @@ $(document).ready(function() {
       var db = new this();
 
       db.setCallbackHandler(function(data) {
-          // console.log(data)
-          // var chart = Array.apply(null, Array(data.length)).map(function() { return 0 });
+        //make the global copy.
+        failedResults = data;
+        var systemAverage = 0;
           var chart = {};
           for (var i = 0; i < data.length; i++) {
-              var attempts = data[i]['COUNT(1)'];
-              var users = data[i]['USER_ID'];
-              // console.log('count is '+ attempts)
+              var attempts = data[i]['COUNT'];
+              systemAverage += attempts;
+              // var users = data[i]['USER_ID'];
               if (chart[parseInt(attempts)] == undefined) {
                 chart[parseInt(attempts)] = 1;
               } else{
@@ -47,6 +51,10 @@ $(document).ready(function() {
               }
 
           };
+          //TODO - calculate the average and make a cutooff?
+          systemAverage = systemAverage/data.length
+          // console.log('System average is: ' + systemAverage)
+
           //Transform to Highcharts style
           var finalArray = []
           for (var amount in chart) {
@@ -54,13 +62,54 @@ $(document).ready(function() {
               finalArray.push([amount,chart[amount]])
             }
           }
-          // console.log(finalArray);
-
-          // console.log(chart)
           mainChart(finalArray);
+          //Now construct the tables?
+          failedTable(data, systemAverage);
       })
-    db.getFailedByUser('1999-01-01', '2015-01-01');
+    db.getFailedByUser('2014-11-07', '2014-11-14');
   }.bind(db)
+
+  // Left Table
+  var failedTable =  function(failedResults, systemAverage) {
+    //We have the current results - get the ones from a week ago.
+    var finalTable = [];
+    var db = new this();
+    // console.log(failedResults)
+    db.setCallbackHandler(function(prevResults) {
+        // console.log(prevResults.length)
+      failedResults.forEach(function (obj){
+        //Scan through the old array.
+        for (var i = 0; i < prevResults.length; i++) {
+          if(prevResults[i].EMAIL == obj.EMAIL){
+            // console.log('MATCH');
+            // console.log(prevResults[i].EMAIL + ' equals ' + obj.EMAIL)
+            // Calculate the difference
+            var growth = failedResults[i]['COUNT']/prevResults[i]['COUNT']*100; //percent growth
+            if (failedResults[i]['COUNT'] < prevResults[i]['COUNT']) {
+              growth = growth * -1;
+            };
+            var diffFromAverage = failedResults[i]['COUNT']/systemAverage*100; //percent diff from system average
+            // console.log(obj.EMAIL + ' has growth of: ' + Math.round(growth));
+            finalTable.push([obj.EMAIL,obj['COUNT'],Math.round(growth)+'%', Math.round(diffFromAverage)+'%']);
+          }
+        };
+      });
+      // console.log(finalTable);
+      //Finally - plop the table
+      $('#failedTable').dataTable( {
+          "data": finalTable,
+          "columns": [
+              { "title": "User" },
+              { "title": "Freq" },
+              { "title": "Growth" },
+              { "title": "Average" },
+
+          ]
+      } );
+    });
+    db.getFailedByUser('2014-11-01', '2014-11-07');
+  }.bind(db);
+
 
   //Call the function
   mainChartData();
@@ -84,9 +133,6 @@ $(document).ready(function() {
 
     <!--- Load the css for the side menu  --->
     <link href="assets/css/menu.css" rel="stylesheet">
-    <!--- add DataTables --->
-    <link href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css" rel="stylesheet">
-    <script type="text/javascript" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
     <link rel="shortcut icon" href="img/favicon.ico">
     <style type="text/css">
     body {
@@ -133,7 +179,7 @@ $(document).ready(function() {
       <script src="assets/js/vendor/html5shiv.js"></script>
       <script src="assets/js/vendor/respond.min.js"></script>
     <![endif]-->
-    <script src="assets/js/jquery8.js"></script>
+
 
   </head>
 
@@ -189,122 +235,12 @@ $(document).ready(function() {
     </div>
     <div class="row" style="margin-top:10px;">
         <div class="col-md-6">
-          <table id="t01">
-            <tr>
-              <th>Username</th>
-              <th>Frequency</th>
-              <th>Growth since last week</th>
-              <th>% of system average</th>
-            </tr>
-            <tr>
-               <td>Nikolaos Hadjis</td>
-                  <td>36</td>
-                  <td>150%</td>
-                  <td>112%</td>
-            </tr>
-            <tr>
-              <td>Nikolaos Hadjis</td>
-                  <td>hadjis.doe@example.com</td>
-                  <td>32</td>
-                  <td></td>
-            </tr>
-            <tr>
-              <td>Nikolaos Hadjis</td>
-                  <td>hadjis.doe@example.com</td>
-                  <td>30</td>
-                  <td></td>
-            </tr>
-             <tr>
-              <td>Nikolaos Hadjis</td>
-                  <td>hadjis.doe@example.com</td>
-                  <td>28</td>
-                  <td></td>
-            </tr>
-             <tr>
-              <td>Nikolaos Hadjis</td>
-                  <td>hadjis.doe@example.com</td>
-                  <td>28</td>
-                  <td></td>
-            </tr>
-             <tr>
-              <td>Nikolaos Hadjis</td>
-                  <td>hadjis.doe@example.com</td>
-                  <td>24</td>
-                  <td></td>
-            </tr>
-             <tr>
-              <td>Nikolaos Hadjis</td>
-                  <td>hadjis.doe@example.com</td>
-                  <td>20</td>
-                  <td></td>
-            </tr>
-             <tr>
-              <td>Nikolaos Hadjis</td>
-                  <td>hadjis.doe@example.com</td>
-                  <td>17</td>
-                  <td></td>
-            </tr>
-             <tr>
-              <td>Nikolaos Hadjis</td>
-                  <td>hadjis.doe@example.com</td>
-                  <td>6</td>
-                  <td></td>
-            </tr>
-          </table>
+          <table id="failedTable" class="compact"> </table>
 
         </div>
         <div class="col-md-6">
           <table id="t02">
-            <tr>
-              <th>IP Address</th>
-              <th>Attempts</th>
-              <th>Growth</th>
-            </tr>
-            <tr>
-               <td>Nikolaos Hadjis</td>
-                  <td>hadjis.doe@example.com</td>
-                  <td>36</td>
-            </tr>
-            <tr>
-              <td>Nikolaos Hadjis</td>
-                  <td>hadjis.doe@example.com</td>
-                  <td>32</td>
-            </tr>
-            <tr>
-              <td>Nikolaos Hadjis</td>
-                  <td>hadjis.doe@example.com</td>
-                  <td>30</td>
-            </tr>
-             <tr>
-              <td>Nikolaos Hadjis</td>
-                  <td>hadjis.doe@example.com</td>
-                  <td>28</td>
-            </tr>
-             <tr>
-              <td>Nikolaos Hadjis</td>
-                  <td>hadjis.doe@example.com</td>
-                  <td>28</td>
-            </tr>
-             <tr>
-              <td>Nikolaos Hadjis</td>
-                  <td>hadjis.doe@example.com</td>
-                  <td>24</td>
-            </tr>
-             <tr>
-              <td>Nikolaos Hadjis</td>
-                  <td>hadjis.doe@example.com</td>
-                  <td>20</td>
-            </tr>
-             <tr>
-              <td>Nikolaos Hadjis</td>
-                  <td>hadjis.doe@example.com</td>
-                  <td>17</td>
-            </tr>
-             <tr>
-              <td>Nikolaos Hadjis</td>
-                  <td>hadjis.doe@example.com</td>
-                  <td>6</td>
-            </tr>
+
           </table>
         </div>
     </div>
@@ -329,7 +265,7 @@ $(document).ready(function() {
 
 
 
-    <script src="assets/js/vendor/jquery.min.js"></script>
+
     <script src="assets/js/flat-ui.min.js"></script>
     <!-- Load the charts -->
     <script src="http://code.highcharts.com/stock/highstock.js"></script>

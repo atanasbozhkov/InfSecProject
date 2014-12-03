@@ -10,6 +10,16 @@
         <cfreturn userQuery/>
     </cffunction>
 
+    <cffunction name="getUsername" access="public" output="false" returntype="query">
+        <cfargument name="id" type="string">
+
+        <cfquery name="userQuery">
+            SELECT users.email FROM users
+            WHERE users.user_id = '#id#'
+        </cfquery>
+        <cfreturn userQuery/>
+    </cffunction>
+
     <cffunction name="createUser" access="public" output="false" returntype="any">
         <cfargument name="email" type="string">
         <cfargument name="firstname" type="string">
@@ -38,7 +48,7 @@
 
     <cffunction name="changeRoleToAdmin" access="public" output="false" returntype="boolean">
         <cfargument name="email" type="string">
-        
+
         <cftry>
             <cfquery name="createUser" result="insertUserResult">
                 UPDATE users SET role_id = '2'

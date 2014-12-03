@@ -45,11 +45,14 @@
 
         <cftry>
             <cfquery name="attempts">
-                SELECT user_id, count(1) FROM login_attempts
+                SELECT users.email, count(login_attempts.`attempt_id`) AS COUNT
+                FROM login_attempts
+                INNER JOIN users
+                ON users.user_id=login_attempts.`user_id`
                 WHERE timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP">
                 AND timestamp <= <cfqueryparam value="#to#" cfsqltype="CF_SQL_TIMESTAMP">
                 AND success=0
-                GROUP BY user_id
+                GROUP BY users.email
             </cfquery>
             <cfcatch type="any">
                 <cfreturn>
