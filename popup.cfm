@@ -34,15 +34,30 @@ $(document).ready(function() {
 
       db.setCallbackHandler(function(data) {
           // console.log(data)
-          var chart = [];
+          // var chart = Array.apply(null, Array(data.length)).map(function() { return 0 });
+          var chart = {};
           for (var i = 0; i < data.length; i++) {
               var attempts = data[i]['COUNT(1)'];
               var users = data[i]['USER_ID'];
-              var newArr = [attempts, users];
-              chart.push(newArr);
+              // console.log('count is '+ attempts)
+              if (chart[parseInt(attempts)] == undefined) {
+                chart[parseInt(attempts)] = 1;
+              } else{
+                chart[parseInt(attempts)] += 1;
+              }
+
           };
-          console.log(chart)
-          mainChart(chart.sort());
+          //Transform to Highcharts style
+          var finalArray = []
+          for (var amount in chart) {
+            if (chart.hasOwnProperty(amount)) {
+              finalArray.push([amount,chart[amount]])
+            }
+          }
+          // console.log(finalArray);
+
+          // console.log(chart)
+          mainChart(finalArray);
       })
     db.getFailedByUser('1999-01-01', '2015-01-01');
   }.bind(db)
