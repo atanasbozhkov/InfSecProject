@@ -91,11 +91,11 @@
 }
 
 
- function getWeekAgo() {
+ function getDaysAgo(day) {
 
  
 	var oneWeekAgo = new Date();
-	oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+	oneWeekAgo.setDate(oneWeekAgo.getDate() - day);
 	var pre_date = oneWeekAgo.getDate();
     var pre_month = oneWeekAgo.getMonth() + 1; //Months are zero based
     var pre_year = oneWeekAgo.getFullYear();
@@ -119,7 +119,7 @@
 <script type="text/javascript">
 
 //document.write(getCurrentDate()+ "  -----------------------------");
-//document.write( getWeekAgo()+ "---*******----------");
+//document.write( getDaysAgo(7)+ "---*******----------");
 var counter = 0,
     dataArr = {};
 function mainChartCounter(name, data) {
@@ -138,13 +138,13 @@ var mainChartData = function() {
         mainChartCounter("stat", data);
     })
     // db.statNumber('1999-01-01', '2015-01-01');
-	dbModel1.statNumber(getWeekAgo() , getCurrentDate());
+	dbModel1.statNumber(getDaysAgo(7) , getCurrentDate());
 
     dbModel2.setCallbackHandler(function(data) {
         mainChartCounter("expected", data);
     })
     // db.statNumber('1999-01-01', '2015-01-01');
-    dbModel2.getExpectedValues(getWeekAgo() , getCurrentDate());
+    dbModel2.getExpectedValues(getDaysAgo(3) , getDaysAgo(1));
 }.bind(db)
 
 //
@@ -163,7 +163,7 @@ var getForgotten = function() {
 		
 			forgottenChart(array, data.FORGOTTEN.FAILCOUNT + data.FORGOTTEN.SUCCESSCOUNT);
 		});
-		db2.statNumber(getWeekAgo(), getCurrentDate());
+		db2.statNumber(getDaysAgo(7), getCurrentDate());
     })
     dbModel2.getForgotAttemptsPerDay('1999-01-01', getCurrentDate());
 }.bind(db)
@@ -186,7 +186,7 @@ var getFailed = function() {
 		db1.setCallbackHandler(function(data){
 			failedChart(array, data.LOGIN.FAILCOUNT);
 		});
-		db1.statNumber(getWeekAgo(), getCurrentDate());
+		db1.statNumber(getDaysAgo(7), getCurrentDate());
     })
     dbModel.getFailedAttemptsPerDay('1999-01-01', getCurrentDate());
 }.bind(db)
