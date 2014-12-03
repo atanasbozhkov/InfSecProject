@@ -55,7 +55,7 @@
     function logoutSubmit() {
         var instance = new auth();
         instance.setCallbackHandler(function() {
-            location.reload();
+            setTimeout(function() {location.reload();}, 0);
         });
         instance.logout();
     }
@@ -124,7 +124,8 @@
     <ul class="sidebar-nav" id="sidebar">
       <li><a href='charts.cfm'>Dashboard</a></li>
       <li>
-      <cfif IsUserLoggedIn()>
+      <!--- <cfif IsUserLoggedIn()> --->
+      <cfif GetAuthUser() neq "">
           <cfoutput>
               <a href="settings.cfm">Settings</a>
               <a onClick="logoutSubmit()">Logout</a>

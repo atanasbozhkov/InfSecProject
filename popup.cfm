@@ -197,7 +197,7 @@ $("#menu-toggle").click(function(e) {
 function logoutSubmit() {
     var instance = new auth();
     instance.setCallbackHandler(function() {
-        location.reload();
+        setTimeout(function() {location.reload();}, 0);
     });
     instance.logout();
 }
@@ -217,7 +217,8 @@ $(document).ready(function() {
       <li><a href='charts.cfm'>Dashboard</a></li>
       <!--- <li><a>link2</a></li> --->
       <li>
-      <cfif IsUserLoggedIn()>
+      <!--- <cfif IsUserLoggedIn()> --->
+      <cfif GetAuthUser() neq "">
           <cfoutput>
               <a href="settings.cfm">Settings</a>
               <a onClick="logoutSubmit()">Logout</a>

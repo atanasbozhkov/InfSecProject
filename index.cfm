@@ -1,4 +1,4 @@
-<cfif IsUserLoggedIn()>
+<cfif GetAuthUser() neq "">
     <cflocation url="charts.cfm">
 </cfif>
 
@@ -58,7 +58,7 @@
         {
             if (auth)
             {
-                location.reload();
+                setTimeout(function() {location.reload();}, 0);
             }
             else
             {
