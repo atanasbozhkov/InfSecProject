@@ -75,25 +75,25 @@ $(document).ready(function() {
   }.bind(db)
 
   // Left Table
-  var failedTable =  function(failedResults, systemAverage) {
+  var failedTable =  function(forgotResults, systemAverage) {
     //We have the current results - get the ones from a week ago.
     var finalTable = [];
     var db = new this();
-    // console.log(failedResults)
+    // console.log(forgotResults)
     db.setCallbackHandler(function(prevResults) {
         // console.log(prevResults.length)
-      failedResults.forEach(function (obj){
+      forgotResults.forEach(function (obj){
         //Scan through the old array.
         for (var i = 0; i < prevResults.length; i++) {
           if(prevResults[i].EMAIL == obj.EMAIL){
             // console.log('MATCH');
             // console.log(prevResults[i].EMAIL + ' equals ' + obj.EMAIL)
             // Calculate the difference
-            var growth = failedResults[i]['COUNT']/prevResults[i]['COUNT']*100; //percent growth
-            if (failedResults[i]['COUNT'] < prevResults[i]['COUNT']) {
+            var growth = forgotResults[i]['COUNT']/prevResults[i]['COUNT']*100; //percent growth
+            if (forgotResults[i]['COUNT'] < prevResults[i]['COUNT']) {
               growth = growth * -1;
             };
-            var diffFromAverage = failedResults[i]['COUNT']/systemAverage*100; //percent diff from system average
+            var diffFromAverage = forgotResults[i]['COUNT']/systemAverage*100; //percent diff from system average
             // console.log(obj.EMAIL + ' has growth of: ' + Math.round(growth));
             finalTable.push([obj.EMAIL,obj['COUNT'],Math.round(growth)+'%', Math.round(diffFromAverage)+'%']);
           }
@@ -116,8 +116,95 @@ $(document).ready(function() {
   }.bind(db);
 
 
+//Start the right table
+  var forgotTableInit = function() {
+      var db = new this();
+
+      db.setCallbackHandler(function(data) {
+        //make the global copy.
+        failedResults = data;
+        var systemAverage = 0;
+          var chart = {};
+          for (var i = 0; i < data.length; i++) {
+              var attempts = data[i]['FAIL_ATTEMPTS'];
+              systemAverage += attempts;
+              // var users = data[i]['USER_ID'];
+              if (chart[parseInt(attempts)] == undefined) {
+                chart[parseInt(attempts)] = 1;
+              } else{
+                chart[parseInt(attempts)] += 1;
+              }
+
+          };
+          //TODO - calculate the average and make a cutooff?
+          systemAverage = systemAverage/data.length
+          // console.log('System average is: ' + systemAverage)
+
+          //Transform to Highcharts style
+          var finalArray = []
+          for (var amount in chart) {
+            if (chart.hasOwnProperty(amount)) {
+              // if(amount > systemAverage){
+              if(amount > 5){
+                finalArray.push([parseInt(amount),chart[amount]])
+
+              }
+            }
+          }
+          // mainChart(finalArray.sort());
+          console.log(finalArray.sort());
+          //Now construct the tables?
+          forgotTable(data, systemAverage);
+      })
+    db.getForgottenFailDetail('2014-11-07', '2014-11-14');
+  }.bind(db)
+
+
+  // Left Table
+  var forgotTable =  function(failedResults, systemAverage) {
+    //We have the current results - get the ones from a week ago.
+    var finalTable = [];
+    var db = new this();
+    // console.log(failedResults)
+    db.setCallbackHandler(function(prevResults) {
+        // console.log(prevResults.length)
+      failedResults.forEach(function (obj){
+        //Scan through the old array.
+        for (var i = 0; i < prevResults.length; i++) {
+          if(prevResults[i].EMAIL == obj.EMAIL){
+            // console.log('MATCH');
+            // console.log(prevResults[i].EMAIL + ' equals ' + obj.EMAIL)
+            // Calculate the difference
+            var growth = failedResults[i]['FAIL_ATTEMPTS']/prevResults[i]['FAIL_ATTEMPTS']*100; //percent growth
+            if (failedResults[i]['FAIL_ATTEMPTS'] < prevResults[i]['FAIL_ATTEMPTS']) {
+              growth = growth * -1;
+            };
+            var diffFromAverage = failedResults[i]['FAIL_ATTEMPTS']/systemAverage*100; //percent diff from system average
+            // console.log(obj.EMAIL + ' has growth of: ' + Math.round(growth));
+            finalTable.push([obj.EMAIL,obj['FAIL_ATTEMPTS'],Math.round(growth)+'%', Math.round(diffFromAverage)+'%']);
+          }
+        };
+      });
+      // console.log(finalTable);
+      //Finally - plop the table
+      $('#forgotTable').dataTable( {
+          "data": finalTable,
+          "columns": [
+              { "title": "User" },
+              { "title": "Freq" },
+              { "title": "Growth" },
+              { "title": "Average" },
+
+          ]
+      } );
+    });
+    db.getForgottenFailDetail('2014-11-01', '2014-11-07');
+  }.bind(db);
+
+
   //Call the function
   mainChartData();
+  forgotTableInit();
 });
 </script>
 
@@ -245,7 +332,7 @@ $(document).ready(function() {
 
         </div>
         <div class="col-md-6">
-          <table id="t02">
+          <table id="forgotTable" class="compact">
 
           </table>
         </div>
