@@ -123,6 +123,7 @@ $(document).ready(function() {
       db.setCallbackHandler(function(data) {
         //make the global copy.
         failedResults = data;
+        console.log(data)
         var systemAverage = 0;
           var chart = {};
           for (var i = 0; i < data.length; i++) {
@@ -172,6 +173,8 @@ $(document).ready(function() {
         //Scan through the old array.
         for (var i = 0; i < prevResults.length; i++) {
           if(prevResults[i].EMAIL == obj.EMAIL){
+            // console.log('this')
+            // console.log(obj)
             // console.log('MATCH');
             // console.log(prevResults[i].EMAIL + ' equals ' + obj.EMAIL)
             // Calculate the difference
@@ -181,7 +184,7 @@ $(document).ready(function() {
             };
             var diffFromAverage = failedResults[i]['FAIL_ATTEMPTS']/systemAverage*100; //percent diff from system average
             // console.log(obj.EMAIL + ' has growth of: ' + Math.round(growth));
-            finalTable.push([obj.EMAIL,obj['FAIL_ATTEMPTS'],Math.round(growth)+'%', Math.round(diffFromAverage)+'%']);
+            finalTable.push([obj.IP_ADDR,obj['FAIL_ATTEMPTS'],Math.round(growth)+'%', Math.round(diffFromAverage)+'%']);
           }
         };
       });
@@ -190,7 +193,7 @@ $(document).ready(function() {
       $('#forgotTable').dataTable( {
           "data": finalTable,
           "columns": [
-              { "title": "User" },
+              { "title": "IP Address" },
               { "title": "Freq" },
               { "title": "Growth" },
               { "title": "Average" },

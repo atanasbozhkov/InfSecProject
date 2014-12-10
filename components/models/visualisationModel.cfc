@@ -81,6 +81,8 @@
         <cfreturn attempts/>
     </cffunction>
 
+
+
     <cffunction name="getForgotAttemptsPerDay" access="public" output="false" returntype="query">
         <cfargument name="from" type="string">
         <cfargument name="to" type="string">
@@ -214,7 +216,7 @@
         <cfargument name="to" type="string">
 
         <cfquery name="attemptsDetail">
-            SELECT u.user_id, u.email, u.first_name, u.last_name, COUNT(*) AS fail_attempts, fa.timestamp
+            SELECT u.user_id, u.email, u.first_name, u.last_name, COUNT(*) AS fail_attempts, fa.timestamp, fa.IP_addr
             FROM forgotten_attempts AS fa LEFT JOIN users AS u ON fa.user_id = u.user_id
             WHERE fa.success = 0
             AND fa.timestamp >= <cfqueryparam value="#from#" cfsqltype="CF_SQL_TIMESTAMP">
