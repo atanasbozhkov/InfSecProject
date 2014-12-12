@@ -10,7 +10,7 @@
 
     <cfset This.datasource = config.sourcename>
 
-    <cfset protectList = config.protectList>
+    <cfset protectList = "charts.cfm,settings.cfm,popup.cfm"&rereplace(config.protectList, "[[:space:]]","","ALL")>
 
     <cfset APPLICATION.setup = true>
 

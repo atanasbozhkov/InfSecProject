@@ -71,12 +71,19 @@
             <cfinvokeargument name="answer" value="#answer#">
         </cfinvoke>
 
-        <cfset home="http://localhost:8500/coldfusionComponent/reset.cfm">
+        <!--- <cfset home="http://localhost:8500/coldfusionComponent/reset.cfm"> --->
+        <cfset rootURL = CGI.SCRIPT_NAME>
+        <cfset rootURL = ListDeleteAt(rootURL, arrayLen(ListToArray(rootURL, "/")), "/")>
+        <cfset rootURL = ListDeleteAt(rootURL, arrayLen(ListToArray(rootURL, "/")), "/")>
+
+        <cfset home="http://#CGI.SERVER_NAME#:#CGI.SERVER_PORT##rootURL#/reset.cfm">
         <cfset link=#home#&"?token="&#token#>
         <cfset qr="http://chart.apis.google.com/chart?chs=150x150&cht=qr&chl=#link#">
 
+        <cfinvoke component="config" method="getConfig" returnvariable="config">
+
         <cfmail to="#email#"
-        from="2126086h@student.gla.ac.uk"
+        from="#config.emailAddr#"
         subject="Your password reset link."
         type="html">
         <html>
@@ -89,7 +96,8 @@
 
                 Or scan the QR Code with your mobile: <br/>
 
-                <img src="#qr#"/>
+                <img src="#qr#"/> <br/>
+                This link would be expired within 12 hours.
             </body>
         </html>
 
