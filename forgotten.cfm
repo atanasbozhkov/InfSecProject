@@ -65,7 +65,7 @@
                 }
                 $("#message").html('<center>' + result + '</center>');
             });
-            instance.sendLink(email, answer);
+            instance.sendLink(email);
         }
         </script>
     </head>

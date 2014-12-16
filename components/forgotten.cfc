@@ -2,7 +2,8 @@
 
     <cffunction name="sendLink" output="false" access="remote" returntype="boolean">
         <cfargument name="email" type="string" required="true">
-        <cfargument name="answer" type="string" required="true">
+        <!--- <cfargument name="answer" type="string" required="false"> --->
+        <cfset answer = "">
 
         <cfinvoke component="models.userModel" method="getUser" returnvariable="userData">
             <cfinvokeargument name="email" value="#email#">

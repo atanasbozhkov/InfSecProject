@@ -56,8 +56,24 @@
                 <p>
                     Welcome to use Security Analysis Tool<br>
                     Here is your configuration<br>
-                    Sourcename: <cfoutput>#config.sourcename#</cfoutput><br>
-                    Database: <cfoutput>#config.database#</cfoutput><br>
+                    Sourcename: 
+                    <cfif config.sourcename neq "">
+                        <cfoutput>#config.sourcename#</cfoutput>
+                    <cfelse>
+                        <cfoutput>[empty]</cfoutput>
+                    </cfif><br>
+                    Database: 
+                    <cfif config.sourcename neq "">
+                        <cfoutput>#config.database#</cfoutput>
+                    <cfelse>
+                        <cfoutput>[empty]</cfoutput>
+                    </cfif><br>
+                    Sender Email address:
+                    <cfif config.emailAddr neq "">
+                        <cfoutput>#config.database#</cfoutput>
+                    <cfelse>
+                        <cfoutput>[empty]</cfoutput>
+                    </cfif><br>
                     We have detected the database you config in the file has missing tables,<br>
                     by clicking the button, the component would create necessary tables using the information above<br>
                     If you want to change the information, please go to /coldfusionComponent/components/config.cfc

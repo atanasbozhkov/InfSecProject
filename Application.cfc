@@ -16,17 +16,10 @@
 
     <!--- trigger when the first time the application run --->
     <cffunction name="onApplicationStart">
-        <cflog text="onApplicationStart" file="teamD">
-        <!--- <cfset initSuccess = true> --->
         <cfinvoke component="components.init" method="checkSchema" returnvariable="schemaExist">
         <cfif schemaExist eq false>
-            <cflog text="schmea not exist" file="teamD">
-            <!--- <cfinvoke component="components.init" method="createSchema" returnvariable="schemaCreated">
-            <cfset initSuccess = schemaCreated> --->
             <cfset APPLICATION.setup = false>
         </cfif>
-
-        <!--- <cfreturn initSuccess> --->
         <cfreturn true>
     </cffunction>
 
