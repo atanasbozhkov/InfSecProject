@@ -1,7 +1,7 @@
 <cfcomponent displayname="SecureComponent" output="true" hint="handle the application">
     <cfset This.name = "SecureComponent">
     <cfset This.sessionManagement=true>
-    <cfset This.Sessiontimeout="#createtimespan(0,0,10,0)#">
+    <cfset This.Sessiontimeout="#createtimespan(0,0,20,0)#">
     <cfset This.applicationtimeout="#createtimespan(5,0,0,0)#">
     <cfset This.loginstorage="session">
     <cfset This.mappings["/local"] = getDirectoryFromPath(getCurrentTemplatePath()) />
@@ -10,7 +10,8 @@
 
     <cfset This.datasource = config.sourcename>
 
-    <cfset protectList = "charts.cfm,settings.cfm,popup.cfm"&rereplace(config.protectList, "[[:space:]]","","ALL")>
+    <cfset toolList = "charts.cfm,settings.cfm,popup.cfm">
+    <cfset protectList = rereplace(config.protectList, "[[:space:]]","","ALL")>
 
     <cfset APPLICATION.setup = true>
 
@@ -40,13 +41,23 @@
             <cfreturn true>
         </cfif>
 
-        <cfif listFindNoCase(protectList, pagename) eq 0>
+        <cfif listFindNoCase(protectList&","&toolList, pagename) eq 0>
             <cfreturn true>
         </cfif>
 
         <!--- <cfif NOT IsUserLoggedIn()> --->
         <cfif GetAuthUser() eq "">
             <cflocation url="index.cfm">
+            <cfreturn true>
+        </cfif>
+
+        <cfset userRole = getUserRoles()>
+        <cfif userRole eq "user" AND listFindNoCase(toolList, pagename) neq 0>
+            <cfif listFindNoCase(toolList, config.firstPage) neq 0>
+                <cflocation url="error.cfm">
+                <cfreturn true>
+            </cfif>
+            <cflocation url="#config.firstPage#">
             <cfreturn true>
         </cfif>
 

@@ -9,12 +9,12 @@
             <cfreturn false>
         </cfif>
 
-        <cfinvoke component="auth" method="checkPw" returnvariable="authSuccess">
+        <cfinvoke component="auth" method="checkPw" returnvariable="userRoleId">
             <cfinvokeargument name="email" value="#SESSION.email#">
             <cfinvokeargument name="password" value="#oldPw#">
         </cfinvoke>
 
-        <cfif authSuccess eq false>
+        <cfif userRoleId neq 2>
             <cfreturn false>
         </cfif>
 

@@ -6,6 +6,8 @@
     <cfset variables.protectList = "">
     <!--- enter the email sender address you config in ColdFusion admin page --->
     <cfset variables.emailAddr = "">
+    <!--- enter a page after user logged in --->
+    <cfset variables.firstPage = "">
 
     <cffunction name="getConfig" access="public" returntype="Struct">
         <cfreturn variables>
