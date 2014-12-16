@@ -37,7 +37,7 @@ instance.login(username, password);
 - logout
 <cfajaxproxy cfc="components.auth" jsclassname="auth">
 var instance = new auth();
-instance.login(username, password);
+instance.logout();
 
 - send password recovery email
 <cfajaxproxy cfc="components.forgotten" jsclassname="forgotten">
